@@ -44,7 +44,7 @@
             <li class="sidebar-item @if($id_page == 5) active @endif">
                 <a class="sidebar-link" href="{{ route('bentuk') }}">
                     <i class="align-middle" data-feather="triangle"></i> 
-                    <span class="align-middle">Data Bentuk</span>
+                    <span class="align-middle">Data Bentuk Sediaan</span>
                 </a>
             </li>
 

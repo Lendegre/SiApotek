@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Dash;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bentuk;
+use App\Models\Golongan;
+use App\Models\Kategori;
+use App\Models\Satuan;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class MasterDataController extends Controller
@@ -40,6 +45,7 @@ class MasterDataController extends Controller
         $data = [
             'title'     => $this->label . 'Supplier',
             'id_page'   => $this->id_page[1],
+            'supplier'  => Supplier::all(),
         ];
 
         return view('dash.master-data.supplier', $data);
@@ -55,6 +61,7 @@ class MasterDataController extends Controller
         $data = [
             'title'     => $this->label . 'Kategori',
             'id_page'   => $this->id_page[2],
+            'kategori'  => Kategori::all(),
         ];
 
         return view('dash.master-data.kategori', $data);
@@ -70,6 +77,7 @@ class MasterDataController extends Controller
         $data = [
             'title'     => $this->label . 'Bentuk',
             'id_page'   => $this->id_page[3],
+            'bentuk'    => Bentuk::all(),
         ];
 
         return view('dash.master-data.bentuk', $data);
@@ -85,6 +93,7 @@ class MasterDataController extends Controller
         $data = [
             'title'     => $this->label . ' Satuan',
             'id_page'   => $this->id_page[4],
+            'satuan'    => Satuan::all(),
         ];
 
         return view('dash.master-data.satuan', $data);
@@ -100,6 +109,7 @@ class MasterDataController extends Controller
         $data = [
             'title'     => $this->label . ' Golongan',
             'id_page'   => $this->id_page[5],
+            'golongan'  => Golongan::all(),
         ];
 
         return view('dash.master-data.golongan', $data);
