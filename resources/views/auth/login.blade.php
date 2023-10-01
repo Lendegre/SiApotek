@@ -3,7 +3,7 @@
 @section('content')
     <div class="row" style="height: 100vh;">
 
-        <div class="col-md-5 py-5 px-5">
+        <div class="col-md-5 py-5 px-md-5 px-4">
             <div class="">
                 <div class="d-flex align-items-center">
                     <img src="{{ asset('img/logo.png') }}" width="50" alt="">
