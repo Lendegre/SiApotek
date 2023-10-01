@@ -37,6 +37,6 @@ class AuthController extends Controller
     protected function handleLogout()
     {
         Auth::logout();
-        return redirect()->route('login')->with('success', 'Anda telah keluar!');
+        return redirect()->route('login')->with('warning', 'Anda telah keluar!');
     }
 }

@@ -17,7 +17,7 @@
             </li>
 
             <li class="sidebar-header">
-                Plugins & Addons
+                Master Data
             </li>
 
             <li class="sidebar-item">

@@ -14,6 +14,6 @@ class OverviewController extends Controller
             'id_page'   => 1,
         ];
 
-        return view('dash.overview', $data);
+        return view('dash.analytics.overview', $data);
     }
 }
