@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
-@section('content')
+@section('content-auth')
     <div class="row" style="height: 100vh;">
 
         <div class="col-md-5 py-5 px-md-5 px-4">

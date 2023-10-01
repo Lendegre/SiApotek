@@ -9,6 +9,6 @@ Route::post('/handleLogin', [Auth::class, 'handleLogin'])->name('handleLogin');
 Route::post('/handleLogout', [Auth::class, 'handleLogout'])->name('handleLogout');
 
 // dashboard page
-Route::middleware('auth')->group(function () {
-    Route::get('/overview', [Overview::class, 'showOverview'])->name('overview');
-});
+// Route::middleware('auth')->group(function () {
+Route::get('/overview', [Overview::class, 'showOverview'])->name('overview');
+// });
