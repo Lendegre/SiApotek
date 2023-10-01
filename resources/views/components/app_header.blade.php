@@ -12,8 +12,7 @@
                         <span class="indicator">4</span>
                     </div>
                 </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
-                    aria-labelledby="alertsDropdown">
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
                     <div class="dropdown-menu-header">
                         4 New Notifications
                     </div>
@@ -81,7 +80,8 @@
                 </a>
 
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                    <img src="{{ asset('img/profil.jpeg') }}" class="avatar img-fluid rounded me-1" alt="Profil Image" /> <span class="text-dark">Neville</span>
+                    <img src="{{ asset('img/profil.jpeg') }}" class="avatar img-fluid rounded me-1" alt="Profil Image" /> 
+                    <span class="text-dark">Hi, {{ auth()->user()->username }}</span>
                 </a>
                 <form action="{{ route('handleLogout') }}" method="POST" class="dropdown-menu dropdown-menu-end">
                     @csrf
