@@ -31,6 +31,7 @@
 		</div>
 	</div>
 
+	@include('components.popup')
 	<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
