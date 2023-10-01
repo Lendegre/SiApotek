@@ -83,11 +83,10 @@
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
                     <img src="{{ asset('img/profil.jpeg') }}" class="avatar img-fluid rounded me-1" alt="Profil Image" /> <span class="text-dark">Neville</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-end">
-                    <!-- <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"
-                            data-feather="user"></i> Profile</a> -->
-                    <a class="dropdown-item" href="#">Log out</a>
-                </div>
+                <form action="{{ route('handleLogout') }}" method="POST" class="dropdown-menu dropdown-menu-end">
+                    @csrf
+                    <button class="dropdown-item" href="#">Log out</button>
+                </form>
             </li>
         </ul>
     </div>
