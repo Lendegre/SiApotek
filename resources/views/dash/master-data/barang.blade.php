@@ -10,9 +10,6 @@
                     <button class="btn text-light modal-open" data-modal="create" style="background: #222e5c"><i data-feather="plus"></i> 
                         Add Data
                     </button>
-                    <button class="btn text-light modal-open" data-modal="import" style="background: #222e5c"><i data-feather="upload"></i> 
-                        Import Data
-                    </button>
                     
                     <div id="create" class="modal">
                         <div class="modal-content">

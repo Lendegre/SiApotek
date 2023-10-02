@@ -11,7 +11,10 @@ Route::post('/handleLogout', [Auth::class, 'handleLogout'])->name('handleLogout'
 
 // dashboard page
 Route::middleware('auth')->group(function () {
+    // analytics
     Route::get('/overview', [Overview::class, 'showOverview'])->name('overview');
+
+    // master-data
     Route::prefix('/data')->group(function () {
         Route::get('/barang', [MasterData::class, 'showDataBarang'])->name('barang');
         Route::get('/suplier', [MasterData::class, 'showDataSupplier'])->name('supplier');
