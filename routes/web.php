@@ -11,16 +11,40 @@ Route::post('/handleLogout', [Auth::class, 'handleLogout'])->name('handleLogout'
 
 // dashboard page
 Route::middleware('auth')->group(function () {
-    // analytics
-    Route::get('/overview', [Overview::class, 'showOverview'])->name('overview');
+    // analytics group
+    Route::prefix('/analytics')->group(function () {
+        Route::get('/overview', [Overview::class, 'showOverview'])->name('overview');
+    });
 
-    // master-data
-    Route::prefix('/data')->group(function () {
+    // users group
+    Route::prefix('/users')->group(function () {
+        Route::get('/users-management');
+    });
+
+    // purchase group
+    Route::prefix('/purchase')->group(function () {
+        Route::get('/purchase-management');
+    });
+
+    // sales group
+    Route::prefix('/sales')->group(function () {
+        Route::get('/sales-management');
+    });
+
+    // master-data group
+    Route::prefix('/master-data')->group(function () {
         Route::get('/barang', [MasterData::class, 'showDataBarang'])->name('barang');
         Route::get('/suplier', [MasterData::class, 'showDataSupplier'])->name('supplier');
         Route::get('/kategori', [MasterData::class, 'showDataKategori'])->name('kategori');
         Route::get('/bentuk', [MasterData::class, 'showDataBentuk'])->name('bentuk');
         Route::get('/satuan', [MasterData::class, 'showDataSatuan'])->name('satuan');
         Route::get('/golongan', [MasterData::class, 'showDataGolongan'])->name('golongan');
+    });
+
+    // reports group
+    Route::prefix('/reports')->group(function () {
+        Route::get('/purchase-report');
+        Route::get('/sales-report');
+        Route::get('/stock-report');
     });
 });
