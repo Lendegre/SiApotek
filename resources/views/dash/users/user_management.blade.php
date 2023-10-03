@@ -15,8 +15,8 @@
                         <div class="modal-content">
                             <span class="close" data-modal="create">&times;</span>
                             <h3>Create User</h3>
-                            <p>Default password dari akun yang baru dibuat adalah username akun.</p>
-                            
+                            <p>Default password dari akun yang baru dibuat adalah <strong>arfafarma23</strong>.</p>
+                            <hr>
                             <form action="{{ route('create-user') }}" method="POST">
                                 @csrf
                                 <label for="username">Username<span class="text-danger">*</span></label>
