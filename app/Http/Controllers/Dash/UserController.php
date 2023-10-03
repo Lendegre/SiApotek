@@ -42,4 +42,37 @@ class UserController extends Controller
 
         return back()->with('success', 'Success to create user');
     }
+
+    /**
+     * Handle request to delete user data
+     * 
+     * @return RedirectResponse
+     */
+    protected function deleteUser($user_id)
+    {
+        DB::table('users')->where('user_id', $user_id)->delete();
+
+        return back()->with('info', 'User has been deleted');
+    }
+
+    /**
+     * Hande request to update user data
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function updateUser(Request $request, $user_id)
+    {
+        $user = User::find($user_id);
+
+        if ($user->username != $request->input('username')) {
+            DB::table('users')->where("user_id", $user_id)->update([
+                'username'  => $request->input('username'),
+                'password'  => bcrypt('arfafarma23'),
+            ]);
+            return back()->with('info', 'User has been updated');
+        }
+
+        return back();
+    }
 }

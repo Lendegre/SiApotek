@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/users')->group(function () {
         Route::get('/users-management', [User::class, 'showUserManagement'])->name('users-management');
         Route::post('/create-user', [User::class, 'createUser'])->name('create-user');
+        Route::post('/delete-user/{user_id}', [User::class, 'deleteUser'])->name('delete-user');
+        Route::post('/update-user/{user_id}', [User::class, 'updateUser'])->name('update-user');
     });
 
     // purchase-sales group

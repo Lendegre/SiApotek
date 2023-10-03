@@ -53,14 +53,51 @@
                                     <span>Admin</span>
                                 </div>
                             </td>
-                            <td>                            
-                                <button class="btn btn-info">
+                            <td>             
+                                {{-- update --}}
+                                <button class="btn btn-info modal-open" data-modal="{{ 'update'.$item->user_id }}">
                                     <i data-feather="edit"></i>
                                 </button>
+
+                                <div id="{{ 'update'.$item->user_id }}" class="modal">
+                                    <div class="modal-content">
+                                        <span class="close" data-modal="{{ 'update'.$item->user_id }}">&times;</span>
+                                        <h3>Update User</h3>
+                                        <hr>
+                                        <form action="{{ route('update-user', $item->user_id) }}" method="POST">
+                                            @csrf
+                                            <div class="">
+                                                <label for="username">Username<span class="text-danger">*</span></label>
+                                                <input type="text" placeholder="Masukkan username" value="{{ $item->username }}" required class="form-control" name="username" id="username">
+                                            </div>
+                                            <div class="mt-4">
+                                                <button type="submit" class="btn btn-info">Update</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                                 
-                                <button class="btn btn-danger">
+                                {{-- delete --}}
+                                <button class="btn btn-danger modal-open" data-modal="{{ 'delete'.$item->user_id }}">
                                     <i data-feather="trash"></i>
                                 </button>
+
+                                <div id="{{ 'delete'.$item->user_id }}" class="modal">
+                                    <div class="modal-content">
+                                        <span class="close" data-modal="{{ 'delete'.$item->user_id }}">&times;</span>
+                                        <h3>Delete User</h3>
+                                        <hr>
+                                        <form action="{{ route('delete-user', $item->user_id) }}" method="POST">
+                                            @csrf
+                                            <div class="">
+                                                <p>Apakah anda yakin untuk menghapus <strong>{{ $item->username }}</strong>?</p>
+                                            </div>
+                                            <div class="mt-4">
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
