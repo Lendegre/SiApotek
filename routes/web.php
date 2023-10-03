@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController as Auth;
+use App\Http\Controllers\Dash\AnalyticsController as Analytics;
 use App\Http\Controllers\Dash\MasterDataController as MasterData;
-use App\Http\Controllers\Dash\OverviewController as Overview;
-use App\Http\Controllers\PurchaseSalesController as PurchaseSales;
-use App\Http\Controllers\ReportController as Report;
-use App\Http\Controllers\UserController as User;
+use App\Http\Controllers\Dash\PurchaseSalesController as PurchaseSales;
+use App\Http\Controllers\Dash\ReportController as Report;
+use App\Http\Controllers\Dash\UserController as User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [Auth::class, 'showLogin'])->name('login');
@@ -16,7 +16,7 @@ Route::post('/handleLogout', [Auth::class, 'handleLogout'])->name('handleLogout'
 Route::middleware('auth')->group(function () {
     // analytics group
     Route::prefix('/analytics')->group(function () {
-        Route::get('/overview', [Overview::class, 'showOverview'])->name('overview');
+        Route::get('/overview', [Analytics::class, 'showOverview'])->name('overview');
     });
 
     // users group

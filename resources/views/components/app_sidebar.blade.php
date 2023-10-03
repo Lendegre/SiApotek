@@ -67,7 +67,7 @@
             </li>
 
             <li class="sidebar-item @if($id_page == 8) active @endif">
-                <a class="sidebar-link" href="{{ route('overview') }}">
+                <a class="sidebar-link" href="{{ route('users-management') }}">
                     <i class="align-middle" data-feather="users"></i> 
                     <span class="align-middle">Users Management</span>
                 </a>
@@ -78,14 +78,14 @@
             </li>
 
             <li class="sidebar-item @if($id_page == 9) active @endif">
-                <a class="sidebar-link" href="{{ route('overview') }}">
+                <a class="sidebar-link" href="{{ route('purchase-management') }}">
                     <i class="align-middle" data-feather="grid"></i> 
                     <span class="align-middle">Purchase Management</span>
                 </a>
             </li>
 
             <li class="sidebar-item @if($id_page == 10) active @endif">
-                <a class="sidebar-link" href="{{ route('overview') }}">
+                <a class="sidebar-link" href="{{ route('sales-management') }}">
                     <i class="align-middle" data-feather="dollar-sign"></i> 
                     <span class="align-middle">Sales Management</span>
                 </a>
@@ -96,21 +96,21 @@
             </li>
 
             <li class="sidebar-item @if($id_page == 11) active @endif">
-                <a class="sidebar-link" href="{{ route('overview') }}">
+                <a class="sidebar-link" href="{{ route('purchase-report') }}">
                     <i class="align-middle" data-feather="file-plus"></i> 
                     <span class="align-middle">Purchase Report</span>
                 </a>
             </li>
 
             <li class="sidebar-item @if($id_page == 12) active @endif">
-                <a class="sidebar-link" href="{{ route('overview') }}">
+                <a class="sidebar-link" href="{{ route('sales-report') }}">
                     <i class="align-middle" data-feather="file-minus"></i> 
                     <span class="align-middle">Sales Report</span>
                 </a>
             </li>
 
             <li class="sidebar-item @if($id_page == 13) active @endif">
-                <a class="sidebar-link" href="{{ route('overview') }}">
+                <a class="sidebar-link" href="{{ route('stock-report') }}">
                     <i class="align-middle" data-feather="box"></i> 
                     <span class="align-middle">Stock Report</span>
                 </a>
