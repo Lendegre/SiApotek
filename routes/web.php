@@ -21,13 +21,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/users-management');
     });
 
-    // purchase group
-    Route::prefix('/purchase')->group(function () {
+    // purchase-sales group
+    Route::prefix('/purchase-sales')->group(function () {
         Route::get('/purchase-management');
-    });
-
-    // sales group
-    Route::prefix('/sales')->group(function () {
         Route::get('/sales-management');
     });
 
