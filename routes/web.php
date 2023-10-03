@@ -45,7 +45,14 @@ Route::middleware('auth')->group(function () {
             Route::post('/delete-supplier/{supplier_id}', [MasterData::class, 'deleteSupplier'])->name('delete-supplier');
         });
 
-        Route::get('/kategori', [MasterData::class, 'showDataKategori'])->name('kategori');
+        // kategori groups
+        Route::prefix('/kategori')->group(function () {
+            Route::get('/', [MasterData::class, 'showDataKategori'])->name('kategori');
+            Route::post('/create-supplier', [MasterData::class, 'createKategori'])->name('create-kategori');
+            Route::post('/update-kategori/{kategori_id}', [MasterData::class, 'updateKategori'])->name('update-kategori');
+            Route::post('/delete-kategori/{kategori_id}', [MasterData::class, 'deleteKategori'])->name('delete-kategori');
+        });
+
         Route::get('/bentuk', [MasterData::class, 'showDataBentuk'])->name('bentuk');
         Route::get('/satuan', [MasterData::class, 'showDataSatuan'])->name('satuan');
         Route::get('/golongan', [MasterData::class, 'showDataGolongan'])->name('golongan');

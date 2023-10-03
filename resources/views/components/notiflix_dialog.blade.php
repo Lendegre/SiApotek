@@ -8,4 +8,9 @@
    Notiflix.Notify.info("{{ session('info') }}"); 
 </script>
 
+@elseif(session()->has('error'))
+<script>
+   Notiflix.Notify.failure("{{ session('error') }}"); 
+</script>
+
 @endif

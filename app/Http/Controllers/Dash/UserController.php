@@ -35,12 +35,16 @@ class UserController extends Controller
      */
     protected function createUser(Request $request)
     {
-        DB::table('users')->insert([
-            'username'  => $request->input('username'),
-            'password'  => bcrypt('arfafarma23'),
-        ]);
+        $existingUser = User::where('username', $request->input('username'))->first();
+        if (!$existingUser) {
+            DB::table('users')->insert([
+                'username'  => $request->input('username'),
+                'password'  => bcrypt('arfafarma23'),
+            ]);
+            return back()->with('success', 'Success to create user');
+        }
 
-        return back()->with('success', 'Success to create user');
+        return back()->with('error', 'Username is duplicate');
     }
 
     /**

@@ -54,21 +54,27 @@ class MasterDataController extends Controller
     }
 
     /**
-     * Handle request to create data
+     * Handle request to create supplier
      * 
      * @param Request
      * @return RedirectResponse
      */
     protected function createSupplier(Request $request)
     {
-        DB::table('supplier')->insert([
-            'nama_supplier' => $request->input('nama_supplier'),
-            'nama_sales'    => $request->input('nama_sales'),
-            'no_telp'       => $request->input('no_telp'),
-            'alamat'        => $request->input('alamat'),
-        ]);
+        $existingSupplier = Supplier::where('nama_supplier', $request->input('nama_supplier'))->first();
 
-        return back()->with('success', 'Success to create data');
+        if (!$existingSupplier) {
+            DB::table('supplier')->insert([
+                'nama_supplier' => $request->input('nama_supplier'),
+                'nama_sales'    => $request->input('nama_sales'),
+                'no_telp'       => $request->input('no_telp'),
+                'alamat'        => $request->input('alamat'),
+            ]);
+
+            return back()->with('success', 'Success to create supplier');
+        }
+
+        return back()->with('error', 'Nama supplier is duplicate');
     }
 
     /**
@@ -102,6 +108,60 @@ class MasterDataController extends Controller
         if ($supplier->isDirty()) {
             $supplier->save();
             return back()->with('info', 'Supplier has been updated');
+        }
+
+        return back();
+    }
+
+    /**
+     * Handle request to create kategori
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function createKategori(Request $request)
+    {
+        $existingKategori = Kategori::where('nama_kategori', $request->input('nama_kategori'))->first();
+
+        if (!$existingKategori) {
+            DB::table('kategori')->insert([
+                'nama_kategori' => $request->input('nama_kategori'),
+            ]);
+
+            return back()->with('success', 'Success to create kategori');
+        }
+
+        return back()->with('error', 'Nama kategori is duplicate');
+    }
+
+    /**
+     * Handle request to delete kategori
+     * 
+     * @return RedirectResponse
+     */
+
+    protected function deleteKategori($kategori_id)
+    {
+        DB::table('kategori')->where('kategori_id', $kategori_id)->delete();
+
+        return back()->with('info', 'Kategori has been deleted');
+    }
+
+    /**
+     * Handle request to update kategori
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function updateKategori(Request $request, $kategori_id)
+    {
+        $kategori = Kategori::find($kategori_id);
+
+        $kategori->nama_kategori = $request->input('nama_kategori');
+
+        if ($kategori->isDirty()) {
+            $kategori->save();
+            return back()->with('info', 'Kategori has been updated');
         }
 
         return back();
