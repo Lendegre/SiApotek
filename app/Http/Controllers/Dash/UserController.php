@@ -21,7 +21,7 @@ class UserController extends Controller
         $data = [
             'title'     => 'User Management',
             'id_page'   => 8,
-            'users'     => User::where('username', '!=', $user->username)->get(),
+            'users'     => User::where('username', '!=', $user->username)->orderBy('user_id', 'DESC')->get(),
         ];
 
         return view('dash.users.user_management', $data);

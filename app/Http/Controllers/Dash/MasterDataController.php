@@ -47,7 +47,7 @@ class MasterDataController extends Controller
         $data = [
             'title'     => $this->label . 'Supplier',
             'id_page'   => $this->id_page[1],
-            'supplier'  => Supplier::all(),
+            'supplier'  => Supplier::orderBy('supplier_id', 'DESC')->get(),
         ];
 
         return view('dash.master-data.supplier', $data);
@@ -123,7 +123,7 @@ class MasterDataController extends Controller
         $data = [
             'title'     => $this->label . 'Kategori',
             'id_page'   => $this->id_page[2],
-            'kategori'  => Kategori::all(),
+            'kategori'  => Kategori::orderBy('kategori_id', 'DESC')->get(),
         ];
 
         return view('dash.master-data.kategori', $data);
@@ -193,7 +193,7 @@ class MasterDataController extends Controller
         $data = [
             'title'     => $this->label . 'Bentuk',
             'id_page'   => $this->id_page[3],
-            'bentuk'    => Bentuk::all(),
+            'bentuk'    => Bentuk::orderBy('bentuk_id', 'DESC')->get(),
         ];
 
         return view('dash.master-data.bentuk', $data);
@@ -263,7 +263,7 @@ class MasterDataController extends Controller
         $data = [
             'title'     => $this->label . ' Satuan',
             'id_page'   => $this->id_page[4],
-            'satuan'    => Satuan::all(),
+            'satuan'    => Satuan::orderBy('satuan_id', 'DESC')->get(),
         ];
 
         return view('dash.master-data.satuan', $data);
@@ -333,7 +333,7 @@ class MasterDataController extends Controller
         $data = [
             'title'     => $this->label . ' Golongan',
             'id_page'   => $this->id_page[5],
-            'golongan'  => Golongan::all(),
+            'golongan'  => Golongan::orderBy('golongan_id', 'DESC')->get(),
         ];
 
         return view('dash.master-data.golongan', $data);
