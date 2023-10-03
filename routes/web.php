@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
     // users group
     Route::prefix('/users')->group(function () {
         Route::get('/users-management', [User::class, 'showUserManagement'])->name('users-management');
+        Route::post('/create-user', [User::class, 'createUser'])->name('create-user');
     });
 
     // purchase-sales group
