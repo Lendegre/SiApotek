@@ -338,4 +338,58 @@ class MasterDataController extends Controller
 
         return view('dash.master-data.golongan', $data);
     }
+
+    /**
+     * Handle request to create golongan
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function createGolongan(Request $request)
+    {
+        $existingGolongan = Golongan::where('jenis_golongan', $request->input('jenis_golongan'))->first();
+
+        if (!$existingGolongan) {
+            DB::table('golongan')->insert([
+                'jenis_golongan' => $request->input('jenis_golongan'),
+            ]);
+
+            return back()->with('success', 'Success to create golongan');
+        }
+
+        return back()->with('error', 'Golongan is duplicate');
+    }
+
+    /**
+     * Handle request to delete golongan
+     * 
+     * @return RedirectResponse
+     */
+
+    protected function deleteGolongan($golongan_id)
+    {
+        DB::table('golongan')->where('golongan_id', $golongan_id)->delete();
+
+        return back()->with('info', 'Golongan has been deleted');
+    }
+
+    /**
+     * Handle request to update golongan
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function updateGolongan(Request $request, $golongan_id)
+    {
+        $golongan = Golongan::find($golongan_id);
+
+        $golongan->jenis_golongan = $request->input('jenis_golongan');
+
+        if ($golongan->isDirty()) {
+            $golongan->save();
+            return back()->with('info', 'Golongan has been updated');
+        }
+
+        return back();
+    }
 }

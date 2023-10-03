@@ -69,7 +69,13 @@ Route::middleware('auth')->group(function () {
             Route::post('/delete-satuan/{satuan_id}', [MasterData::class, 'deleteSatuan'])->name('delete-satuan');
         });
 
-        Route::get('/golongan', [MasterData::class, 'showDataGolongan'])->name('golongan');
+        // jenis golongan group
+        Route::prefix('golongan')->group(function () {
+            Route::get('/', [MasterData::class, 'showDataGolongan'])->name('golongan');
+            Route::post('/create-golongan', [MasterData::class, 'createGolongan'])->name('create-golongan');
+            Route::post('/update-golongan/{golongan_id}', [MasterData::class, 'updateGolongan'])->name('update-golongan');
+            Route::post('/delete-golongan/{golongan_id}', [MasterData::class, 'deleteGolongan'])->name('delete-golongan');
+        });
     });
 
     // reports group
