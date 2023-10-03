@@ -114,6 +114,22 @@ class MasterDataController extends Controller
     }
 
     /**
+     * Render view kategori user interface
+     * 
+     * @return View
+     */
+    protected function showDataKategori()
+    {
+        $data = [
+            'title'     => $this->label . 'Kategori',
+            'id_page'   => $this->id_page[2],
+            'kategori'  => Kategori::all(),
+        ];
+
+        return view('dash.master-data.kategori', $data);
+    }
+
+    /**
      * Handle request to create kategori
      * 
      * @param Request
@@ -168,22 +184,6 @@ class MasterDataController extends Controller
     }
 
     /**
-     * Render view kategori user interface
-     * 
-     * @return View
-     */
-    protected function showDataKategori()
-    {
-        $data = [
-            'title'     => $this->label . 'Kategori',
-            'id_page'   => $this->id_page[2],
-            'kategori'  => Kategori::all(),
-        ];
-
-        return view('dash.master-data.kategori', $data);
-    }
-
-    /**
      * Render view bentuk user interface
      * 
      * @return View
@@ -200,6 +200,60 @@ class MasterDataController extends Controller
     }
 
     /**
+     * Handle request to create bentuk
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function createBentuk(Request $request)
+    {
+        $existingBentuk = Bentuk::where('bentuk_barang', $request->input('bentuk_barang'))->first();
+
+        if (!$existingBentuk) {
+            DB::table('bentuk')->insert([
+                'bentuk_barang' => $request->input('bentuk_barang'),
+            ]);
+
+            return back()->with('success', 'Success to create bentuk sediaan');
+        }
+
+        return back()->with('error', 'Bentuk sediaan is duplicate');
+    }
+
+    /**
+     * Handle request to delete bentuk
+     * 
+     * @return RedirectResponse
+     */
+
+    protected function deletebentuk($bentuk_id)
+    {
+        DB::table('bentuk')->where('bentuk_id', $bentuk_id)->delete();
+
+        return back()->with('info', 'Bentuk sediaan has been deleted');
+    }
+
+    /**
+     * Handle request to update bentuk
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function updateBentuk(Request $request, $bentuk_id)
+    {
+        $bentuk = Bentuk::find($bentuk_id);
+
+        $bentuk->bentuk_barang = $request->input('bentuk_barang');
+
+        if ($bentuk->isDirty()) {
+            $bentuk->save();
+            return back()->with('info', 'Bentuk sediaan has been updated');
+        }
+
+        return back();
+    }
+
+    /**
      * Render view satuan user interface
      * 
      * @return View
@@ -213,6 +267,60 @@ class MasterDataController extends Controller
         ];
 
         return view('dash.master-data.satuan', $data);
+    }
+
+    /**
+     * Handle request to create satuan
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function createSatuan(Request $request)
+    {
+        $existingSatuan = Satuan::where('satuan_barang', $request->input('satuan_barang'))->first();
+
+        if (!$existingSatuan) {
+            DB::table('satuan')->insert([
+                'satuan_barang' => $request->input('satuan_barang'),
+            ]);
+
+            return back()->with('success', 'Success to create satuan');
+        }
+
+        return back()->with('error', 'Satuan is duplicate');
+    }
+
+    /**
+     * Handle request to delete satuan
+     * 
+     * @return RedirectResponse
+     */
+
+    protected function deleteSatuan($satuan_id)
+    {
+        DB::table('satuan')->where('satuan_id', $satuan_id)->delete();
+
+        return back()->with('info', 'Satuan sediaan has been deleted');
+    }
+
+    /**
+     * Handle request to update satuan
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function updateSatuan(Request $request, $satuan_id)
+    {
+        $satuan = Satuan::find($satuan_id);
+
+        $satuan->satuan_barang = $request->input('satuan_barang');
+
+        if ($satuan->isDirty()) {
+            $satuan->save();
+            return back()->with('info', 'Satuan has been updated');
+        }
+
+        return back();
     }
 
     /**

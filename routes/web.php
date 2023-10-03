@@ -45,16 +45,30 @@ Route::middleware('auth')->group(function () {
             Route::post('/delete-supplier/{supplier_id}', [MasterData::class, 'deleteSupplier'])->name('delete-supplier');
         });
 
-        // kategori groups
+        // kategori group
         Route::prefix('/kategori')->group(function () {
             Route::get('/', [MasterData::class, 'showDataKategori'])->name('kategori');
-            Route::post('/create-supplier', [MasterData::class, 'createKategori'])->name('create-kategori');
+            Route::post('/create-kategori', [MasterData::class, 'createKategori'])->name('create-kategori');
             Route::post('/update-kategori/{kategori_id}', [MasterData::class, 'updateKategori'])->name('update-kategori');
             Route::post('/delete-kategori/{kategori_id}', [MasterData::class, 'deleteKategori'])->name('delete-kategori');
         });
 
-        Route::get('/bentuk', [MasterData::class, 'showDataBentuk'])->name('bentuk');
-        Route::get('/satuan', [MasterData::class, 'showDataSatuan'])->name('satuan');
+        // bentuk persediaan group
+        Route::prefix('/bentuk')->group(function () {
+            Route::get('/', [MasterData::class, 'showDataBentuk'])->name('bentuk');
+            Route::post('/create-bentuk', [MasterData::class, 'createBentuk'])->name('create-bentuk');
+            Route::post('/update-bentuk/{bentuk_id}', [MasterData::class, 'updateBentuk'])->name('update-bentuk');
+            Route::post('/delete-bentuk/{bentuk_id}', [MasterData::class, 'deleteBentuk'])->name('delete-bentuk');
+        });
+
+        // satuan group
+        Route::prefix('/satuan')->group(function () {
+            Route::get('/', [MasterData::class, 'showDataSatuan'])->name('satuan');
+            Route::post('/create-satuan', [MasterData::class, 'createSatuan'])->name('create-satuan');
+            Route::post('/update-satuan/{satuan_id}', [MasterData::class, 'updateSatuan'])->name('update-satuan');
+            Route::post('/delete-satuan/{satuan_id}', [MasterData::class, 'deleteSatuan'])->name('delete-satuan');
+        });
+
         Route::get('/golongan', [MasterData::class, 'showDataGolongan'])->name('golongan');
     });
 
