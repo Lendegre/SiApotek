@@ -28,7 +28,7 @@ class UserController extends Controller
     }
 
     /**
-     * Handle request post to create user data
+     * Handle request to create user data
      * 
      * @param Request
      * @return RedirectResponse

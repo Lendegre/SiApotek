@@ -23,8 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/users')->group(function () {
         Route::get('/users-management', [User::class, 'showUserManagement'])->name('users-management');
         Route::post('/create-user', [User::class, 'createUser'])->name('create-user');
-        Route::post('/delete-user/{user_id}', [User::class, 'deleteUser'])->name('delete-user');
         Route::post('/update-user/{user_id}', [User::class, 'updateUser'])->name('update-user');
+        Route::post('/delete-user/{user_id}', [User::class, 'deleteUser'])->name('delete-user');
     });
 
     // purchase-sales group
@@ -36,7 +36,15 @@ Route::middleware('auth')->group(function () {
     // master-data group
     Route::prefix('/master-data')->group(function () {
         Route::get('/barang', [MasterData::class, 'showDataBarang'])->name('barang');
-        Route::get('/suplier', [MasterData::class, 'showDataSupplier'])->name('supplier');
+
+        // supplier group
+        Route::prefix('/suplier')->group(function () {
+            Route::get('/', [MasterData::class, 'showDataSupplier'])->name('supplier');
+            Route::post('/create-supplier', [MasterData::class, 'createSupplier'])->name('create-supplier');
+            Route::post('/update-supplier/{supplier_id}', [MasterData::class, 'updateSupplier'])->name('update-supplier');
+            Route::post('/delete-supplier/{supplier_id}', [MasterData::class, 'deleteSupplier'])->name('delete-supplier');
+        });
+
         Route::get('/kategori', [MasterData::class, 'showDataKategori'])->name('kategori');
         Route::get('/bentuk', [MasterData::class, 'showDataBentuk'])->name('bentuk');
         Route::get('/satuan', [MasterData::class, 'showDataSatuan'])->name('satuan');

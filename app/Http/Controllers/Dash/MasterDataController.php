@@ -8,7 +8,9 @@ use App\Models\Golongan;
 use App\Models\Kategori;
 use App\Models\Satuan;
 use App\Models\Supplier;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MasterDataController extends Controller
 {
@@ -49,6 +51,60 @@ class MasterDataController extends Controller
         ];
 
         return view('dash.master-data.supplier', $data);
+    }
+
+    /**
+     * Handle request to create data
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function createSupplier(Request $request)
+    {
+        DB::table('supplier')->insert([
+            'nama_supplier' => $request->input('nama_supplier'),
+            'nama_sales'    => $request->input('nama_sales'),
+            'no_telp'       => $request->input('no_telp'),
+            'alamat'        => $request->input('alamat'),
+        ]);
+
+        return back()->with('success', 'Success to create data');
+    }
+
+    /**
+     * Handle request to delete supplier
+     * 
+     * @return RedirectResponse
+     */
+
+    protected function deleteSupplier($supplier_id)
+    {
+        DB::table('supplier')->where('supplier_id', $supplier_id)->delete();
+
+        return back()->with('info', 'Supplier has been deleted');
+    }
+
+    /**
+     * Handle request to update supplier
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function updateSupplier(Request $request, $supplier_id)
+    {
+        $supplier = Supplier::find($supplier_id);
+
+        $supplier->nama_supplier = $request->input('nama_supplier');
+        $supplier->nama_sales = $request->input('nama_sales');
+        $supplier->no_telp = $request->input('no_telp');
+        $supplier->alamat = $request->input('alamat');
+
+        if ($supplier->isDirty()) {
+            $supplier->save();
+            return back()->with('info', 'Supplier has been updated');
+        }
+
+        return back();
     }
 
     /**
