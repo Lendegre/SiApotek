@@ -3,6 +3,9 @@
 use App\Http\Controllers\Auth\AuthController as Auth;
 use App\Http\Controllers\Dash\MasterDataController as MasterData;
 use App\Http\Controllers\Dash\OverviewController as Overview;
+use App\Http\Controllers\PurchaseSalesController as PurchaseSales;
+use App\Http\Controllers\ReportController as Report;
+use App\Http\Controllers\UserController as User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [Auth::class, 'showLogin'])->name('login');
@@ -18,13 +21,13 @@ Route::middleware('auth')->group(function () {
 
     // users group
     Route::prefix('/users')->group(function () {
-        Route::get('/users-management');
+        Route::get('/users-management', [User::class, 'showUserManagement'])->name('users-management');
     });
 
     // purchase-sales group
     Route::prefix('/purchase-sales')->group(function () {
-        Route::get('/purchase-management');
-        Route::get('/sales-management');
+        Route::get('/purchase-management', [PurchaseSales::class, 'showPurchaseManagement'])->name('purchase-management');
+        Route::get('/sales-management', [PurchaseSales::class, 'showSalesManagement'])->name('sales-management');
     });
 
     // master-data group
@@ -39,8 +42,8 @@ Route::middleware('auth')->group(function () {
 
     // reports group
     Route::prefix('/reports')->group(function () {
-        Route::get('/purchase-report');
-        Route::get('/sales-report');
-        Route::get('/stock-report');
+        Route::get('/purchase-report', [Report::class, 'showPurchaseReport'])->name('purchase-report');
+        Route::get('/sales-report', [Report::class, 'showSalesReport'])->name('sales-report');
+        Route::get('/stock-report', [Report::class, 'showStockReport'])->name('stock-report');
     });
 });
