@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // users group
-    Route::prefix('/users')->group(function () {
+    Route::prefix('/users')->middleware('role:pemilik')->group(function () {
         Route::get('/users-management', [User::class, 'showUserManagement'])->name('users-management');
         Route::post('/create-user', [User::class, 'createUser'])->name('create-user');
         Route::post('/update-user/{user_id}', [User::class, 'updateUser'])->name('update-user');
@@ -30,6 +30,9 @@ Route::middleware('auth')->group(function () {
     // purchase-sales group
     Route::prefix('/purchase-sales')->group(function () {
         Route::get('/purchase-management', [PurchaseSales::class, 'showPurchaseManagement'])->name('purchase-management');
+        Route::middleware('role:pemilik,apoteker')->group(function () {
+            Route::get('/purchase-agreement', [PurchaseSales::class, 'showPurchaseAgreement'])->name('purchase-agreement');
+        });
         Route::get('/sales-management', [PurchaseSales::class, 'showSalesManagement'])->name('sales-management');
     });
 

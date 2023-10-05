@@ -16,6 +16,49 @@
                 </a>
             </li>
 
+
+            @if (auth()->user()->role == "pemilik")
+                
+            <li class="sidebar-header">
+                Users
+            </li>
+
+            <li class="sidebar-item @if($id_page == 8) active @endif">
+                <a class="sidebar-link" href="{{ route('users-management') }}">
+                    <i class="align-middle" data-feather="users"></i> 
+                    <span class="align-middle">Users Management</span>
+                </a>
+            </li>
+           
+            @endif
+
+            <li class="sidebar-header">
+                Purchase & Sales
+            </li>
+
+            <li class="sidebar-item @if($id_page == 9) active @endif">
+                <a class="sidebar-link" href="{{ route('purchase-management') }}">
+                    <i class="align-middle" data-feather="grid"></i> 
+                    <span class="align-middle">Purchase Management</span>
+                </a>
+            </li>
+
+            @if (auth()->user()->role != 'admin')
+            <li class="sidebar-item @if($id_page == 14) active @endif">
+                <a class="sidebar-link" href="{{ route('purchase-agreement') }}">
+                    <i class="align-middle" data-feather="check-circle"></i> 
+                    <span class="align-middle">Purchase Agreement</span>
+                </a>
+            </li>
+            @endif
+
+            <li class="sidebar-item @if($id_page == 10) active @endif">
+                <a class="sidebar-link" href="{{ route('sales-management') }}">
+                    <i class="align-middle" data-feather="dollar-sign"></i> 
+                    <span class="align-middle">Sales Management</span>
+                </a>
+            </li>
+
             <li class="sidebar-header">
                 Master Data
             </li>
@@ -59,35 +102,6 @@
                 <a class="sidebar-link" href="{{ route('golongan') }}">
                     <i class="align-middle" data-feather="bar-chart-2"></i> 
                     <span class="align-middle">Data Golongan</span>
-                </a>
-            </li>
-
-            <li class="sidebar-header">
-                Users
-            </li>
-
-            <li class="sidebar-item @if($id_page == 8) active @endif">
-                <a class="sidebar-link" href="{{ route('users-management') }}">
-                    <i class="align-middle" data-feather="users"></i> 
-                    <span class="align-middle">Users Management</span>
-                </a>
-            </li>
-           
-            <li class="sidebar-header">
-                Purchase & Sales
-            </li>
-
-            <li class="sidebar-item @if($id_page == 9) active @endif">
-                <a class="sidebar-link" href="{{ route('purchase-management') }}">
-                    <i class="align-middle" data-feather="grid"></i> 
-                    <span class="align-middle">Purchase Management</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item @if($id_page == 10) active @endif">
-                <a class="sidebar-link" href="{{ route('sales-management') }}">
-                    <i class="align-middle" data-feather="dollar-sign"></i> 
-                    <span class="align-middle">Sales Management</span>
                 </a>
             </li>
 

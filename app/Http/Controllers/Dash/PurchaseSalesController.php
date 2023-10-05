@@ -12,7 +12,7 @@ class PurchaseSalesController extends Controller
     public function __construct()
     {
         $this->label = 'Management';
-        $this->id_page = [9, 10];
+        $this->id_page = [9, 14, 10];
     }
 
     /**
@@ -31,6 +31,21 @@ class PurchaseSalesController extends Controller
     }
 
     /**
+     * Render view purchase agreement
+     * 
+     * @return View
+     */
+    protected function showPurchaseAgreement()
+    {
+        $data = [
+            'title'     => 'Purchase Agreement',
+            'id_page'   => $this->id_page[1],
+        ];
+
+        return view('dash.purchase-sales.purchase_management', $data);
+    }
+
+    /**
      * Render view sales management
      * 
      * @return View
@@ -39,7 +54,7 @@ class PurchaseSalesController extends Controller
     {
         $data = [
             'title'     => 'Sales ' . $this->label,
-            'id_page'   => $this->id_page[1]
+            'id_page'   => $this->id_page[2]
         ];
 
         return view('dash.purchase-sales.sales_management', $data);
