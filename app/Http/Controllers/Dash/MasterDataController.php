@@ -29,9 +29,18 @@ class MasterDataController extends Controller
      */
     protected function showDataBarang()
     {
+        $count_model = [
+            Supplier::count(),
+            Kategori::count(),
+            Bentuk::count(),
+            Satuan::count(),
+            Golongan::count(),
+        ];
+
         $data = [
-            'title'     => $this->label . 'Barang',
-            'id_page'   => $this->id_page[0],
+            'title'         => $this->label . 'Barang',
+            'id_page'       => $this->id_page[0],
+            'count_model'   => $count_model
         ];
 
         return view('dash.master-data.barang', $data);
