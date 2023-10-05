@@ -44,7 +44,7 @@
                 </div>
                 
                 <div class="table-responsive"> 
-                    <table class="table table-striped">
+                    <table class="table table-striped" id="data">
                         <thead>
                             <tr style="white-space: nowrap">
                                 <th>No.</th>
@@ -121,6 +121,7 @@
                                 </td>
                             </tr>
                             @endforeach
+                            
                         </tbody>
                     </table>
                 </div>

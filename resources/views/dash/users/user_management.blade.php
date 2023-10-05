@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 
-                <table class="table">
+                <table class="table" id="data">
                     <thead>
                         <tr>
                             <th>No.</th>

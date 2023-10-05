@@ -32,7 +32,7 @@
                 </div>
                 
                 <div class="table-responsive"> 
-                    <table class="table table-striped">
+                    <table id="data" class="table table-striped">
                         <thead>
                             <tr style="white-space: nowrap">
                                 <th>No.</th>
