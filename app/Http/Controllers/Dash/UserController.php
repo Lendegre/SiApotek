@@ -40,6 +40,7 @@ class UserController extends Controller
             DB::table('users')->insert([
                 'username'  => $request->input('username'),
                 'password'  => bcrypt('arfafarma23'),
+                'role'      => $request->input('role'),
             ]);
             return back()->with('success', 'Success to create user');
         }
@@ -72,7 +73,7 @@ class UserController extends Controller
         if ($user->username != $request->input('username')) {
             DB::table('users')->where("user_id", $user_id)->update([
                 'username'  => $request->input('username'),
-                'password'  => bcrypt('arfafarma23'),
+                'role'      => $request->input('role')
             ]);
             return back()->with('info', 'User has been updated');
         }

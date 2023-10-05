@@ -19,10 +19,20 @@
                             <hr>
                             <form action="{{ route('create-user') }}" method="POST">
                                 @csrf
-                                <label for="username">Username<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" required name="username" placeholder="Masukkan username" id="username">
-                                
-                                
+                                <div class="mt-2">
+                                    <label for="username">Username<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" required name="username" placeholder="Masukkan username" id="username">
+                                </div>
+
+                                <div class="mt-2">
+                                    <label for="role">Role<span class="text-danger">*</span></label>
+                                    <select name="role" class="form-control" id="role" required> 
+                                        <option value="">-Pilih Role-</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="apoteker">Apoteker</option>
+                                    </select>
+                                </div>
+
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-success">Simpan</button>
                                 </div>
@@ -30,7 +40,6 @@
                         </div>
                     </div>
                 </div>
-                
                 
                 <table class="table">
                     <thead>
@@ -50,7 +59,7 @@
                                     <span>
                                         <strong>{{ $item->username }}</strong>
                                     </span>
-                                    <span>Admin</span>
+                                    <span>{{ ucfirst($item->role) }}</span>
                                 </div>
                             </td>
                             <td>             
@@ -69,6 +78,14 @@
                                             <div class="">
                                                 <label for="username">Username<span class="text-danger">*</span></label>
                                                 <input type="text" placeholder="Masukkan username" value="{{ $item->username }}" required class="form-control" name="username" id="username">
+                                            </div>
+                                            <div class="mt-3">
+                                                <label for="role">Role<span class="text-danger">*</span></label>
+                                                <select name="role" id="role" required class="form-control">
+                                                    <option value="{{ $item->role }}" class="text-success font-weight-bold">{{ ucfirst($item->role) }}</option>
+                                                    <option value="admin">Admin</option>
+                                                    <option value="apoteker">Apoteker</option>
+                                                </select>
                                             </div>
                                             <div class="mt-4">
                                                 <button type="submit" class="btn btn-info">Update</button>
