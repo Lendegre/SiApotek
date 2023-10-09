@@ -28,6 +28,7 @@ class MasterDataController extends Controller
             Satuan::all(),
             Bentuk::all(),
             Kategori::all(),
+            Golongan::all()
         ];
     }
 
@@ -46,12 +47,6 @@ class MasterDataController extends Controller
             Golongan::count(),
         ];
 
-        if (auth()->user()->role == 'admin') {
-            $golongan = Golongan::whereNotIn('jenis_golongan', ['Narkotika', 'Psikotropika'])->get();
-        } else {
-            $golongan = Golongan::all();
-        }
-
         $data = [
             'title'         => $this->label . 'Barang',
             'id_page'       => $this->id_page[0],
@@ -61,7 +56,7 @@ class MasterDataController extends Controller
             'satuan'        => $this->model[1],
             'bentuk'        => $this->model[2],
             'kategori'      => $this->model[3],
-            'golongan'      => $golongan,
+            'golongan'      => $this->model[4],
         ];
 
         return view('dash.master-data.barang', $data);
@@ -79,13 +74,6 @@ class MasterDataController extends Controller
             abort(404);
         }
 
-        if (auth()->user()->role == 'admin') {
-            $golongan = Golongan::whereNotIn('jenis_golongan', ['Narkotika', 'Psikotropika'])->get();
-        } else {
-            $golongan = Golongan::all();
-        }
-
-
         $data = [
             'title'     => 'Add Items',
             'id_page'   => null,
@@ -94,7 +82,7 @@ class MasterDataController extends Controller
             'satuan'    => $this->model[1],
             'bentuk'    => $this->model[2],
             'kategori'  => $this->model[3],
-            'golongan'  => $golongan,
+            'golongan'  => $this->model[4],
         ];
 
         return view('dash.master-data.elements.add_items', $data);

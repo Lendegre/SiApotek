@@ -29,7 +29,17 @@ Route::middleware('auth')->group(function () {
 
     // purchase-sales group
     Route::prefix('/purchase-sales')->group(function () {
-        Route::get('/purchase-management', [PurchaseSales::class, 'showPurchaseManagement'])->name('purchase-management');
+        Route::prefix('/purchase-management')->group(function () {
+            Route::get('/', [PurchaseSales::class, 'showPurchaseManagement'])->name('purchase-management');
+            Route::get('/purchase-product/{no_surat}', [PurchaseSales::class, 'showPurchaseProduct'])->name('purchase-product');
+            Route::post('/create-purchase', [PurchaseSales::class, 'createPurchase'])->name('create-purchase');
+            Route::post('/create-purchase-product', [PurchaseSales::class, 'createPurchaseProduct'])->name('create-purchase-product');
+            Route::post('/delete-purchase-product/{purchase_product_id}', [PurchaseSales::class, 'deletePurchaseProduct'])->name('delete-purchase-product');
+            Route::post('/update-purchase-product/{purchase_product_id}', [PurchaseSales::class, 'updatePurchaseProduct'])->name('update-purchase-product');
+            Route::get('/detail-purchase/{purchase_id}', [PurchaseSales::class, 'showDetailPurchase'])->name('detail-purchase');
+        });
+
+
         Route::middleware('role:pemilik,apoteker')->group(function () {
             Route::get('/purchase-agreement', [PurchaseSales::class, 'showPurchaseAgreement'])->name('purchase-agreement');
         });
@@ -90,7 +100,11 @@ Route::middleware('auth')->group(function () {
 
     // reports group
     Route::prefix('/reports')->group(function () {
-        Route::get('/purchase-report', [Report::class, 'showPurchaseReport'])->name('purchase-report');
+        Route::prefix('/purchase-report')->group(function () {
+            Route::get('/', [Report::class, 'showPurchaseReport'])->name('purchase-report');
+            Route::post('/delete-report-purchase/{purchase_id}', [Report::class, 'deleteReportPurchase'])->name('delete-report-purchase');
+        });
+
         Route::get('/sales-report', [Report::class, 'showSalesReport'])->name('sales-report');
         Route::get('/stock-report', [Report::class, 'showStockReport'])->name('stock-report');
     });

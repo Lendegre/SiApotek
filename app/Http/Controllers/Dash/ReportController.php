@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Dash;
 
 use App\Http\Controllers\Controller;
+use App\Models\Purchase;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -25,10 +28,25 @@ class ReportController extends Controller
         $data = [
             'title' => 'Purchase ' . $this->label,
             'id_page' => $this->id_page[0],
+            'purchase_reports' => Purchase::all(),
         ];
 
         return view('dash.reports.purchase_report', $data);
     }
+
+    /**
+     * Logic to delete purchase report
+     * 
+     * @param int $purchase_id
+     * @return RedirectResponse
+     */
+    protected function deleteReportPurchase($purchase_id)
+    {
+        DB::table('purchase')->where('purchase_id', $purchase_id)->delete();
+
+        return back()->with('info', 'Purchase report has been deleted');
+    }
+
 
     /**
      * Render view purchase report
