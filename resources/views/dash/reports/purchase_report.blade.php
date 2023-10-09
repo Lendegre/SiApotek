@@ -39,7 +39,9 @@
                                         </td>
                                         <td>{{ $item->tgl_pengajuan }}</td>
                                         <td>
-                                            <a href="{{ route('purchase-product', $item->no_surat) }}" class="btn btn-primary"><i data-feather="grid"></i></a>
+                                            @if ($item->status != 'Diterima')
+                                                <a href="{{ route('purchase-product', $item->no_surat) }}" class="btn btn-primary"><i data-feather="grid"></i></a>
+                                            @endif
                                             <a href="{{ route('detail-purchase', $item->purchase_id) }}" class="btn btn-warning"><i data-feather="eye"></i></a>
                                             <button class="btn btn-danger modal-open" data-modal="{{ 'delete'.$item->purchase_id }}"><i data-feather="trash"></i></button>
                                         

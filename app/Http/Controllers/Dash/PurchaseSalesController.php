@@ -180,9 +180,25 @@ class PurchaseSalesController extends Controller
         $data = [
             'title'     => 'Purchase Agreement',
             'id_page'   => $this->id_page[1],
+            'purchase_reports' => Purchase::all(),
         ];
 
-        return view('dash.purchase-sales.purchase_management', $data);
+        return view('dash.purchase-sales.purchase_agreement', $data);
+    }
+
+    /**
+     * Logic to update purchase status
+     * 
+     * @param Request | @param int $purchase_id
+     * @return RedirectResponse
+     */
+    protected function updateStatus(Request $request)
+    {
+        DB::table('purchase')->where('purchase_id', $request->input('purchase_id'))->update([
+            'status'    => $request->input('status'),
+        ]);
+
+        return back()->with('success', 'Purchase status has been updated');
     }
 
     /**

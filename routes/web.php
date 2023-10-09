@@ -41,8 +41,12 @@ Route::middleware('auth')->group(function () {
 
 
         Route::middleware('role:pemilik,apoteker')->group(function () {
-            Route::get('/purchase-agreement', [PurchaseSales::class, 'showPurchaseAgreement'])->name('purchase-agreement');
+            Route::prefix('/purchase-agreement')->group(function () {
+                Route::get('/', [PurchaseSales::class, 'showPurchaseAgreement'])->name('purchase-agreement');
+                Route::post('/update-status', [PurchaseSales::class, 'updateStatus'])->name('update-status');
+            });
         });
+
         Route::get('/sales-management', [PurchaseSales::class, 'showSalesManagement'])->name('sales-management');
     });
 
