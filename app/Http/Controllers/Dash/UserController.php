@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
@@ -69,13 +70,18 @@ class UserController extends Controller
     protected function updateUser(Request $request, $user_id)
     {
         $user = User::find($user_id);
+        $otherUser = User::where('username', $request->input('username'))->first();
 
         if ($user->username != $request->input('username')) {
-            DB::table('users')->where("user_id", $user_id)->update([
-                'username'  => $request->input('username'),
-                'role'      => $request->input('role')
-            ]);
-            return back()->with('info', 'User has been updated');
+            if (!$otherUser) {
+                DB::table('users')->where("user_id", $user_id)->update([
+                    'username'  => $request->input('username'),
+                    'role'      => $request->input('role')
+                ]);
+                return back()->with('info', 'User has been updated');
+            } else {
+                return back()->with('error', 'User is duplicate');
+            }
         }
 
         return back();

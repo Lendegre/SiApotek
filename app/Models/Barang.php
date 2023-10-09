@@ -22,7 +22,6 @@ class Barang extends Model
         'bentuk_id',
         'harga_beli',
         'harga_jual',
-        'stok',
         'minimal_stok',
         'kategori_id',
         'golongan_id'

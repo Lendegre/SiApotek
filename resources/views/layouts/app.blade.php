@@ -26,7 +26,7 @@
 			<main class="content">
 				<div class="container-fluid p-0">
 					<h1 class="h3 mb-3"><strong>{{ $title }}</strong></h1>
-					@if ($id_page != 1)
+					@if ($id_page != 1 && $id_page != null)
 					<p>
 						<a href="{{ route('overview') }}">Overview</a> /
 						<span>{{ $title }}</span>

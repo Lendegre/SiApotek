@@ -14,19 +14,18 @@ return new class extends Migration
         Schema::create('barang', function (Blueprint $table) {
             $table->id('barang_id');
             $table->string('nama_barang');
-            $table->foreignId('supplier_id')->constrained('supplier', 'supplier_id');
+            $table->foreignId('supplier_id')->constrained('supplier', 'supplier_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->date('tanggal_kedaluwarsa');
             $table->date('tanggal_masuk');
             $table->integer('jumlah');
-            $table->foreignId('satuan_id')->constrained('satuan', 'satuan_id');
+            $table->foreignId('satuan_id')->constrained('satuan', 'satuan_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('isi');
-            $table->foreignId('bentuk_id')->constrained('bentuk', 'bentuk_id');
+            $table->foreignId('bentuk_id')->constrained('bentuk', 'bentuk_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->bigInteger('harga_beli');
             $table->bigInteger('harga_jual');
-            $table->integer('stok');
             $table->integer('minimal_stok');
-            $table->foreignId('kategori_id')->constrained('kategori', 'kategori_id');
-            $table->foreignId('golongan_id')->constrained('golongan', 'golongan_id');
+            $table->foreignId('kategori_id')->constrained('kategori', 'kategori_id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('golongan_id')->constrained('golongan', 'golongan_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

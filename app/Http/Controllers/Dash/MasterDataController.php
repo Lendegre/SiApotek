@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dash;
 
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
 use App\Models\Bentuk;
 use App\Models\Golongan;
 use App\Models\Kategori;
@@ -10,16 +11,24 @@ use App\Models\Satuan;
 use App\Models\Supplier;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class MasterDataController extends Controller
 {
-    protected $label, $id_page;
+    protected $label, $id_page, $model;
 
     public function __construct()
     {
         $this->label = 'Data ';
         $this->id_page = [2, 3, 4, 5, 6, 7];
+        $this->model = [
+            Supplier::all(),
+            Satuan::all(),
+            Bentuk::all(),
+            Kategori::all(),
+        ];
     }
 
     /**
@@ -37,13 +46,161 @@ class MasterDataController extends Controller
             Golongan::count(),
         ];
 
+        if (auth()->user()->role == 'admin') {
+            $golongan = Golongan::whereNotIn('jenis_golongan', ['Narkotika', 'Psikotropika'])->get();
+        } else {
+            $golongan = Golongan::all();
+        }
+
         $data = [
             'title'         => $this->label . 'Barang',
             'id_page'       => $this->id_page[0],
-            'count_model'   => $count_model
+            'count_model'   => $count_model,
+            'items'         => Barang::orderBy('barang_id', 'DESC')->get(),
+            'suppliers'     => $this->model[0],
+            'satuan'        => $this->model[1],
+            'bentuk'        => $this->model[2],
+            'kategori'      => $this->model[3],
+            'golongan'      => $golongan,
         ];
 
         return view('dash.master-data.barang', $data);
+    }
+
+    /**
+     * Render view add item interface
+     * 
+     * @param int $countData
+     * @return View
+     */
+    protected function showAddItem($countData)
+    {
+        if (!$countData || $countData > 100) {
+            abort(404);
+        }
+
+        if (auth()->user()->role == 'admin') {
+            $golongan = Golongan::whereNotIn('jenis_golongan', ['Narkotika', 'Psikotropika'])->get();
+        } else {
+            $golongan = Golongan::all();
+        }
+
+
+        $data = [
+            'title'     => 'Add Items',
+            'id_page'   => null,
+            'items'     => $countData,
+            'suppliers' => $this->model[0],
+            'satuan'    => $this->model[1],
+            'bentuk'    => $this->model[2],
+            'kategori'  => $this->model[3],
+            'golongan'  => $golongan,
+        ];
+
+        return view('dash.master-data.elements.add_items', $data);
+    }
+
+    /**
+     * Logic count to counting the request amount
+     * 
+     * @param Request
+     * @return View
+     */
+    protected function countAmountRequest(Request $request)
+    {
+        $amount = $request->input('amount');
+        if ($amount > 0) {
+            return redirect()->route('add-items', $amount);
+        } else {
+            return back()->with('error', 'Penambahan jumlah barang minimal 1 barang');
+        }
+    }
+
+
+    /**
+     * Logic to create items
+     * 
+     * @param Request
+     * @return View
+     */
+    protected function createItems(Request $request)
+    {
+        $count_data = $request->input('count_data');
+        $isDuplicate = false;
+
+        for ($i = 1; $i <= $count_data; $i++) {
+            $otherBarang = Barang::where('nama_barang', $request->input("nama_barang$i"))->first();
+
+            if (!$otherBarang) {
+                DB::table('barang')->insert([
+                    "nama_barang"         => $request->input("nama_barang$i"),
+                    "supplier_id"         => $request->input("supplier_id$i"),
+                    "tanggal_kedaluwarsa" => $request->input("tanggal_kedaluwarsa$i"),
+                    "tanggal_masuk"       => $request->input("tanggal_masuk$i"),
+                    "jumlah"              => $request->input("jumlah$i"),
+                    "satuan_id"           => $request->input("satuan_id$i"),
+                    "isi"                 => $request->input("isi$i"),
+                    "bentuk_id"           => $request->input("bentuk_id$i"),
+                    "harga_beli"          => $request->input("harga_beli$i"),
+                    "harga_jual"          => $request->input("harga_jual$i"),
+                    "minimal_stok"        => $request->input("minimal_stok$i"),
+                    "kategori_id"         => $request->input("kategori_id$i"),
+                    "golongan_id"         => $request->input("golongan_id$i")
+                ]);
+            } else {
+                $isDuplicate = true;
+            }
+        }
+
+        if ($isDuplicate) {
+            return back()->withInput()->with('error', 'Barang is duplicate');
+        } else {
+            return redirect()->route('barang')->with('success', 'Success to create item');
+        }
+    }
+
+    /**
+     * Logic to delete item
+     * 
+     * @param int $barang_id
+     */
+    protected function deleteItem($barang_id)
+    {
+        DB::table('barang')->where('barang_id', $barang_id)->delete();
+
+        return back()->with('info', 'Item has been deleted');
+    }
+
+    /**
+     * Logic to update item
+     * 
+     */
+    protected function updateItem(Request $request, $barang_id)
+    {
+        $barang = Barang::find($barang_id);
+        $otherBarang = Barang::where('nama_barang', $request->input('nama_barang'))->first();
+
+        if ($barang->nama_barang != $request->input('nama_barang')) {
+            if (!$otherBarang) {
+                $barang->nama_barang = $request->input('nama_barang');
+                $barang->supplier_id = $request->input('supplier_id');
+                $barang->tanggal_masuk = $request->input('tanggal_masuk');
+                $barang->tanggal_kedaluwarsa = $request->input('tanggal_kedaluwarsa');
+                $barang->harga_beli = $request->input('harga_beli');
+                $barang->harga_jual = $request->input('harga_jual');
+                $barang->minimal_stok = $request->input('minimal_stok');
+                $barang->kategori_id = $request->input('kategori_id');
+                $barang->golongan_id = $request->input('golongan_id');
+
+                $barang->save();
+
+                return back()->with('info', 'Barang has been updated');
+            } else {
+                return back()->with('error', 'Barang is duplicate');
+            }
+        }
+
+        return back();
     }
 
     /**
@@ -108,15 +265,19 @@ class MasterDataController extends Controller
     protected function updateSupplier(Request $request, $supplier_id)
     {
         $supplier = Supplier::find($supplier_id);
+        $otherSupplier = Supplier::where('nama_supplier', $request->input('nama_supplier'))->first();
 
-        $supplier->nama_supplier = $request->input('nama_supplier');
-        $supplier->nama_sales = $request->input('nama_sales');
-        $supplier->no_telp = $request->input('no_telp');
-        $supplier->alamat = $request->input('alamat');
-
-        if ($supplier->isDirty()) {
-            $supplier->save();
-            return back()->with('info', 'Supplier has been updated');
+        if ($supplier->nama_supplier != $request->input('nama_supplier')) {
+            if (!$otherSupplier) {
+                $supplier->nama_supplier = $request->input('nama_supplier');
+                $supplier->nama_sales = $request->input('nama_sales');
+                $supplier->no_telp = $request->input('no_telp');
+                $supplier->alamat = $request->input('alamat');
+                $supplier->save();
+                return back()->with('info', 'Supplier has been updated');
+            } else {
+                return back()->with('error', 'Supplier is duplicate');
+            }
         }
 
         return back();
@@ -181,12 +342,16 @@ class MasterDataController extends Controller
     protected function updateKategori(Request $request, $kategori_id)
     {
         $kategori = Kategori::find($kategori_id);
+        $otherKategori = Kategori::where('nama_kategori', $request->input('nama_kategori'))->first();
 
-        $kategori->nama_kategori = $request->input('nama_kategori');
-
-        if ($kategori->isDirty()) {
-            $kategori->save();
-            return back()->with('info', 'Kategori has been updated');
+        if ($kategori->nama_kategori != $request->input('nama_kategori')) {
+            if (!$otherKategori) {
+                $kategori->nama_kategori = $request->input('nama_kategori');
+                $kategori->save();
+                return back()->with('info', 'Kategori has been updated');
+            } else {
+                return back()->with('error', 'Kategori is duplicate');
+            }
         }
 
         return back();
@@ -251,12 +416,17 @@ class MasterDataController extends Controller
     protected function updateBentuk(Request $request, $bentuk_id)
     {
         $bentuk = Bentuk::find($bentuk_id);
+        $otherBentuk = Bentuk::where('bentuk_barang', $request->input('bentuk_barang'))->first();
 
-        $bentuk->bentuk_barang = $request->input('bentuk_barang');
+        if ($bentuk->bentuk_barang != $request->input('bentuk_barang')) {
 
-        if ($bentuk->isDirty()) {
-            $bentuk->save();
-            return back()->with('info', 'Bentuk sediaan has been updated');
+            if (!$otherBentuk) {
+                $bentuk->bentuk_barang = $request->input('bentuk_barang');
+                $bentuk->save();
+                return back()->with('info', 'Bentuk sediaan has been updated');
+            } else {
+                return back()->with('error', 'Bentuk sediaan is duplicate');
+            }
         }
 
         return back();
@@ -321,12 +491,17 @@ class MasterDataController extends Controller
     protected function updateSatuan(Request $request, $satuan_id)
     {
         $satuan = Satuan::find($satuan_id);
+        $otherSatuan = Satuan::where('satuan_barang', $request->input('satuan_barang'))->first();
 
-        $satuan->satuan_barang = $request->input('satuan_barang');
+        if ($satuan->satuan_barang != $request->input('satuan_barang')) {
+            if (!$otherSatuan) {
+                $satuan->satuan_barang = $request->input('satuan_barang');
 
-        if ($satuan->isDirty()) {
-            $satuan->save();
-            return back()->with('info', 'Satuan has been updated');
+                $satuan->save();
+                return back()->with('info', 'Satuan has been updated');
+            } else {
+                return back()->with('error', 'Satuan is duplicate');
+            }
         }
 
         return back();
@@ -391,12 +566,17 @@ class MasterDataController extends Controller
     protected function updateGolongan(Request $request, $golongan_id)
     {
         $golongan = Golongan::find($golongan_id);
+        $otherGolongan = Golongan::where('jenis_golongan', $request->input('jenis_golongan'))->first();
 
-        $golongan->jenis_golongan = $request->input('jenis_golongan');
+        if ($golongan->jenis_golongan != $request->input('jenis_golongan')) {
+            if (!$otherGolongan) {
+                $golongan->jenis_golongan = $request->input('jenis_golongan');
 
-        if ($golongan->isDirty()) {
-            $golongan->save();
-            return back()->with('info', 'Golongan has been updated');
+                $golongan->save();
+                return back()->with('info', 'Golongan has been updated');
+            } else {
+                return back()->with('error', 'Golongan is duplicate');
+            }
         }
 
         return back();

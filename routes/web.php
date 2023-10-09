@@ -38,7 +38,14 @@ Route::middleware('auth')->group(function () {
 
     // master-data group
     Route::prefix('/master-data')->group(function () {
-        Route::get('/barang', [MasterData::class, 'showDataBarang'])->name('barang');
+        Route::prefix('/barang')->group(function () {
+            Route::get('/', [MasterData::class, 'showDataBarang'])->name('barang');
+            Route::get('/add-items/{countData}', [MasterData::class, 'showAddItem'])->name('add-items');
+            Route::post('/count-amount-request', [MasterData::class, 'countAmountRequest'])->name('count-amount-request');
+            Route::post('/create-items', [MasterData::class, 'createItems'])->name('create-items');
+            Route::post('/delete-item/{barang_id}', [MasterData::class, 'deleteItem'])->name('delete-item');
+            Route::post('/update-item/{barang_id}', [MasterData::class, 'updateItem'])->name('update-item');
+        });
 
         // supplier group
         Route::prefix('/suplier')->group(function () {
