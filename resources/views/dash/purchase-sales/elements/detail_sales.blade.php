@@ -7,20 +7,17 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div style="border: 1px solid navy; padding: 8px;">
-                    <p class="mb-0">No. Surat: <strong>{{ $purchase->no_surat }}</strong></p>
-                    <p class="mb-0">Tanggal Pemesanan: <strong>{{ $purchase->tgl_pengajuan }}</strong></p>
-                    <p class="mb-0">Status: <strong>{{ $purchase->status }}</strong></p>
-                    <p class="mb-0">Supplier: <strong>{{ $purchase->supplier->nama_supplier }}</strong></p>
-                    <p>Golongan: <strong>{{ $purchase->golongan->jenis_golongan }}</strong></p>
-                    
-                    @if ($purchase->status == 'Diterima')
-                        
-                    <form action="{{ route('surat-pesanan', $purchase->purchase_id) }}" method="POST" class="mt-3">  
-                        @csrf
-                        <button formtarget="_blank" type="submit" class="btn btn-danger">Download PDF <i data-feather="file-text"></i></button>
-                    </form>
-
+                <div style="border: 1px solid green; padding: 8px;">
+                    <p class="mb-0">Nama Konsumen: <strong>{{ $customer->nama_customer }}</strong></p>
+                    <p class="mb-0">Usia: <strong>{{ $customer->usia }}</strong></p>
+                    <p class="mb-0">Jenis: <strong>{{ $customer->jenis_obat }}</strong></p>
+                    @if ($customer->jenis_obat == 'Resep')
+                        @if ($customer->status == 'Dibayar')
+                        <form action="{{ route('surat-resep', $customer->customer_id) }}" method="POST">
+                            @csrf
+                            <button formtarget="_blank" type="submit" class="btn btn-secondary my-2">Resep Obat</button>
+                        </form>
+                        @endif
                     @endif
                 </div>
 
@@ -30,8 +27,8 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Nama Barang</th>
-                                <th>Jumlah</th>
-                                <th>Isi/Stok</th>
+                                <th>Permintaan Stok</th>
+                                <th>Harga (isi * harga jual)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,13 +36,16 @@
                             <tr>
                                 <td>{{ $loop->iteration . '.' }}</td>
                                 <td>{{ $item->barang->nama_barang }}</td>
-                                <td>{{ $item->jumlah . ' ' . $item->barang->satuan->satuan_barang }} </td>
                                 <td>{{ $item->isi . ' ' . $item->barang->bentuk->bentuk_barang }}</td>
+                                <td>Rp. {{ number_format($item->isi * $item->barang->harga_jual, 0, ',', '.') }}</td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="card-footer bg-secondary text-light">
+                Total: Rp. {{ number_format($total_harga, 0, ',', '.') }}
             </div>
         </div>
     </div>

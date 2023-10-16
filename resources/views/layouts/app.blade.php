@@ -54,6 +54,8 @@
 	<script>	
 		new DataTable('#data');
 	</script>
+	@stack('chart-script')
+
 	@include('components.notiflix_dialog')
 </body>
 </html>

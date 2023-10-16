@@ -38,13 +38,18 @@
                                             @endif
                                         </td>
                                         <td>{{ $item->tgl_pengajuan }}</td>
-                                        <td>
+                                        <td style="white-space: nowrap;">
                                             @if ($item->status != 'Diterima')
                                                 <a href="{{ route('purchase-product', $item->no_surat) }}" class="btn btn-primary"><i data-feather="grid"></i></a>
+                                            @elseif($item->status == 'Diterima')
+                                                <form action="{{ route('surat-pesanan', $item->purchase_id) }}" method="POST" style="display: inline">
+                                                    @csrf
+                                                    <button formtarget="_blank" class="btn btn-info"><i data-feather="download"></i></button>
+                                                </form>
                                             @endif
                                             <a href="{{ route('detail-purchase', $item->purchase_id) }}" class="btn btn-warning"><i data-feather="eye"></i></a>
                                             <button class="btn btn-danger modal-open" data-modal="{{ 'delete'.$item->purchase_id }}"><i data-feather="trash"></i></button>
-                                        
+                                            
                                             <div id="{{ 'delete'.$item->purchase_id }}" class="modal">
                                                 <div class="modal-content">
                                                     <span class="close" data-modal="{{ 'delete'.$item->purchase_id }}">&times;</span>

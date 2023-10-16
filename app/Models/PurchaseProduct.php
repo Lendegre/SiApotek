@@ -16,8 +16,6 @@ class PurchaseProduct extends Model
         'purchase_id',
         'jumlah',
         'isi',
-        'satuan_id',
-        'bentuk_id',
     ];
 
     // relationship with barang
@@ -30,17 +28,5 @@ class PurchaseProduct extends Model
     public function purchase(): BelongsTo
     {
         return $this->belongsTo(Purchase::class, 'purchase_id');
-    }
-
-    // relationship with satuan
-    public function satuan(): BelongsTo
-    {
-        return $this->belongsTo(Satuan::class, 'satuan_id');
-    }
-
-    // relationship with golongan
-    public function bentuk(): BelongsTo
-    {
-        return $this->belongsTo(Bentuk::class, 'bentuk_id');
     }
 }

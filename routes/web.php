@@ -33,10 +33,12 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [PurchaseSales::class, 'showPurchaseManagement'])->name('purchase-management');
             Route::get('/purchase-product/{no_surat}', [PurchaseSales::class, 'showPurchaseProduct'])->name('purchase-product');
             Route::post('/create-purchase', [PurchaseSales::class, 'createPurchase'])->name('create-purchase');
+            Route::post('/select-item', [PurchaseSales::class, 'selectItem'])->name('select-item');
             Route::post('/create-purchase-product', [PurchaseSales::class, 'createPurchaseProduct'])->name('create-purchase-product');
             Route::post('/delete-purchase-product/{purchase_product_id}', [PurchaseSales::class, 'deletePurchaseProduct'])->name('delete-purchase-product');
             Route::post('/update-purchase-product/{purchase_product_id}', [PurchaseSales::class, 'updatePurchaseProduct'])->name('update-purchase-product');
             Route::get('/detail-purchase/{purchase_id}', [PurchaseSales::class, 'showDetailPurchase'])->name('detail-purchase');
+            Route::post('/surat-pesanan/{purchase_id}', [PurchaseSales::class, 'previewPDFPesanan'])->name('surat-pesanan');
         });
 
 
@@ -47,7 +49,17 @@ Route::middleware('auth')->group(function () {
             });
         });
 
-        Route::get('/sales-management', [PurchaseSales::class, 'showSalesManagement'])->name('sales-management');
+        Route::prefix('/sales-management')->group(function () {
+            Route::get('/', [PurchaseSales::class, 'showSalesManagement'])->name('sales-management');
+            Route::get('/order-product/{customer_id}', [PurchaseSales::class, 'showOrderProduct'])->name('order-product');
+            Route::post('/create-order', [PurchaseSales::class, 'createOrder'])->name('create-order');
+            Route::post('/create-order-item', [PurchaseSales::class, 'createOrderItem'])->name('create-order-item');
+            Route::post('/delete-order-item/{order_id}', [PurchaseSales::class, 'deleteOrderItem'])->name('delete-order-item');
+            Route::post('/update-order-item/{order_id}', [PurchaseSales::class, 'updateOrderItem'])->name('update-order-item');
+            Route::get('/detail-order/{customer_id}', [PurchaseSales::class, 'showDetailOrder'])->name('detail-order');
+            Route::post('/finish/{customer_id}', [PurchaseSales::class, 'finish'])->name('finish');
+            Route::post('/surat-resep/{customer_id}', [PurchaseSales::class, 'previewPDFResep'])->name('surat-resep');
+        });
     });
 
     // master-data group
@@ -109,7 +121,17 @@ Route::middleware('auth')->group(function () {
             Route::post('/delete-report-purchase/{purchase_id}', [Report::class, 'deleteReportPurchase'])->name('delete-report-purchase');
         });
 
-        Route::get('/sales-report', [Report::class, 'showSalesReport'])->name('sales-report');
-        Route::get('/stock-report', [Report::class, 'showStockReport'])->name('stock-report');
+        Route::prefix('/sales-report')->group(function () {
+            Route::get('/', [Report::class, 'showSalesReport'])->name('sales-report');
+            Route::post('/delete-report-sales/{customer_id}', [Report::class, 'deleteReportSales'])->name('delete-report-sales');
+        });
+
+
+
+        Route::prefix('/stock-report')->group(function () {
+            Route::get('/', [Report::class, 'showStockReport'])->name('stock-report');
+            Route::get('/showLowStock', [Report::class, 'showLowStock'])->name('stock-low');
+            Route::get('/showAlmostExp', [Report::class, 'showAlmostExp'])->name('stock-exp');
+        });
     });
 });

@@ -11,50 +11,56 @@
             <div class="card-body">
                 <h4><strong>{{ $purchase->supplier->nama_supplier }}</strong></h4>
                 <hr>
+
                 <form action="{{ route('create-purchase-product') }}" method="POST">
                     @csrf
                     <input type="hidden" name="purchase_id" value="{{ $purchase->purchase_id }}">
-                    <div class="col-12">
-                        <label for="barang_id">Barang</label>
-                        <select class="form-control" name="barang_id" required id="barang_id">
-                            <option value="">-Pilih Barang-</option>
-                            @foreach ($barang as $item)
-                            <option value="{{ $item->barang_id }}">{{ $item->nama_barang }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-3">
-                            <label for="jumlah">Jumlah</label>
-                            <input required type="number" name="jumlah" id="jumlah" placeholder="Masukkan jumlah pesanan" class="form-control">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="satuan_id">Satuan</label>
-                            <select name="satuan_id" class="form-control" id="satuan_id">
-                                <option value="">-Pilih Satuan-</option>
-                                @foreach ($satuan as $item)
-                                <option value="{{ $item->satuan_id }}">{{ $item->satuan_barang }}</option>
+
+                    <div class="row align-items-end">
+                        <div class="col-10">
+                            <label for="barang_id">Barang</label>
+                            <select class="form-control" name="barang_id" required id="barang_id">
+                                <option value="">-Pilih Barang-</option>
+                                @foreach ($barang as $item)
+                                    <option @if(old('barang_id') == $item->barang_id) selected @endif value="{{ $item->barang_id }}">{{ $item->nama_barang }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <label for="isi">Isi/Stok</label>
-                            <input required type="number" name="isi" id="isi" placeholder="Masukkan stok pesanan" class="form-control">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="bentuk_id">Bentuk Sediaan</label>
-                            <select name="bentuk_id" class="form-control" id="bentuk_id">
-                                <option value="">-Pilih Bentuk Sediaan-</option>                                
-                                @foreach ($bentuk as $item)
-                                <option value="{{ $item->bentuk_id }}">{{ $item->bentuk_barang }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
                     
-                    <button type="submit" class="mt-4 btn btn-primary">
-                        Tambah Pesanan
-                    </button>
+
+                        <div class="col-2">
+                        @if (session()->has('dataSelected'))
+                            <a href="javascript:window.location.reload(true)" class="btn btn-secondary">Cancel</a>    
+                        @else
+                            <button name="getProduct" type="submit" class="btn btn-primary">Get Product</button>
+                        @endif
+                        </div>
+                    </div>
+
+                    @if (session()->has('dataSelected'))
+                        <div class="row mt-3">
+                            <div class="col-md-3">
+                                <label for="jumlah">Jumlah</label>
+                                <input required type="number" name="jumlah" id="jumlah" placeholder="Masukkan jumlah pesanan" class="form-control border border-success">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="jumlah">Satuan</label>
+                                <input disabled value="{{ session('dataSelected')->satuan->satuan_barang }}" placeholder="Satuan Jumlah" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="isi">Isi/Stok</label>
+                                <input required type="number" name="isi" id="isi" placeholder="Masukkan stok pesanan" class="form-control border border-success">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="isi">Bentuk Sediaan</label>
+                                <input disabled value="{{ session('dataSelected')->bentuk->bentuk_barang }}" placeholder="Brntuk sediaan stok" class="form-control">
+                            </div>
+                        </div>
+                        
+                        <button name="tambahPesanan" type="submit" class="mt-4 btn btn-primary">
+                            Tambah Pesanan
+                        </button>
+                    @endif
                 </form>
             </div>
         </div>
@@ -87,8 +93,8 @@
                             <tr>
                                 <td>{{ $loop->iteration . '.' }}</td>
                                 <td>{{ $item->barang->nama_barang }}</td>
-                                <td>{{ $item->jumlah . ' ' . $item->satuan->satuan_barang}} </td>
-                                <td>{{ $item->isi . ' ' . $item->bentuk->bentuk_barang }}</td>
+                                <td>{{ $item->jumlah . ' ' . $item->barang->satuan->satuan_barang }} </td>
+                                <td>{{ $item->isi . ' ' . $item->barang->bentuk->bentuk_barang }}</td>
                                 <td>
                                     <button class="btn btn-info modal-open" data-modal="{{ 'update'.$item->purchase_product_id }}"><i data-feather="edit"></i></button>
                                     <button class="btn btn-danger modal-open" data-modal="{{ 'delete'.$item->purchase_product_id }}"><i data-feather="trash"></i></button>
@@ -102,30 +108,12 @@
                                                 @csrf
                                                 <div class="row" style="row-gap: 15px;">
                                                     <div class="col-md-6">
-                                                        <label for="jumlah">Jumlah</label>
+                                                        <label for="jumlah">Jumlah ({{ $item->barang->satuan->satuan_barang }})</label>
                                                         <input required type="number" value="{{ $item->jumlah }}" name="jumlah" id="jumlah" placeholder="Masukkan jumlah pesanan" class="form-control">
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <label for="satuan_id">Satuan</label>
-                                                        <select name="satuan_id" class="form-control" id="satuan_id">
-                                                            <option value="{{ $item->satuan_id }}">{{ $item->satuan->satuan_barang }}</option>
-                                                            @foreach ($satuan as $satuanItem)
-                                                            <option value="{{ $satuanItem->satuan_id }}">{{ $satuanItem->satuan_barang }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="isi">Isi/Stok</label>
+                                                        <label for="isi">Isi/Stok ({{ $item->barang->bentuk->bentuk_barang }})</label>
                                                         <input required type="number" name="isi" value="{{ $item->isi }}" id="isi" placeholder="Masukkan stok pesanan" class="form-control">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="bentuk_id">Bentuk Sediaan</label>
-                                                        <select name="bentuk_id" class="form-control" id="bentuk_id">
-                                                            <option value="{{ $item->bentuk_id }}">{{$item->bentuk->bentuk_barang}}</option>                                
-                                                            @foreach ($bentuk as $bentukItem)
-                                                            <option value="{{ $bentukItem->bentuk_id }}">{{ $bentukItem->bentuk_barang }}</option>
-                                                            @endforeach
-                                                        </select>
                                                     </div>
                                                 </div>
                                                 
@@ -143,7 +131,7 @@
                                             <hr>
                                             <form action="{{ route('delete-purchase-product', $item->purchase_product_id) }}" method="POST">
                                                 @csrf
-                                                <p>Yakin untuk menghapus barang <strong>{{ $item->barang->nama_barang }}</strong></p>
+                                                <p>Yakin untuk menghapus item <strong>{{ $item->barang->nama_barang }}</strong></p>
                                                 <div class="mt-3">
                                                     <button type="submit" class="btn btn-danger">Hapus</button>
                                                 </div>

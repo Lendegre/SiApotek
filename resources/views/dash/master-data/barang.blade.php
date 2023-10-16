@@ -72,6 +72,7 @@
                         </div>
                     </div>
                     @endif
+                    <a href="{{ route('stock-report') }}" class="btn btn-dark"><i data-feather="file-text"></i> Stock Report</a>
                 </div>
                 
                 <div class="table-responsive"> 

@@ -166,29 +166,29 @@ class MasterDataController extends Controller
     protected function updateItem(Request $request, $barang_id)
     {
         $barang = Barang::find($barang_id);
-        $otherBarang = Barang::where('nama_barang', $request->input('nama_barang'))->first();
+        $otherBarang = Barang::where('nama_barang', '!=', $barang->nama_barang)->where('nama_barang', $request->input('nama_barang'))->first();
 
-        if ($barang->nama_barang != $request->input('nama_barang')) {
-            if (!$otherBarang) {
-                $barang->nama_barang = $request->input('nama_barang');
-                $barang->supplier_id = $request->input('supplier_id');
-                $barang->tanggal_masuk = $request->input('tanggal_masuk');
-                $barang->tanggal_kedaluwarsa = $request->input('tanggal_kedaluwarsa');
-                $barang->harga_beli = $request->input('harga_beli');
-                $barang->harga_jual = $request->input('harga_jual');
-                $barang->minimal_stok = $request->input('minimal_stok');
-                $barang->kategori_id = $request->input('kategori_id');
-                $barang->golongan_id = $request->input('golongan_id');
+        if (!$otherBarang) {
+            $barang->nama_barang = $request->input('nama_barang');
+            $barang->supplier_id = $request->input('supplier_id');
+            $barang->tanggal_masuk = $request->input('tanggal_masuk');
+            $barang->tanggal_kedaluwarsa = $request->input('tanggal_kedaluwarsa');
+            $barang->jumlah = $request->input('jumlah');
+            $barang->satuan_id = $request->input('satuan_id');
+            $barang->isi = $request->input('isi');
+            $barang->bentuk_id = $request->input('bentuk_id');
+            $barang->harga_beli = $request->input('harga_beli');
+            $barang->harga_jual = $request->input('harga_jual');
+            $barang->minimal_stok = $request->input('minimal_stok');
+            $barang->kategori_id = $request->input('kategori_id');
+            $barang->golongan_id = $request->input('golongan_id');
 
-                $barang->save();
+            $barang->save();
 
-                return back()->with('info', 'Barang has been updated');
-            } else {
-                return back()->with('error', 'Barang is duplicate');
-            }
+            return back()->with('info', 'Barang has been updated');
         }
 
-        return back();
+        return back()->with('error', 'Barang is duplicate');
     }
 
     /**
