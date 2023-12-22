@@ -6,9 +6,9 @@
     <div class="col-12">
         <div class="d-flex justify-content-between align-items-center">
             <div class="">
-                <a href="{{ route('stock-report') }}" class="btn @if($sub_page == 'stock1') btn-dark @endif">All Reports</a>
-                <a href="{{ route('stock-low') }}" class="btn @if($sub_page == 'stock2') btn-dark @endif">Low Stock</a>
-                <a href="{{ route('stock-exp') }}" class="btn @if($sub_page == 'stock3') btn-dark @endif">Almost Expired</a>        
+                <a href="{{ route('stock-report') }}" class="btn @if($sub_page == 'stock1') btn-dark @endif">Semua Laporan</a>
+                <a href="{{ route('stock-low') }}" class="btn @if($sub_page == 'stock2') btn-dark @endif">Barang Hampir Habis</a>
+                <a href="{{ route('stock-exp') }}" class="btn @if($sub_page == 'stock3') btn-dark @endif">Kedaluwarsa</a>        
             </div>
             <div class="">
                 <a href="{{ route('barang') }}" class="btn btn-primary">Data Barang</a>
@@ -39,7 +39,7 @@
                             <th>No.</th>
                             <th>Nama Barang</th>
                             @if ($sub_page != 'stock3')
-                            <th class="table-warning">Isi/Stok</th>
+                            <th class="table-warning">Stok Saat Ini</th>
                             <th>Minimal Stok</th>
                             @endif
 
@@ -55,8 +55,8 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nama_barang }}</td>
-                                    <td class="table-warning">{{ $item->isi . ' ' . $item->bentuk->bentuk_barang }}</td>
-                                    <td>{{ $item->minimal_stok }}</td>
+                                    <td class="table-warning">{{ $item->isi . ' ' . $item->satuan_jual }}</td>
+                                    <td>{{ $item->minimal_stok }} {{ $item->satuan_jual }}</td>
                                     <td>{{ $item->tanggal_masuk }}</td>
                                     <td class="table-danger">{{ $item->tanggal_kedaluwarsa }}</td>
                                 </tr>
@@ -68,8 +68,8 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nama_barang }}</td>
-                                    <td class="table-warning">{{ $item->isi . ' ' . $item->bentuk->bentuk_barang }}</td>
-                                    <td>{{ $item->minimal_stok }}</td>
+                                    <td class="table-warning">{{ $item->isi . ' ' . $item->satuan_jual }}</td>
+                                    <td>{{ $item->minimal_stok }} {{ $item->satuan_jual }}</td>
                                 </tr>
                             @endforeach
                         @endif

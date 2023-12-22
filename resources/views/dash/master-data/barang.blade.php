@@ -72,7 +72,7 @@
                         </div>
                     </div>
                     @endif
-                    <a href="{{ route('stock-report') }}" class="btn btn-dark"><i data-feather="file-text"></i> Stock Report</a>
+                    <a href="{{ route('stock-report') }}" class="btn btn-dark"><i data-feather="file-text"></i> Laporan Stok</a>
                 </div>
                 
                 <div class="table-responsive"> 
@@ -80,15 +80,16 @@
                         <thead>
                             <tr style="white-space: nowrap">
                                 <th>No.</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">Aksi</th>
                                 <th>Nama Barang</th>
                                 <th>Supplier</th>
                                 <th>Tanggal Masuk</th>
                                 <th>Kedaluwarsa</th>
                                 <th>Jumlah</th>
-                                <th>Stok</th>
+                                <th>Stok Saat Ini</th>
                                 <th>Harga Beli</th>
                                 <th>Harga Jual</th>
+                                <th>Satuan Jual</th>
                                 <th>Kategori</th>
                                 <th>Golongan</th>
                                 <th>Minimal Stok</th>
@@ -196,6 +197,11 @@
                                                     </div>
                                                     
                                                     <div class="col-md-6">
+                                                        <label for="{{ 'satuan_jual' }}">Satuan Jual</label>
+                                                        <input required value="{{ $barang->satuan_jual }}" type="string" placeholder="Masukkan satuan jual" class="form-control" name="{{ 'satuan_jual' }}" id="{{ 'satuan_jual'}}">
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6">
                                                         <label for="{{ 'minimal_stok' }}">Minimal Stok</label>
                                                         <input required value="{{ $barang->minimal_stok }}" type="number" placeholder="Masukkan minimal stok" class="form-control" name="{{ 'minimal_stok' }}" id="{{ 'minimal_stok' }}">
                                                     </div>
@@ -210,7 +216,7 @@
                                                         </select>
                                                     </div>
                                                     
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <label for="{{ 'golongan_id' }}">Golongan</label>
                                                         <select required name="{{ 'golongan_id' }}" class="form-control" id="{{ 'golongan_id' }}">
                                                             <option value="{{ $barang->golongan_id }}">{{ $barang->golongan->jenis_golongan }}</option>
@@ -220,14 +226,12 @@
                                                         </select>
                                                     </div>
                                                     
-                                                    
-                                                    
                                                     <div class="">
                                                         <button class="btn p-2 text-light" style="width: 100%; background: linear-gradient(to right, #000, navy)">
                                                             <strong>Simpan</strong>
                                                         </button>
                                                     </div>  
-                                                    
+                                                </div>
                                                 </form>
                                             </div>
                                         </div>
@@ -237,12 +241,13 @@
                                     <td>{{ $barang->tanggal_masuk }}</td>
                                     <td>{{ $barang->tanggal_kedaluwarsa }}</td>
                                     <td>{{ $barang->jumlah . ' '}} {{ $barang->satuan->satuan_barang }}</td>
-                                    <td>{{ $barang->isi . ' '}} {{ $barang->bentuk->bentuk_barang }}</td>
-                                    <td>Rp. {{ number_format($barang->harga_beli, 0, ',', '.') }}</td>
-                                    <td>Rp. {{ number_format($barang->harga_jual, 0, ',', '.') }} <strong>/ isi</strong></td>
+                                    <td>{{ $barang->isi . ' '}} {{ $barang->satuan_jual }}</td>
+                                    <td>Rp. {{ number_format($barang->harga_beli, 0, ',', '.') }}/{{ $barang->satuan->satuan_barang }}</td>
+                                    <td>Rp. {{ number_format($barang->harga_jual, 0, ',', '.') }} <strong>/{{ $barang->satuan_jual }}</strong></td>
+                                    <td>{{ $barang->satuan_jual }}</td>
                                     <td>{{ $barang->kategori->nama_kategori }}</td>
                                     <td>{{ $barang->golongan->jenis_golongan }}</td>
-                                    <td>{{ $barang->minimal_stok }}</td>
+                                    <td>{{ $barang->minimal_stok }} {{ $barang->satuan_jual }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

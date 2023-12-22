@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('supplier_id');
             $table->integer('golongan_id');
             $table->enum('status', ['Pending', 'Diterima', 'Ditolak'])->default('Pending');
+            $table->text('keterangan')->nullable();
             $table->date('tgl_pengajuan');
             $table->timestamps();
         });

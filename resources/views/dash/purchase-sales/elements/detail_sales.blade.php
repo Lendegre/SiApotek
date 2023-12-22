@@ -1,23 +1,25 @@
 @extends('layouts.app')
 
 @section('content-app')
-<button class="btn btn-dark" onclick="history.back()"><- Kembali</button>
 <hr>
 <div class="row">
     <div class="col-12">
         <div class="card">
+            <div class="card-header bg-secondary text-light">
+                Total: Rp. {{ number_format($total_harga, 0, ',', '.') }}
+            </div>
             <div class="card-body">
-                <div style="border: 1px solid green; padding: 8px;">
-                    <p class="mb-0">Nama Konsumen: <strong>{{ $customer->nama_customer }}</strong></p>
-                    <p class="mb-0">Usia: <strong>{{ $customer->usia }}</strong></p>
-                    <p class="mb-0">Jenis: <strong>{{ $customer->jenis_obat }}</strong></p>
-                    @if ($customer->jenis_obat == 'Resep')
-                        @if ($customer->status == 'Dibayar')
-                        <form action="{{ route('surat-resep', $customer->customer_id) }}" method="POST">
+                <div style="border: 1px solid gray; padding: 8px;">
+                    <p class="mb-0">Nama: <strong>{{ $customer->nama }}</strong></p>
+                    <p class="mb-0">Jenis Obat: <strong>{{ $customer->jenis_obat }}</strong></p>
+                    <p class="mb-0">Golongan: <strong>{{ $customer->golongan->jenis_golongan }}</strong></p>
+                    <p class="mb-0">Tanggal: <strong>{{ $products[0]->tanggal }}</strong></p>
+                    @if ($customer->status == 'Dibayar')
+                        @if($customer->jenis_obat == 'Resep') <form action="{{ route('surat-resep', $customer->customer_id) }}" method="POST"> @endif
+                        @if($customer->jenis_obat == 'Non-Resep') <form action="{{ route('surat-nonresep', $customer->customer_id) }}" method="POST"> @endif
                             @csrf
-                            <button formtarget="_blank" type="submit" class="btn btn-secondary my-2">Resep Obat</button>
+                            <button formtarget="_blank" type="submit" class="btn btn-secondary my-2">Cetak Nota Penjualan</button>
                         </form>
-                        @endif
                     @endif
                 </div>
 
@@ -27,8 +29,8 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Nama Barang</th>
-                                <th>Permintaan Stok</th>
-                                <th>Harga (isi * harga jual)</th>
+                                <th>Jumlah</th>
+                                <th>Harga (satuan jual * harga jual)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,9 +46,7 @@
                     </table>
                 </div>
             </div>
-            <div class="card-footer bg-secondary text-light">
-                Total: Rp. {{ number_format($total_harga, 0, ',', '.') }}
-            </div>
+            <button onclick="history.back()" class="btn card-footer text-light rounded" style="background: #181818"><strong>Kembali</strong></button>
         </div>
     </div>
 </div>

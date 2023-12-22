@@ -8,6 +8,7 @@
 </head>
 <body>
     <h3 style="text-align: center">SURAT PESANAN</h3>
+    <p style="text-align: center"><strong>Nomor: {{ $purchase->no_surat }}</strong></p>
     <p style="text-align: center">Golongan: {{ $purchase->golongan->jenis_golongan }}</p>
     <hr>
 
@@ -27,21 +28,21 @@
             <tr>
                 <th>No.</th>
                 <th>Nama Pesanan</th>
-                <th>Bentuk Kesediaan</th>
-                <th>Satuan</th>
-                <th>Jumlah</th>
-                <th>Stok/Isi</th>
+                <th>Zat Aktif {{ $purchase->golongan->jenis_golongan }}</th>
+                <th>Satuan</th> 
+                <th>Jumlah</th> 
+                <th>Bentuk</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($products as $product)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $product->barang->nama_barang }}</td>
-                    <td>{{ $product->barang->bentuk->bentuk_barang }}</td>
-                    <td>{{ $product->barang->satuan->satuan_barang }}</td>
-                    <td>{{ $product->jumlah }}</td>
-                    <td>{{ $product->isi }}</td>
+                    <td style="text-align: center">{{ $loop->iteration }}</td>
+                    <td style="text-align: center">{{ $product->nama_brg}}</td>
+                    <td style="text-align: center">{{ $product->zat }}</td>
+                    <td style="text-align: center">{{ $product->satuan->satuan_barang }}</td>
+                    <td style="text-align: center">{{ $product->jumlah }}</td>
+                    <td style="text-align: center">{{ $product->bentuk }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -49,12 +50,13 @@
     <br>
     <p>Pesanan tersebut akan dipergunakan untuk:</p>
     <p>Nama Sarana : <strong>Apotek Arfa Farma</strong></p>
-    <table>
+    <p>Alamat Sarana : <strong>Jalan Raya Sukamantri 1 Rt.01 Rw.01 Desa Sukamantri Kecamatan Sukamantri Kabupaten Ciamis</strong></p>
+    {{-- <table>
         <tr>
             <td style="white-space: nowrap">Alamat Sarana : </td>
             <td><strong>Jalan Raya Sukamantri 1 Rt.01 Rw.01 Desa Sukamantri Kecamatan Sukamantri Kabupaten Ciamis</strong></td>
         </tr>
-    </table>
+    </table> --}}
     <p>Surat Izin Apotek : <strong>503.28/146/SIA/DPMPTSP.03/III/2018</strong></p>
 
 </body>

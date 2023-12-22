@@ -14,7 +14,7 @@
                     <div id="create" class="modal">
                         <div class="modal-content">
                             <span class="close" data-modal="create">&times;</span>
-                            <h2>Create Satuan Jumlah</h2>
+                            <h2>Tambah Satuan Barang</h2>
                             <hr>
                             <form action="{{ route('create-satuan') }}" method="POST">
                                 @csrf
@@ -37,7 +37,7 @@
                             <tr style="white-space: nowrap">
                                 <th>No.</th>
                                 <th>Satuan</th>
-                                <th>Action</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         
@@ -64,7 +64,7 @@
                                                 </div>
                                                 
                                                 <div class="mt-3">
-                                                    <button type="submit" class="btn btn-info">Update</button>
+                                                    <button type="submit" class="btn btn-info">Perbarui</button>
                                                 </div>
                                             </form>
                                         </div>

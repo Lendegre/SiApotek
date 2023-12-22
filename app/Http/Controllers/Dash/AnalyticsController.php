@@ -33,7 +33,7 @@ class AnalyticsController extends Controller
         $totalProduct = Barang::count();
 
         $data = [
-            'title'             => 'Overview',
+            'title'             => 'Halaman Utama',
             'id_page'           => 1,
             'count_supplier'    => Supplier::count(),
             'count_user'        => User::count(),

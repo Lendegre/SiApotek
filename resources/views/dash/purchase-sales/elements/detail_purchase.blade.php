@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content-app')
-<button class="btn btn-dark" onclick="history.back()"><- Kembali</button>
 <hr>
 <div class="row">
     <div class="col-12">
@@ -31,16 +30,16 @@
                                 <th>No.</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah</th>
-                                <th>Isi/Stok</th>
+                                <th>Bentuk</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($products as $item)
                             <tr>
                                 <td>{{ $loop->iteration . '.' }}</td>
-                                <td>{{ $item->barang->nama_barang }}</td>
-                                <td>{{ $item->jumlah . ' ' . $item->barang->satuan->satuan_barang }} </td>
-                                <td>{{ $item->isi . ' ' . $item->barang->bentuk->bentuk_barang }}</td>
+                                <td>{{ $item->nama_brg }}</td>
+                                <td>{{ $item->jumlah . ' ' . $item->satuan->satuan_barang }} </td>
+                                <td>{{ $item->bentuk }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -50,4 +49,5 @@
         </div>
     </div>
 </div>
+<button class="btn btn-dark" onclick="history.back()"><- Kembali</button>
 @endsection

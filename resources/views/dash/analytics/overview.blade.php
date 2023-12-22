@@ -2,7 +2,7 @@
 
 @section('content-app')
 <div class="row">
-    <div class="col-xl-12 col-xxl-5 d-flex">
+    <div class="d-flex">
         <div class="w-100">
             <div class="row">
                 <div class="col-xl-4 col-12">
@@ -29,7 +29,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col mt-0">
-                                    <h5 class="card-title">Users</h5>
+                                    <h5 class="card-title">Pengguna</h5>
                                 </div>
                                 
                                 <div class="col-auto">
@@ -48,7 +48,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col mt-0">
-                                    <h5 class="card-title">Products</h5>
+                                    <h5 class="card-title">Produk</h5>
                                 </div>
                                 
                                 <div class="col-auto">
@@ -92,9 +92,10 @@
                                 <th>Tanggal Masuk</th>
                                 <th>Kedaluwarsa</th>
                                 <th>Jumlah</th>
-                                <th>Stok</th>
+                                <th>Stok Saat Ini</th>
                                 <th>Harga Beli</th>
                                 <th>Harga Jual</th>
+                                <th>Satuan Jual</th>
                                 <th>Kategori</th>
                                 <th>Golongan</th>
                                 <th>Minimal Stok</th>
@@ -112,12 +113,13 @@
                                 <td>{{ $item->tanggal_masuk }}</td>
                                 <td>{{ $item->tanggal_kedaluwarsa }}</td>
                                 <td>{{ $item->jumlah . ' '}} {{ $item->satuan->satuan_barang }}</td>
-                                <td>{{ $item->isi . ' '}} {{ $item->bentuk->bentuk_barang }}</td>
-                                <td>Rp. {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
-                                <td>Rp. {{ number_format($item->harga_jual, 0, ',', '.') }} <strong>/ isi</strong></td>
+                                <td>{{ $item->isi . ' '}} {{ $item->satuan_jual }}</td>
+                                <td>Rp. {{ number_format($item->harga_beli, 0, ',', '.') }}/ {{ $item->satuan->satuan_barang}}</td>
+                                <td>Rp. {{ number_format($item->harga_jual, 0, ',', '.') }} <strong>/{{ $item->satuan_jual }}</strong></td>
+                                <td>{{ $item->satuan_jual }}</td>
                                 <td>{{ $item->kategori->nama_kategori }}</td>
                                 <td>{{ $item->golongan->jenis_golongan }}</td>
-                                <td>{{ $item->minimal_stok }}</td>
+                                <td>{{ $item->minimal_stok }} {{ $item->satuan_jual }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -140,21 +142,21 @@
             labels: ['Product Report'],
             datasets: [
             {
-                label: 'Total Product',
+                label: 'Total Produk',
                 data: [{{ $totalProduct }}],
                 backgroundColor: ['rgba(0, 150, 64, 0.2)',],
                 borderColor: ['rgb(255, 99, 132)',],
                 borderWidth: 1
             },
             {
-                label: 'Low Stock',
+                label: 'Stok Hampir Habis',
                 data: [{{ $lowStock }}],
                 backgroundColor: ['rgba(255, 159, 64, 0.2)',],
                 borderColor: ['rgb(255, 99, 132)',],
                 borderWidth: 1
             },
             {
-                label: 'Almost Expired',
+                label: 'Kedaluwarsa',
                 data: [{{ $almostExp }}],
                 backgroundColor: ['rgba(255, 16, 64, 0.2)',],
                 borderColor: ['rgb(255, 99, 132)',],

@@ -46,9 +46,12 @@
           <th>
             <div id="header">
                     <div id="logo">
-                        <img src="{{ public_path() . '/img/logo2.png' }}" width="80" alt="logo farmasi"> 
+                        <img src="{{ public_path() . '/img/logo.png' }}" width="300" alt="logo farmasi"> 
                     </div>
-                    <h3 style="float: left"><b>APOTEK ARFA FARMA</b></h3>
+                    {{-- <h3 style="float: left"><b>APOTEK ARFA FARMA</b></h3> --}}
+                    <br>
+                    <br>
+                    <br>
                     <div id="paragraph-container">
                         <p>JALAN RAYA SUKAMANTRI 1 RT.01 RW.01
                             <br> 
@@ -61,10 +64,9 @@
             </th>
           <th>
             <div id="paragraph-container2">
-            <p>No Invoice  : <strong>{{ $title->no_order }}</strong></p>
+            <p style="margin-top: 50px">No Invoice  : <strong>{{ $title->no_order }}</strong></p>
             <br>
-            <br>
-            <p>Kepada Tuan/Ny : 
+            <p style="margin-bottom: 28px">Kepada Tuan/Ny : 
             <br>
             {{ $customer->nama }}</p>
             </div>
@@ -94,16 +96,16 @@
                 </th>
                 <th>Nama Produk</th>
                 <th>Harga</th>
-                <th>Jumlah</th>
+                <th>Total</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($orders as $order)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $order->barang->nama_barang }}</td>
-                    <td>{{ $order->barang->harga_jual }}</td>
-                    <td>{{ $order->harga }}</td>
+                    <td style="text-align: center">{{ $order->isi }}</td>
+                    <td style="text-align: center">{{ $order->barang->nama_barang }}</td>
+                    <td style="text-align: center">{{ $order->barang->harga_jual }}</td>
+                    <td style="text-align: center">{{ $order->harga }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -125,7 +127,7 @@
             <div class="center-line"></div>
         </th>
         <th>
-            <p style="padding-left: 150px">Total Jumlah</p>
+            <p style="padding-left: 150px">Sub Total</p>
             <br>
             <br>
         </th>

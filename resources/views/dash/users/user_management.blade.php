@@ -14,7 +14,7 @@
                     <div id="create" class="modal">
                         <div class="modal-content">
                             <span class="close" data-modal="create">&times;</span>
-                            <h3>Create User</h3>
+                            <h3>Buat Pengguna Baru</h3>
                             <p>Default password dari akun yang baru dibuat adalah <strong>arfafarma23</strong>.</p>
                             <hr>
                             <form action="{{ route('create-user') }}" method="POST">
@@ -45,8 +45,8 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Account</th>
-                            <th>Action</th>
+                            <th>Akun</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>

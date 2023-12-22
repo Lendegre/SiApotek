@@ -8,19 +8,13 @@
                     @csrf
                     <div class="row align-items-center" style="row-gap: 12px;">
                         <div class="col-md-3">
-                            <label for="nama_customer">Nama Konsumen : </label>
+                            <label for="nama">Nama: </label>
                         </div>
                         <div class="col-md-9">
-                            <input required type="text" class="form-control" placeholder="Masukkan nama konsumen" name="nama_customer" id="nama_customer">
+                            <input type="string" name="nama" id="nama" class="form-control">
                         </div>
                         <div class="col-md-3">
-                            <label for="usia">Usia : </label>
-                        </div>
-                        <div class="col-md-9">
-                            <input required type="number" class="form-control" placeholder="Masukkan usia konsumen" name="usia" id="usia">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="jenis_obat">Jenis Obat : </label>
+                            <label for="jenis_obat">Jenis Obat: </label>
                         </div>
                         <div class="col-md-9">
                             <select required class="form-control" name="jenis_obat" id="jenis_obat">
@@ -30,14 +24,19 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label for="alamat">Alamat : </label>
+                            <label for="jenis_obat">Golongan: </label>
                         </div>
                         <div class="col-md-9">
-                            <textarea required name="alamat" id="alamat" class="form-control" placeholder="Masukkan alamat konsumen"></textarea>
+                            <select required class="form-control" name="golongan_id" id="golongan_id">
+                                <option value="">-Pilih golongan-</option>
+                                @foreach ($golongan as $item)
+                                    <option value="{{ $item->golongan_id }}">{{ $item->jenis_golongan }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="text-end">
-                        <button class="btn btn-dark mt-5 px-4">
+                        <button class="btn btn-dark mt-5 py-2 px-4">
                             Selanjutnya
                         </button>
                     </div>

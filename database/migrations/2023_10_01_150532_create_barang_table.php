@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('bentuk_id')->constrained('bentuk', 'bentuk_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->bigInteger('harga_beli');
             $table->bigInteger('harga_jual');
+            $table->string('satuan_jual');
             $table->integer('minimal_stok');
             $table->foreignId('kategori_id')->constrained('kategori', 'kategori_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('golongan_id')->constrained('golongan', 'golongan_id')->cascadeOnDelete()->cascadeOnUpdate();

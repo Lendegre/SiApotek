@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('purchase_product', function (Blueprint $table) {
             $table->id('purchase_product_id');
-            $table->foreignId('barang_id')->constrained('barang', 'barang_id')->cascadeOnDelete()->cascadeOnUpdate();
+            // $table->foreignId('barang_id')->constrained('barang', 'barang_id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('nama_brg');
             $table->foreignId('purchase_id')->constrained('purchase', 'purchase_id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('satuan_id')->constrained('satuan', 'satuan_id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('bentuk');
             $table->integer('jumlah');
-            $table->integer('isi');
+            $table->string('zat')->nullable();
             $table->timestamps();
         });
     }

@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content-app')
-    <a href="{{ route('sales-report') }}" class="btn btn-dark">Sales Report</a>
-    <hr>
     <div class="row mt-3">
         <div class="col-12">
             <div class="card">
@@ -12,6 +10,12 @@
                     <form class="row" action="{{ route('create-order-item') }}" method="POST">
                         @csrf
                         <input type="hidden" name="customer_id" value="{{ $customer->customer_id }}">
+                        <div class="row">
+                            <div class="mb-3 col-md-3">
+                                <label for="tanggal">Tanggal</label>
+                                <input type="text" readonly class="form-control bg bg-secondary text-light" name="tanggal" id="tanggal" value="{{ date('Y/m/d', strtotime('now')) }}">
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <label for="barang_id">Barang</label>
                             <select class="form-control" name="barang_id" required id="barang_id">
@@ -23,8 +27,8 @@
                         </div>
                         
                         <div class="col-md-6">
-                            <label for="isi">Permintaan Stok</label>
-                            <input required type="number" name="isi" id="isi" placeholder="Masukkan stok pesanan" class="form-control">
+                            <label for="isi">Jumlah</label>
+                            <input required type="number" name="isi" id="isi" placeholder="Masukkan jumlah" class="form-control">
                         </div>
                         
                         <div class="col-12">    
@@ -43,7 +47,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between">
-                        <h5><strong>Item List:</strong></h5>
+                        <h5><strong>Daftar Barang:</strong></h5>
                         <a href="{{ route('detail-order', $customer->customer_id) }}">
                             <u>Detail Pemesanan</u>
                         </a>
@@ -54,9 +58,9 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Nama Barang</th>
-                                <th>Isi/Stok</th>
-                                <th>Harga (isi * harga jual)</th>
-                                <th>Action</th>
+                                <th>Jumlah</th>
+                                <th>Harga (satuan jual * harga jual)</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,7 +68,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration . '.' }}</td>
                                     <td>{{ $item->barang->nama_barang }}</td>
-                                    <td>{{ $item->isi . ' ' . $item->barang->bentuk->bentuk_barang }}</td>
+                                    <td>{{ $item->isi . ' ' . $item->barang->satuan_jual }}</td>
                                     <td>Rp. {{ number_format($item->harga) }}</td>
                                     <td>
                                         <button class="btn btn-info modal-open" data-modal="{{ 'update'.$item->order_id }}"><i data-feather="edit"></i></button>
@@ -79,7 +83,7 @@
                                                     @csrf
                                                     <div class="row" style="row-gap: 15px;">
                                                         <div class="col-md-12">
-                                                            <label for="isi">Isi/Stok ({{ $item->barang->bentuk->bentuk_barang }})</label>
+                                                            <label for="isi">Jumlah ({{ $item->barang->satuan_jual }})</label>
                                                             <input required type="number" name="isi" value="{{ $item->isi }}" id="isi" placeholder="Masukkan stok pesanan" class="form-control">
                                                         </div>
                                                     </div>
@@ -120,6 +124,7 @@
                             <input type="hidden" value="{{ $item->isi }}" name="isi{{ $item->order_id }}" id="isi">
                         @endforeach
                         <button type="submit" class="btn btn-success">Selesaikan Pembayaran</button>
+                        <a href="{{ route('sales-report') }}" class="btn btn-dark">Laporan Penjualan</a>
                     </form>
                 </div>
 

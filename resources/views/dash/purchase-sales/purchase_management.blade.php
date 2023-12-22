@@ -25,7 +25,7 @@ date_default_timezone_set('Asia/Jakarta');
                         </div>
                         <div class="col-md-4">
                             <label for="supplier_id">Supplier</label>
-                            <select class="form-control" name="supplier_id" required id="supplier_id">
+                            <select class="form-select" name="supplier_id" required id="supplier_id">
                                 <option value="">-Pilih Supplier-</option>
                                 @foreach ($supplier as $item)
                                 <option value="{{ $item->supplier_id }}">{{ $item->nama_supplier }}</option>
@@ -34,7 +34,7 @@ date_default_timezone_set('Asia/Jakarta');
                         </div>
                         <div class="col-md-4">
                             <label for="golongan_id">Golongan</label>
-                            <select class="form-control" name="golongan_id" required id="golongan_id">
+                            <select class="form-select" name="golongan_id" required id="golongan_id">
                                 <option value="">-Pilih Golongan-</option>
                                 @foreach ($golongan as $item)
                                 <option value="{{ $item->golongan_id }}">{{ $item->jenis_golongan }}</option>

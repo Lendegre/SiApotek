@@ -16,7 +16,8 @@ class Purchase extends Model
         'golongan_id',
         'supplier_id',
         'tgl_pengajuan',
-        'status'
+        'status',
+        'keterangan',
     ];
 
     // relationship with supplier
@@ -30,4 +31,15 @@ class Purchase extends Model
     {
         return $this->belongsTo(Golongan::class, 'golongan_id');
     }
+
+    public function faktur(): hasMany
+    {
+        return $this->hasMany(faktur::class, 'id');
+    }
+
+    public function purchaseproduct(): BelongsTo
+    {
+        return $this->belongsTo(purchaseproduct::class, 'purchase_product_id');
+    }
+
 }

@@ -15,18 +15,38 @@ class PurchaseProduct extends Model
         'barang_id',
         'purchase_id',
         'jumlah',
-        'isi',
+        'bentuk',
+        'zat',
     ];
 
     // relationship with barang
-    public function barang(): BelongsTo
-    {
-        return $this->belongsTo(Barang::class, 'barang_id');
-    }
+    // public function barang(): BelongsTo
+    // {
+    //     return $this->belongsTo(Barang::class, 'barang_id');
+    // }
 
     // relationship with purchase
+
+    public function satuan(): BelongsTo
+    {
+        return $this->belongsTo(Satuan::class, 'satuan_id');
+    }
+
+
     public function purchase(): BelongsTo
     {
         return $this->belongsTo(Purchase::class, 'purchase_id');
     }
+    
+    // public function faktur(): BelongsTo
+    // {
+    //     return $this->belongsTo(Faktur::class, 'id');
+    // }
+        
+    public function barangmasuk(): hasMany
+    {
+        return $this->hasMany(barangmasuk::class, 'id');
+    }
+
+
 }

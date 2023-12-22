@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('customer', function (Blueprint $table) {
             $table->id('customer_id');
-            $table->string('nama_customer');
-            $table->integer('usia');
-            $table->string('alamat');
+            $table->string('nama')->nullable();
             $table->enum('jenis_obat', ['Resep', 'Non-Resep']);
+            $table->foreignId('golongan_id')->constrained('golongan', 'golongan_id');
             $table->enum('status', ['Pending', 'Dibayar']);
             $table->bigInteger('total_harga')->default(0);
             $table->timestamps();

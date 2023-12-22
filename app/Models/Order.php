@@ -17,6 +17,7 @@ class Order extends Model
         'barang_id',
         'isi',
         'harga',
+        'tanggal',
     ];
 
     // relationship with barang

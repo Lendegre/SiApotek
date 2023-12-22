@@ -14,6 +14,7 @@
                                     <th>Supplier</th>
                                     <th>Golongan</th>
                                     <th>Status</th>
+                                    <th>Keterangan</th>
                                     <th>Tanggal Pengajuan</th>
                                     <th>Action</th>
                                 </tr>
@@ -37,6 +38,7 @@
                                             
                                             @endif
                                         </td>
+                                        <td>{{ $item->keterangan }}</td>
                                         <td>{{ $item->tgl_pengajuan }}</td>
                                         <td>
                                             <button class="btn btn-success modal-open" data-modal="{{ 'update'.$item->purchase_id }}"><i data-feather="check"></i></button>
@@ -55,10 +57,13 @@
                                                             <label for="status">Status</label>
                                                             <select name="status" class="form-control" required id="status">
                                                                 <option value="">-Pilih Status-</option>
-                                                                <option value="Pending">Pending</option>
                                                                 <option value="Ditolak">Ditolak</option>
                                                                 <option value="Diterima">Diterima</option>
                                                             </select>
+                                                            <div class="mt-3" id="formKeterangan" style="display: none;">
+                                                                <label for="keterangan" class="form-label">Keterangan</label>
+                                                                <textarea class="form-control" id="keterangan" name="keterangan"></textarea>
+                                                            </div>
                                                         </div>
                                                         <div class="mt-3">
                                                             <button type="submit" class="btn btn-success">Simpan</button>
@@ -91,4 +96,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('status').addEventListener('change', function() {
+            var formAlasan = document.getElementById('formKeterangan');
+    
+            if (this.value === 'Ditolak') {
+                formAlasan.style.display = 'block';
+            } else {
+                formAlasan.style.display = 'none';
+            }
+        });
+    </script>
+
 @endsection

@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>{{ $title }} | Arfa Farma | Autentikasi</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="icon" href="{{ asset('img/logo.png') }}">
+    <link rel="icon" href="{{ asset('img/logo2.png') }}">
 </head>
 <body>
     

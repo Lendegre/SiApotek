@@ -9,7 +9,7 @@
 	<meta name="author" content="Arfa Farma">
 	<title>{{ $title }} | Arfa Farma</title>
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
-	<link rel="icon" href="{{ asset('img/logo.png') }}">
+	<link rel="icon" href="{{ asset('img/logo2.png') }}">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="{{ asset('css/public.css') }}">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix@3.2.6/dist/notiflix-3.2.6.min.css">
@@ -28,7 +28,7 @@
 					<h1 class="h3 mb-3"><strong>{{ $title }}</strong></h1>
 					@if ($id_page != 1 && $id_page != null)
 					<p>
-						<a href="{{ route('overview') }}">Overview</a> /
+						<a href="{{ route('overview') }}">Halaman Utama</a> /
 						<span>{{ $title }}</span>
 					</p>
 					@endif

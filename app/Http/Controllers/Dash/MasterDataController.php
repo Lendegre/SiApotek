@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dash;
 
 use App\Http\Controllers\Controller;
+use App\Models\Unit;
 use App\Models\Barang;
 use App\Models\Bentuk;
 use App\Models\Golongan;
@@ -75,7 +76,7 @@ class MasterDataController extends Controller
         }
 
         $data = [
-            'title'     => 'Add Items',
+            'title'     => 'Tambah Barang',
             'id_page'   => null,
             'items'     => $countData,
             'suppliers' => $this->model[0],
@@ -131,6 +132,7 @@ class MasterDataController extends Controller
                     "bentuk_id"           => $request->input("bentuk_id$i"),
                     "harga_beli"          => $request->input("harga_beli$i"),
                     "harga_jual"          => $request->input("harga_jual$i"),
+                    "satuan_jual"         => $request->input("satuan_jual$i"),
                     "minimal_stok"        => $request->input("minimal_stok$i"),
                     "kategori_id"         => $request->input("kategori_id$i"),
                     "golongan_id"         => $request->input("golongan_id$i")
@@ -179,6 +181,7 @@ class MasterDataController extends Controller
             $barang->bentuk_id = $request->input('bentuk_id');
             $barang->harga_beli = $request->input('harga_beli');
             $barang->harga_jual = $request->input('harga_jual');
+            $barang->satuan_jual = $request->input('satuan_jual');
             $barang->minimal_stok = $request->input('minimal_stok');
             $barang->kategori_id = $request->input('kategori_id');
             $barang->golongan_id = $request->input('golongan_id');

@@ -14,7 +14,7 @@
                     <div id="create" class="modal">
                         <div class="modal-content">
                             <span class="close" data-modal="create">&times;</span>
-                            <h2>Create Supplier</h2>
+                            <h2>Tambah Supplier</h2>
                             <hr>
                             <form action="{{ route('create-supplier') }}" method="POST">
                                 @csrf
@@ -52,7 +52,7 @@
                                 <th>Nama Sales</th>
                                 <th>No. Telp</th>
                                 <th>Alamat</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         
@@ -94,7 +94,7 @@
                                                 </div>
                                                 
                                                 <div class="mt-3">
-                                                    <button type="submit" class="btn btn-info">Update</button>
+                                                    <button type="submit" class="btn btn-info">Perbarui</button>
                                                 </div>
                                             </form>
                                         </div>

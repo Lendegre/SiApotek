@@ -7,10 +7,12 @@ use App\Models\Barang;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Purchase;
+use App\Models\BarangMasuk;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReportController extends Controller
 {
@@ -18,7 +20,6 @@ class ReportController extends Controller
 
     public function __construct()
     {
-        $this->label = 'Report';
         $this->id_page = [11, 12, 13];
     }
 
@@ -29,10 +30,13 @@ class ReportController extends Controller
      */
     protected function showPurchaseReport()
     {
+        $barangmasuk = Barangmasuk::all();
+
         $data = [
-            'title' => 'Purchase ' . $this->label,
+            'title' => 'Data Pembelian Barang',
             'id_page' => $this->id_page[0],
             'purchase_reports' => Purchase::all(),
+            'barangmasuk' => $barangmasuk,
         ];
 
         return view('dash.reports.purchase_report', $data);
@@ -60,13 +64,24 @@ class ReportController extends Controller
     protected function showSalesReport()
     {
         $data = [
-            'title' => 'Sales ' . $this->label,
+            'title' => 'Laporan Penjualan',
             'id_page' => $this->id_page[1],
-            'sales_report' => Customer::all(),
+            'sales_report' => Order::all(),
             'income'    => Customer::sum('total_harga'),
         ];
 
         return view('dash.reports.sales_report', $data);
+    }
+
+    public function cetakSalesReport(Request $request)
+    {
+        $tanggalAwal = $request->input('tanggalAwal');
+        $tanggalAkhir = $request->input('tanggalAkhir');
+
+        $sales = Order::whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir])->get();
+
+        $pdf = PDF::loadView('pdf.report_sales', compact('sales', 'tanggalAwal', 'tanggalAkhir'));
+        return $pdf->stream('sales_report.pdf');
     }
 
     /**
@@ -91,7 +106,7 @@ class ReportController extends Controller
     protected function showStockReport()
     {
         $data = [
-            'title' => 'Stock ' . $this->label,
+            'title' => 'Laporan Persediaan',
             'id_page' => $this->id_page[2],
             'sub_page'  => 'stock1',
             'barang'    => Barang::all(),
@@ -112,7 +127,7 @@ class ReportController extends Controller
         $infoLowStock = $lowStock->count();
 
         $data = [
-            'title' => 'Low Stock Report for ' . $this->label,
+            'title' => 'Barang Hampir Habis',
             'id_page' => $this->id_page[2],
             'sub_page' => 'stock2',
             'barang' => $lowStock->get(),
@@ -139,7 +154,7 @@ class ReportController extends Controller
         $infoAlmostExp = $almostExp->count();
 
         $data = [
-            'title' => 'Stock ' . $this->label,
+            'title' => 'Kedaluwarsa',
             'id_page' => $this->id_page[2],
             'sub_page'  => 'stock3',
             'barang'    => $almostExp->get(),

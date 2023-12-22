@@ -14,7 +14,7 @@
                     <div id="create" class="modal">
                         <div class="modal-content">
                             <span class="close" data-modal="create">&times;</span>
-                            <h2>Create Golongan</h2>
+                            <h2>Buat Data Golongan</h2>
                             <hr>
                             <form action="{{ route('create-golongan') }}" method="POST">
                                 @csrf
@@ -37,7 +37,7 @@
                             <tr style="white-space: nowrap">
                                 <th>No.</th>
                                 <th>Nama Supplier</th>
-                                <th>Action</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         

@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         $user = auth()->user();
         $data = [
-            'title'     => 'User Management',
+            'title'     => 'Kelola Pengguna',
             'id_page'   => 8,
             'users'     => User::where('username', '!=', $user->username)->orderBy('user_id', 'DESC')->get(),
         ];

@@ -4,37 +4,60 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header bg-success">
-                    <h4 class="text-light mb-0" style="font-weight: bold">Total Income <br> Rp. {{ number_format($income, 0, ',', '.') }}</h4>
+                <div class="card-header bg-success ">
+                    <h4 class="text-light mb-0" style="font-weight: bold">Total Pendapatan <br> Rp. {{ number_format($income, 0, ',', '.') }}</h4>
                 </div>
                 <div class="card-body">
+                    <form action="{{ route('sales.cetak') }}" method="post">
+                        @csrf
+                        <div class="form-row d-flex mb-5">
+                            <div class="col-md-3 mb-3 mx-3">
+                                <label for="tanggalAwal">Tanggal Awal:</label>
+                                <div>
+                                    <input type="date" class="form-control" name="tanggalAwal" id="tanggalAwal" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 mb-3 mx-3">
+                                <label for="tanggalAkhir">Tanggal Akhir:</label>
+                                <div>
+                                    <input type="date" class="form-control" name="tanggalAkhir" id="tanggalAkhir" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-4 mx-3">
+                                <button type="submit" class="btn btn-primary btn-sm rounded-3">Cetak</button>
+                            </div>
+                        </div>
+                    </form>
+                    
+
                     <div class="table-responsive">
                         <table class="table" id="data">
                             <thead>
-                                <tr>
+                                <tr style="white-space: nowrap">
                                     <th>No.</th>
-                                    <th>Konsumen</th>
+                                    <th>Tanggal</th>
+                                    <th>Nama Barang</th>
                                     <th>Jenis Obat</th>
-                                    <th>Harga</th>
-                                    <th>Usia</th>
-                                    <th>Alamat</th>
+                                    <th>Jumlah</th>
+                                    <th>Stok</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($sales_report as $item)
-                                    <tr>
+                                    <tr style="white-space: nowrap">
                                         <td>{{ $loop->iteration . '.' }}</td>
-                                        <td>{{ $item->nama_customer }}</td>
-                                        <td>{{ $item->jenis_obat }}</td>
-                                        <td>Rp. {{ number_format($item->total_harga, 0, ',', '.') }}</td>
-                                        <td>{{ $item->usia }}</td>
-                                        <td>{{ $item->alamat }}</td>
+                                        <td>{{ $item->tanggal }}</td>
+                                        <td>{{ $item->barang->nama_barang }}</td>
+                                        <td>{{ $item->customer->jenis_obat }}</td>
+                                        <td>{{ $item->isi }}</td>
+                                        <td>{{ $item->barang->isi }}</td>
                                         <td>
-                                            @if ($item->status == 'Pending')
+                                            @if ($item->customer->status == 'Pending')
                                                 <span class="rounded px-3 bg-warning text-light">Pending</span>           
-                                            @elseif($item->status == 'Dibayar') 
+                                            @elseif($item->customer->status == 'Dibayar') 
                                                 <span class="rounded px-3 bg-success text-light">Selesai</span>
                                             @endif
                                         </td>
@@ -58,10 +81,7 @@
                                                     </div>
                                                 </div>
                                             @endif
-
                                             <a href="{{ route('detail-order', $item->customer_id) }}" class="btn btn-warning"><i data-feather="eye"></i></a>
-                                            
-
                                         </td>
                                     </tr>
                                 @endforeach
