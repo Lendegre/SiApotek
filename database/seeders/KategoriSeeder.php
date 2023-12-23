@@ -14,8 +14,15 @@ class KategoriSeeder extends Seeder
     public function run(): void
     {
         DB::table('kategori')->insert([
-            ['nama_kategori' => 'Obat',],
+            ['nama_kategori' => 'Obat Generik',],
             ['nama_kategori' => 'Alat Kesehatan',],
+            ['nama_kategori' => 'OTC(Over The Counter)',],
+            ['nama_kategori' => 'Kosmetik',],
+            ['nama_kategori' => 'Minuman Bayi',],
+            ['nama_kategori' => 'Makanan Bayi',],
+            ['nama_kategori' => 'Obat Herbal',],
+            ['nama_kategori' => 'Obat Bebas Berstandar',],
+            ['nama_kategori' => 'Obat Etikal',],
             ['nama_kategori' => 'Perlengkapan Bayi',],
         ]);
     }
