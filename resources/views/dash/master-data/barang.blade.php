@@ -30,7 +30,7 @@
                                         <tbody>
                                             
                                             @php
-                                            $models = ['Supplier', 'Kategori', 'Bentuk Sediaan', 'Satuan', 'Golongan']
+                                            $models = ['Kategori', 'Bentuk Sediaan', 'Satuan', 'Golongan']
                                             @endphp
                                             
                                             @foreach ($models as $idx => $model)
@@ -82,7 +82,6 @@
                                 <th>No.</th>
                                 <th class="text-center">Aksi</th>
                                 <th>Nama Barang</th>
-                                <th>Supplier</th>
                                 <th>Tanggal Masuk</th>
                                 <th>Kedaluwarsa</th>
                                 <th>Jumlah</th>
@@ -133,7 +132,7 @@
                                                         <input type="text" required value="{{ $barang->nama_barang }}" class="form-control" placeholder="Masukkan nama barang" name="{{ 'nama_barang' }}" id="{{ 'nama_barang' }}">
                                                     </div>
                                                     
-                                                    <div class="col-md-6">
+                                                    {{-- <div class="col-md-6">
                                                         <label for="{{ 'supplier_id' }}">Supplier</label>
                                                         <select required name="{{ 'supplier_id' }}" class="form-control" id="{{ 'supplier_id' }}">
                                                             <option value="{{ $barang->supplier_id }}">{{ $barang->supplier->nama_supplier }}</option>
@@ -142,7 +141,7 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-6"> --}}
                                                         <label for="{{ 'tanggal_kedaluwarsa' }}">Tanggal Kedaluwarsa</label>
                                                         <input required value="{{ $barang->tanggal_kedaluwarsa }}" type="date" class="form-control" name="{{ 'tanggal_kedaluwarsa' }}" id="{{ 'tanggal_kedaluwarsa' }}">
                                                     </div>
@@ -237,7 +236,6 @@
                                         </div>
                                     </td>
                                     <td>{{ $barang->nama_barang }}</td>
-                                    <td>{{ $barang->supplier->nama_supplier }}</td>
                                     <td>{{ $barang->tanggal_masuk }}</td>
                                     <td>{{ $barang->tanggal_kedaluwarsa }}</td>
                                     <td>{{ $barang->jumlah . ' '}} {{ $barang->satuan->satuan_barang }}</td>

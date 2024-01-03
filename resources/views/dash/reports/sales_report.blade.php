@@ -5,31 +5,37 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header bg-success ">
-                    <h4 class="text-light mb-0" style="font-weight: bold">Total Pendapatan <br> Rp. {{ number_format($income, 0, ',', '.') }}</h4>
+                    {{-- <h4 class="text-light mb-0" style="font-weight: bold">Total Pendapatan <br> Rp. {{ number_format($income, 0, ',', '.') }}</h4> --}}
+                    <h3 class="text-light">
+                        <strong>Pendapatan : Rp. {{ isset($income['harga']) ? number_format($income['harga'], 2) : 'N/A' }}</strong>
+                    </h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('sales.cetak') }}" method="post">
+                    <form action="{{ Route('cari') }}" method="get">
                         @csrf
                         <div class="form-row d-flex mb-5">
-                            <div class="col-md-3 mb-3 mx-3">
+                            <div class="form-group col-md-3 mb-3 mx-3">
                                 <label for="tanggalAwal">Tanggal Awal:</label>
                                 <div>
-                                    <input type="date" class="form-control" name="tanggalAwal" id="tanggalAwal" required>
+                                    <input type="date" class="form-control" name="tanggalAwal" id="tanggalAwal"  value="{{ old('tanggalAwal', $tanggalAwal) }}" required>
                                 </div>
                             </div>
                             
-                            <div class="col-md-3 mb-3 mx-3">
+                            <div class="form-group col-md-3 mb-3 mx-3">
                                 <label for="tanggalAkhir">Tanggal Akhir:</label>
                                 <div>
-                                    <input type="date" class="form-control" name="tanggalAkhir" id="tanggalAkhir" required>
+                                    <input type="date" class="form-control" name="tanggalAkhir" id="tanggalAkhir" value="{{ old('tanggalAkhir', $tanggalAkhir) }}" required>
                                 </div>
                             </div>
                             <div class="col-md-3 mt-4 mx-3">
-                                <button type="submit" class="btn btn-primary btn-sm rounded-3">Cetak</button>
+                                <button type="submit" class="btn btn-primary btn-sm rounded-3">Cari</button>
                             </div>
                         </div>
                     </form>
-                    
+
+                    <div class="d-flex justify-content-end mb-3">
+                        <a href="{{ route('sales-pdf', ['tanggalAwal' => $tanggalAwal, 'tanggalAkhir' => $tanggalAkhir]) }}" class="btn btn-primary" target="_blank">Cetak PDF</a>
+                    </div>
 
                     <div class="table-responsive">
                         <table class="table" id="data">
@@ -46,7 +52,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($sales_report as $item)
+                                @foreach ( $sales_report as $item)
                                     <tr style="white-space: nowrap">
                                         <td>{{ $loop->iteration . '.' }}</td>
                                         <td>{{ $item->tanggal }}</td>

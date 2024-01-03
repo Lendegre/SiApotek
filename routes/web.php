@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
         Route::middleware('role:admin,apoteker')->group(function () {
             Route::prefix('/purchase-management')->group(function () {
                 Route::get('/', [PurchaseSales::class, 'showPurchaseManagement'])->name('purchase-management');
+                Route::get('/data-surat', [PurchaseSales::class, 'showDataSurat'])->name('data-surat');
                 Route::get('/purchase-product/{no_surat}', [PurchaseSales::class, 'showPurchaseProduct'])->name('purchase-product');
                 Route::post('/create-purchase', [PurchaseSales::class, 'createPurchase'])->name('create-purchase');
                 Route::post('/create-purchase-product', [PurchaseSales::class, 'createPurchaseProduct'])->name('create-purchase-product');
@@ -137,17 +138,22 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/reports')->group(function () {
         Route::prefix('/purchase-report')->group(function () {
             Route::get('/', [Report::class, 'showPurchaseReport'])->name('purchase-report');
+            Route::get('/filter-purchase', [Report::class, 'filter'])->name('filter-purchase');
+            Route::get('/purchase-pdf', [Report::class, 'pdfPurchaseReport'])->name('purchase-pdf');
             Route::post('/delete-report-purchase/{purchase_id}', [Report::class, 'deleteReportPurchase'])->name('delete-report-purchase');
         });
 
         Route::prefix('/sales-report')->group(function () {
             Route::get('/', [Report::class, 'showSalesReport'])->name('sales-report');
-            Route::post('/sales/cetak', [Report::class, 'cetakSalesReport'])->name('sales.cetak');
+            Route::get('/cari', [Report::class, 'cari'])->name('cari');
+            Route::get('/sales-pdf', [Report::class, 'pdfSalesReport'])->name('sales-pdf');
             Route::post('/delete-report-sales/{customer_id}', [Report::class, 'deleteReportSales'])->name('delete-report-sales');
         });
 
         Route::prefix('/stock-report')->group(function () {
             Route::get('/', [Report::class, 'showStockReport'])->name('stock-report');
+            Route::get('/filter-stok', [Report::class, 'filterStok'])->name('filter-stok');
+            Route::get('/stock-pdf', [Report::class, 'pdfStockReport'])->name('stock-pdf');
             Route::get('/showLowStock', [Report::class, 'showLowStock'])->name('stock-low');
             Route::get('/showAlmostExp', [Report::class, 'showAlmostExp'])->name('stock-exp');
         });

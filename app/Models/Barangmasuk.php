@@ -33,6 +33,6 @@ class Barangmasuk extends Model
 
     public function purchaseproduct(): BelongsTo
     {
-        return $this->belongsTo(purchase_product::class, 'purchase_product_id');
+        return $this->belongsTo(purchaseproduct::class, 'purchase_product_id');
     }
 }

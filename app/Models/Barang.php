@@ -13,7 +13,6 @@ class Barang extends Model
     protected $table = 'barang';
     protected $fillable = [
         'nama_barang',
-        'supplier_id',
         'tanggal_kedaluwarsa',
         'tanggal_masuk',
         'jumlah',
@@ -56,5 +55,11 @@ class Barang extends Model
     public function golongan(): BelongsTo
     {
         return $this->belongsTo(Golongan::class, 'golongan_id');
+    }
+
+    // table relation with Order
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class, 'id');
     }
 }

@@ -36,6 +36,16 @@
                                 </div>
 
                                 <div class="col-md-6">
+                                    <label for="{{ 'golongan_id'.$i }}"><strong>Golongan</strong></label>
+                                    <select required name="{{ 'golongan_id'.$i }}" class="form-control" id="{{ 'golongan_id'.$i }}">
+                                        <option value="">Pilih Golongan</option>
+                                        @foreach ($golongan as $item)
+                                            <option @if(old('golongan_id'.$i) == $item->golongan_id) selected @endif value="{{ $item->golongan_id }}">{{ $item->jenis_golongan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                {{-- <div class="col-md-6">
                                     <label for="{{ 'supplier_id'.$i }}"><strong>Supplier</strong></label>
                                     <select required name="{{ 'supplier_id'.$i }}" class="form-control" id="{{ 'supplier_id'.$i }}">
                                         <option value="">-Pilih Supplier-</option>
@@ -43,7 +53,7 @@
                                             <option @if(old('supplier_id'.$i) == $item->supplier_id) selected @endif value="{{ $item->supplier_id }}">{{ $item->nama_supplier }}</option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
                                 <div class="col-md-6">
                                     <label for="{{ 'tanggal_kedaluwarsa'.$i }}"><strong>Tanggal Kedaluwarsa</strong></label>
                                     <input required value="{{ old('tanggal_kedaluwarsa'.$i) }}" type="date" class="form-control" name="{{ 'tanggal_kedaluwarsa'.$i }}" id="{{ 'tanggal_kedaluwarsa'.$i }}">
@@ -114,16 +124,6 @@
                                         <option value="">Pilih Kategori</option>
                                         @foreach ($kategori as $item)
                                             <option @if(old('kategori_id'.$i) == $item->kategori_id) selected @endif value="{{ $item->kategori_id }}">{{ $item->nama_kategori }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="{{ 'golongan_id'.$i }}"><strong>Golongan</strong></label>
-                                    <select required name="{{ 'golongan_id'.$i }}" class="form-control" id="{{ 'golongan_id'.$i }}">
-                                        <option value="">Pilih Golongan</option>
-                                        @foreach ($golongan as $item)
-                                            <option @if(old('golongan_id'.$i) == $item->golongan_id) selected @endif value="{{ $item->golongan_id }}">{{ $item->jenis_golongan }}</option>
                                         @endforeach
                                     </select>
                                 </div>

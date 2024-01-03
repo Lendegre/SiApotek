@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Penjualan</title>
+    <title>Laporan Pembelian</title>
     <!-- Include Bootstrap CSS (optional, for styling purposes) -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
@@ -33,33 +33,33 @@
     <div id="logo">
        <center><img src="{{ public_path() . '/img/logo.png' }}" style="" width="300" alt="logo farmasi"></center>
     </div>
-    <h2 style="text-align: center">LAPORAN PENJUALAN</h2>
+    <h2 style="text-align: center">LAPORAN PEMBELIAN</h2>
     <p style="text-align: center">Periode: ({{ $tanggalAwal }}) - ({{ $tanggalAkhir }})</p>
     <hr class="bg bg-dark">
     <table border="1" style="width: 100%" class="border border-dark">
         <thead>
             <tr>
                 <th class="table-cell text-center">No</th>
+                <th class="table-cell text-center">No faktur</th>
                 <th class="table-cell text-center">Tanggal</th>
-                <th class="table-cell text-center">Nama Pembeli</th>
+                <th class="table-cell text-center">Supplier</th>
                 <th class="table-cell text-center">Nama Barang</th>
                 <th class="table-cell text-center">Harga</th>
                 <th class="table-cell text-center">Jumlah</th>
                 <th class="table-cell text-center">Total</th>
-                <th class="table-cell text-center">Sisa Stok</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($sales_report as $sale)
+            @foreach($barangmasuk as $bm)
                 <tr>
                     <td class="table-cell">{{ $loop->iteration }}</td>
-                    <td class="table-cell">{{ $sale->tanggal }}</td>
-                    <td class="table-cell">{{ $sale->customer->nama }}</td>
-                    <td class="table-cell">{{ $sale->barang->nama_barang }}</td>
-                    <td class="table-cell">Rp. {{ $sale->barang->harga_jual }}</td>
-                    <td class="table-cell">{{ $sale->isi }} {{ $sale->barang->satuan_jual }}</td>
-                    <td class="table-cell">Rp. {{ $sale->customer->total_harga }}</td>
-                    <td class="table-cell">{{ $sale->barang->isi }} {{ $sale->barang->satuan_jual }}</td>
+                    <td class="table-cell">{{ $bm->no_faktur }}</td>
+                    <td class="table-cell">{{ $bm->tgl_trm }}</td>
+                    <td class="table-cell">{{ $bm->purchase->supplier->nama_supplier }}</td>
+                    <td class="table-cell">{{ $bm->nama_brg }}</td>
+                    <td class="table-cell">{{ $bm->h_beli }}</td>
+                    <td class="table-cell">{{ $bm->jumlah_trm }}</td>
+                    <td class="table-cell">{{ $bm->total }}</td>
                 </tr>
             @endforeach
         </tbody>

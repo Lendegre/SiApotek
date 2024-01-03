@@ -51,10 +51,17 @@
                 </a>
             </li>
 
+            <li class="sidebar-item @if($id_page == 16) active @endif">
+                <a class="sidebar-link" href="{{ route('data-surat') }}">
+                    <i class="align-middle" data-feather="file-text"></i> 
+                    <span class="align-middle">Surat Pemesanan Barang</span>
+                </a>
+            </li>
+
             <li class="sidebar-item @if($id_page == 15) active @endif">
                 <a class="sidebar-link" href="{{ route('data-faktur') }}">
                     <i class="align-middle" data-feather="file"></i> 
-                    <span class="align-middle">Data Barang Masuk</span>
+                    <span class="align-middle">Faktur Pembelian Barang</span>
                 </a>
             </li>
             @endif

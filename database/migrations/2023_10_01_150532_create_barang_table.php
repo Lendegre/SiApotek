@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('barang', function (Blueprint $table) {
             $table->id('barang_id');
             $table->string('nama_barang');
-            $table->foreignId('supplier_id')->constrained('supplier', 'supplier_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->date('tanggal_kedaluwarsa');
             $table->date('tanggal_masuk');
             $table->integer('jumlah');

@@ -50,7 +50,6 @@ class BarangSeeder extends Seeder
             // ],
         [
             'nama_barang'           => 'Lacto-B',
-                'supplier_id'           => 2,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+25 days')),
                 'tanggal_masuk'         => date('Y-m-d', strtotime('-200 days')),
                 'jumlah'                => 2,
@@ -66,7 +65,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama_barang'           => 'Refaquin',
-                'supplier_id'           => 2,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+20 days')),
                 'tanggal_masuk'         => date('Y-m-d', strtotime('-100 days')),
                 'jumlah'                => 3,
@@ -82,7 +80,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama_barang'           => 'Alpara',
-                'supplier_id'           => 4,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+50 days')),
                 'tanggal_masuk'         => date('Y-m-d', strtotime('-129 days')),
                 'jumlah'                => 15,
@@ -98,7 +95,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama_barang'           => 'Fasidol',
-                'supplier_id'           => 4,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+100 days')),
                 'tanggal_masuk'         => date('Y-m-d', strtotime('-80 days')),
                 'jumlah'                => 5,
@@ -114,7 +110,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama_barang'           => 'Zensoderm',
-                'supplier_id'           => 4,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+20 days')),
                 'tanggal_masuk'         => now(),
                 'jumlah'                => 60,
@@ -130,7 +125,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama_barang'           => 'Bioplacenton',
-                'supplier_id'           => 4,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+50 days')),
                 'tanggal_masuk'         => date('Y-m-d', strtotime('-20 days')),
                 'jumlah'                => 12,
@@ -146,7 +140,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama_barang'           => 'Norpid',
-                'supplier_id'           => 4,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+90 days')),
                 'tanggal_masuk'         => date('Y-m-d', strtotime('-20 days')),
                 'jumlah'                => 10,
@@ -162,7 +155,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama_barang'           => 'Hufagrip Flu dan Batuk',
-                'supplier_id'           => 1,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+100 days')),
                 'tanggal_masuk'         => date('Y-m-d', strtotime('-98 days')),
                 'jumlah'                => 20,
@@ -178,7 +170,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama_barang'           => 'Mycoral',
-                'supplier_id'           => 1,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+120 days')),
                 'tanggal_masuk'         => date('Y-m-d', strtotime('-98 days')),
                 'jumlah'                => 1,
@@ -194,7 +185,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama_barang'           => 'Betadine Gargle 190ml',
-                'supplier_id'           => 1,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+74 days')),
                 'tanggal_masuk'         => date('Y-m-d', strtotime('+-98 days')),
                 'jumlah'                => 5,
@@ -210,7 +200,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama_barang'           => 'Gasela',
-                'supplier_id'           => 5,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+198 days')),
                 'tanggal_masuk'         => date('Y-m-d', strtotime('-23 days')),
                 'jumlah'                => 10,
@@ -226,7 +215,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama_barang'           => 'Amlodipine 5mg',
-                'supplier_id'           => 5,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+69 days')),
                 'tanggal_masuk'         => date('Y-m-d', strtotime('+20 days')),
                 'jumlah'                => 20,
@@ -242,7 +230,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama_barang'           => 'Vitamin C',
-                'supplier_id'           => 3,
                 'tanggal_kedaluwarsa'   => date('Y-m-d', strtotime('+1 days')),
                 'tanggal_masuk'         => date('Y-m-d', strtotime('-101 days')),
                 'jumlah'                => 10,
