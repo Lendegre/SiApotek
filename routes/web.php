@@ -109,12 +109,12 @@ Route::middleware('auth')->group(function () {
             });
 
             // bentuk persediaan group
-            Route::prefix('/bentuk')->group(function () {
-                Route::get('/', [MasterData::class, 'showDataBentuk'])->name('bentuk');
-                Route::post('/create-bentuk', [MasterData::class, 'createBentuk'])->name('create-bentuk');
-                Route::post('/update-bentuk/{bentuk_id}', [MasterData::class, 'updateBentuk'])->name('update-bentuk');
-                Route::post('/delete-bentuk/{bentuk_id}', [MasterData::class, 'deleteBentuk'])->name('delete-bentuk');
-            });
+            // Route::prefix('/bentuk')->group(function () {
+            //     Route::get('/', [MasterData::class, 'showDataBentuk'])->name('bentuk');
+            //     Route::post('/create-bentuk', [MasterData::class, 'createBentuk'])->name('create-bentuk');
+            //     Route::post('/update-bentuk/{bentuk_id}', [MasterData::class, 'updateBentuk'])->name('update-bentuk');
+            //     Route::post('/delete-bentuk/{bentuk_id}', [MasterData::class, 'deleteBentuk'])->name('delete-bentuk');
+            // });
 
             // satuan group
             Route::prefix('/satuan')->group(function () {

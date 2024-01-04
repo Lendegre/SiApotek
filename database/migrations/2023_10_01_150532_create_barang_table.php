@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id('barang_id');
             $table->string('nama_barang');
             $table->date('tanggal_kedaluwarsa');
-            $table->date('tanggal_masuk');
             $table->integer('jumlah');
             $table->foreignId('satuan_id')->constrained('satuan', 'satuan_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('isi');
-            $table->foreignId('bentuk_id')->constrained('bentuk', 'bentuk_id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('bentuk');
             $table->bigInteger('harga_beli');
             $table->bigInteger('harga_jual');
             $table->string('satuan_jual');

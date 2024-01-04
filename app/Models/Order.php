@@ -25,11 +25,6 @@ class Order extends Model
     {
         return $this->belongsTo(Barang::class, 'barang_id');
     }
-    // relationship with bentuk sediaan
-    public function bentuk(): BelongsTo
-    {
-        return $this->belongsTo(Bentuk::class, 'bentuk_id');
-    }
     // relationship with bentuk customer
     public function customer(): BelongsTo
     {

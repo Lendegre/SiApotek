@@ -88,11 +88,10 @@
                             <tr style="white-space: nowrap">
                                 <th>No.</th>
                                 <th>Nama Barang</th>
-                                <th>Supplier</th>
-                                <th>Tanggal Masuk</th>
                                 <th>Kedaluwarsa</th>
-                                <th>Jumlah</th>
-                                <th>Stok Saat Ini</th>
+                                <th>Jumlah Stok</th>
+                                <th>Isi dalam kemasan</th>
+                                <th>Bentuk Sediaan</th>
                                 <th>Harga Beli</th>
                                 <th>Harga Jual</th>
                                 <th>Satuan Jual</th>
@@ -109,11 +108,10 @@
                                 <td>{{ $loop->iteration . '.' }}</td>
                                 
                                 <td>{{ $item->nama_barang }}</td>
-                                <td>{{ $item->supplier->nama_supplier }}</td>
-                                <td>{{ $item->tanggal_masuk }}</td>
                                 <td>{{ $item->tanggal_kedaluwarsa }}</td>
                                 <td>{{ $item->jumlah . ' '}} {{ $item->satuan->satuan_barang }}</td>
                                 <td>{{ $item->isi . ' '}} {{ $item->satuan_jual }}</td>
+                                <td>{{ $item->bentuk }}</td>
                                 <td>Rp. {{ number_format($item->harga_beli, 0, ',', '.') }}/ {{ $item->satuan->satuan_barang}}</td>
                                 <td>Rp. {{ number_format($item->harga_jual, 0, ',', '.') }} <strong>/{{ $item->satuan_jual }}</strong></td>
                                 <td>{{ $item->satuan_jual }}</td>

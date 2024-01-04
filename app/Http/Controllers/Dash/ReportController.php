@@ -206,7 +206,7 @@ class ReportController extends Controller
         $tanggalAkhir = $request->input('tanggalAkhir');
 
         $barang = Barang::all();
-        $order = Order::all();
+        // $order = Order::all();
 
         // $barang = DB::table('Barang as t1')
         // ->join('Orders as t2', 't1.Barang_id', '=', 't2.Barang_id')

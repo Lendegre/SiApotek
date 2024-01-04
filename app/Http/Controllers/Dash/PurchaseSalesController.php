@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Dash;
 
 use App\Models\Order;
 use App\Models\Barang;
-use App\Models\Bentuk;
 use App\Models\Faktur;
 use App\Models\Satuan;
 use App\Models\Customer;

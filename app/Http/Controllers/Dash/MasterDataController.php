@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Dash;
 use App\Http\Controllers\Controller;
 use App\Models\Unit;
 use App\Models\Barang;
-use App\Models\Bentuk;
 use App\Models\Golongan;
 use App\Models\Kategori;
 use App\Models\Satuan;
@@ -27,7 +26,6 @@ class MasterDataController extends Controller
         $this->model = [
             Supplier::all(),
             Satuan::all(),
-            Bentuk::all(),
             Kategori::all(),
             Golongan::all()
         ];
@@ -41,9 +39,7 @@ class MasterDataController extends Controller
     protected function showDataBarang()
     {
         $count_model = [
-            Supplier::count(),
             Kategori::count(),
-            Bentuk::count(),
             Satuan::count(),
             Golongan::count(),
         ];
@@ -53,11 +49,9 @@ class MasterDataController extends Controller
             'id_page'       => $this->id_page[0],
             'count_model'   => $count_model,
             'items'         => Barang::orderBy('barang_id', 'DESC')->get(),
-            'suppliers'     => $this->model[0],
             'satuan'        => $this->model[1],
-            'bentuk'        => $this->model[2],
-            'kategori'      => $this->model[3],
-            'golongan'      => $this->model[4],
+            'kategori'      => $this->model[2],
+            'golongan'      => $this->model[3],
         ];
 
         return view('dash.master-data.barang', $data);
@@ -79,11 +73,9 @@ class MasterDataController extends Controller
             'title'     => 'Tambah Barang',
             'id_page'   => null,
             'items'     => $countData,
-            'suppliers' => $this->model[0],
             'satuan'    => $this->model[1],
-            'bentuk'    => $this->model[2],
-            'kategori'  => $this->model[3],
-            'golongan'  => $this->model[4],
+            'kategori'  => $this->model[2],
+            'golongan'  => $this->model[3],
         ];
 
         return view('dash.master-data.elements.add_items', $data);
@@ -123,13 +115,11 @@ class MasterDataController extends Controller
             if (!$otherBarang) {
                 DB::table('barang')->insert([
                     "nama_barang"         => $request->input("nama_barang$i"),
-                    "supplier_id"         => $request->input("supplier_id$i"),
                     "tanggal_kedaluwarsa" => $request->input("tanggal_kedaluwarsa$i"),
-                    "tanggal_masuk"       => $request->input("tanggal_masuk$i"),
                     "jumlah"              => $request->input("jumlah$i"),
                     "satuan_id"           => $request->input("satuan_id$i"),
                     "isi"                 => $request->input("isi$i"),
-                    "bentuk_id"           => $request->input("bentuk_id$i"),
+                    "bentuk"              => $request->input("bentuk$i"),
                     "harga_beli"          => $request->input("harga_beli$i"),
                     "harga_jual"          => $request->input("harga_jual$i"),
                     "satuan_jual"         => $request->input("satuan_jual$i"),
@@ -172,13 +162,11 @@ class MasterDataController extends Controller
 
         if (!$otherBarang) {
             $barang->nama_barang = $request->input('nama_barang');
-            $barang->supplier_id = $request->input('supplier_id');
-            $barang->tanggal_masuk = $request->input('tanggal_masuk');
             $barang->tanggal_kedaluwarsa = $request->input('tanggal_kedaluwarsa');
             $barang->jumlah = $request->input('jumlah');
             $barang->satuan_id = $request->input('satuan_id');
             $barang->isi = $request->input('isi');
-            $barang->bentuk_id = $request->input('bentuk_id');
+            $barang->bentuk = $request->input('bentuk');
             $barang->harga_beli = $request->input('harga_beli');
             $barang->harga_jual = $request->input('harga_jual');
             $barang->satuan_jual = $request->input('satuan_jual');
@@ -342,81 +330,6 @@ class MasterDataController extends Controller
                 return back()->with('info', 'Kategori has been updated');
             } else {
                 return back()->with('error', 'Kategori is duplicate');
-            }
-        }
-
-        return back();
-    }
-
-    /**
-     * Render view bentuk user interface
-     * 
-     * @return View
-     */
-    protected function showDataBentuk()
-    {
-        $data = [
-            'title'     => $this->label . 'Bentuk',
-            'id_page'   => $this->id_page[3],
-            'bentuk'    => Bentuk::orderBy('bentuk_id', 'DESC')->get(),
-        ];
-
-        return view('dash.master-data.bentuk', $data);
-    }
-
-    /**
-     * Handle request to create bentuk
-     * 
-     * @param Request
-     * @return RedirectResponse
-     */
-    protected function createBentuk(Request $request)
-    {
-        $existingBentuk = Bentuk::where('bentuk_barang', $request->input('bentuk_barang'))->first();
-
-        if (!$existingBentuk) {
-            DB::table('bentuk')->insert([
-                'bentuk_barang' => $request->input('bentuk_barang'),
-            ]);
-
-            return back()->with('success', 'Success to create bentuk sediaan');
-        }
-
-        return back()->with('error', 'Bentuk sediaan is duplicate');
-    }
-
-    /**
-     * Handle request to delete bentuk
-     * 
-     * @return RedirectResponse
-     */
-
-    protected function deletebentuk($bentuk_id)
-    {
-        DB::table('bentuk')->where('bentuk_id', $bentuk_id)->delete();
-
-        return back()->with('info', 'Bentuk sediaan has been deleted');
-    }
-
-    /**
-     * Handle request to update bentuk
-     * 
-     * @param Request
-     * @return RedirectResponse
-     */
-    protected function updateBentuk(Request $request, $bentuk_id)
-    {
-        $bentuk = Bentuk::find($bentuk_id);
-        $otherBentuk = Bentuk::where('bentuk_barang', $request->input('bentuk_barang'))->first();
-
-        if ($bentuk->bentuk_barang != $request->input('bentuk_barang')) {
-
-            if (!$otherBentuk) {
-                $bentuk->bentuk_barang = $request->input('bentuk_barang');
-                $bentuk->save();
-                return back()->with('info', 'Bentuk sediaan has been updated');
-            } else {
-                return back()->with('error', 'Bentuk sediaan is duplicate');
             }
         }
 

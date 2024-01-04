@@ -58,15 +58,25 @@
                                     <label for="{{ 'tanggal_kedaluwarsa'.$i }}"><strong>Tanggal Kedaluwarsa</strong></label>
                                     <input required value="{{ old('tanggal_kedaluwarsa'.$i) }}" type="date" class="form-control" name="{{ 'tanggal_kedaluwarsa'.$i }}" id="{{ 'tanggal_kedaluwarsa'.$i }}">
                                 </div>
-                                
+
                                 <div class="col-md-6">
+                                    <label for="{{ 'kategori_id'.$i }}"><strong>Kategori</strong></label>
+                                    <select required name="{{ 'kategori_id'.$i }}" id="{{ 'kategori_id'.$i }}" class="form-control">
+                                        <option value="">Pilih Kategori</option>
+                                        @foreach ($kategori as $item)
+                                            <option @if(old('kategori_id'.$i) == $item->kategori_id) selected @endif value="{{ $item->kategori_id }}">{{ $item->nama_kategori }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                
+                                {{-- <div class="col-md-6">
                                     <label for="{{ 'tanggal_masuk'.$i }}"><strong>Tanggal Masuk</strong></label>
                                     <input required value="{{ old('tanggal_masuk'.$i) }}" type="date" class="form-control" name="{{ 'tanggal_masuk'.$i }}" id="{{ 'tanggal_masuk'.$i }}">
-                                </div>
+                                </div> --}}
 
                                 <div class="col-md-6 justify-content-between d-flex">
                                     <div class="col-md-6">
-                                        <label for="{{ 'jumlah'.$i }}"><strong>Jumlah</strong></label>
+                                        <label for="{{ 'jumlah'.$i }}"><strong>Jumlah Stok</strong></label>
                                         <input required value="{{ old('jumlah'.$i) }}" type="number" placeholder="Masukkan jumlah " class="form-control" name="{{ 'jumlah'.$i }}" id="{{ 'jumlah'.$i }}">    
                                     </div>
                                     
@@ -83,18 +93,13 @@
                                 
                                 <div class="col-md-6 justify-content-between d-flex">
                                     <div class="col-md-6">
-                                        <label for="{{ 'isi'.$i }}"><strong>Isi Dalam Kemasan</strong></label>
+                                        <label for="{{ 'isi'.$i }}"><strong>Isi dalam kemasan</strong></label>
                                         <input required value="{{ old('isi'.$i) }}" type="number" placeholder="Masukkan jumlah isi" class="form-control" name="{{ 'isi'.$i }}" id="{{ 'isi'.$i }}">    
                                     </div>
                                     
                                     <div class="col-md-5">
-                                        <label for="{{ 'bentuk_id'.$i }}"><strong>Bentuk sediaan</strong></label>
-                                        <select name="{{ 'bentuk_id'.$i }}" id="{{ 'bentuk_id'.$i }}" class="form-control">
-                                            <option value="">-Pilih Bentuk sediaan-</option>
-                                            @foreach ($bentuk as $item)
-                                                <option @if(old('bentuk_id'.$i) == $item->bentuk_id) selected @endif value="{{ $item->bentuk_id }}">{{ $item->bentuk_barang }}</option>
-                                            @endforeach
-                                        </select>
+                                        <label for="{{ 'bentuk'.$i }}"><strong>Bentuk sediaan</strong></label>
+                                        <input required value="{{ old('bentuk'.$i) }}" type="string" placeholder="Masukkan bentuk sediaan" class="form-control" name="{{ 'bentuk'.$i }}" id="{{ 'bentuk'.$i }}">  
                                     </div>                                    
                                 </div>
 
@@ -117,17 +122,6 @@
                                     <label for="{{ 'minimal_stok'.$i }}"><strong>Minimal Stok</strong></label>
                                     <input required value="{{ old('minimal_stok'.$i) }}" type="number" placeholder="Masukkan minimal stok" class="form-control" name="{{ 'minimal_stok'.$i }}" id="{{ 'minimal_stok'.$i }}">
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="{{ 'kategori_id'.$i }}"><strong>Kategori</strong></label>
-                                    <select required name="{{ 'kategori_id'.$i }}" id="{{ 'kategori_id'.$i }}" class="form-control">
-                                        <option value="">Pilih Kategori</option>
-                                        @foreach ($kategori as $item)
-                                            <option @if(old('kategori_id'.$i) == $item->kategori_id) selected @endif value="{{ $item->kategori_id }}">{{ $item->nama_kategori }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
                             </div>
                         </div>
                     </div>

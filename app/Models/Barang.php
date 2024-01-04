@@ -14,11 +14,9 @@ class Barang extends Model
     protected $fillable = [
         'nama_barang',
         'tanggal_kedaluwarsa',
-        'tanggal_masuk',
         'jumlah',
         'satuan_id',
         'isi',
-        'bentuk_id',
         'harga_beli',
         'harga_jual',
         'satuan_jual',
@@ -40,10 +38,10 @@ class Barang extends Model
     }
 
     // table relation with bentuk sediaan
-    public function bentuk(): BelongsTo
-    {
-        return $this->belongsTo(Bentuk::class, 'bentuk_id');
-    }
+    // public function bentuk(): BelongsTo
+    // {
+    //     return $this->belongsTo(Bentuk::class, 'bentuk_id');
+    // }
 
     // table relation with kategori
     public function kategori(): BelongsTo
