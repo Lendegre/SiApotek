@@ -14,14 +14,14 @@
                     <p class="mb-0">Jenis Obat: <strong>{{ $customer->jenis_obat }}</strong></p>
                     <p class="mb-0">Golongan: <strong>{{ $customer->golongan->jenis_golongan }}</strong></p>
                     <p class="mb-0">Tanggal: <strong>{{ $products[0]->tanggal }}</strong></p>
-                    @if ($customer->status == 'Dibayar')
+                    {{-- @if ($customer->status == 'Dibayar') --}}
                         @if($customer->jenis_obat == 'Resep') <form action="{{ route('surat-resep', $customer->customer_id) }}" method="POST"> @endif
                         @if($customer->jenis_obat == 'Non-Resep') <form action="{{ route('surat-nonresep', $customer->customer_id) }}" method="POST"> @endif
+                    {{-- @endif --}}
                             @csrf
                             <button formtarget="_blank" type="submit" class="btn btn-secondary my-2">Cetak Nota Penjualan</button>
                         </form>
-                    @endif
-                </div>
+                    </div>
 
                 <div class="row table-responsive mt-4">
                     <table class="table" id="data">
@@ -30,7 +30,7 @@
                                 <th>No.</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah</th>
-                                <th>Harga (satuan jual * harga jual)</th>
+                                <th>Harga (jumlah * harga jual)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,8 +38,8 @@
                             <tr>
                                 <td>{{ $loop->iteration . '.' }}</td>
                                 <td>{{ $item->barang->nama_barang }}</td>
-                                <td>{{ $item->isi . ' ' . $item->barang->bentuk->bentuk_barang }}</td>
-                                <td>Rp. {{ number_format($item->isi * $item->barang->harga_jual, 0, ',', '.') }}</td>
+                                <td>{{ $item->stok . ' ' . $item->barang->satuan_jual }}</td>
+                                <td>Rp. {{ number_format($item->stok * $item->barang->harga_jual, 0, ',', '.') }}</td>
                             </tr>
                             @endforeach
                         </tbody>

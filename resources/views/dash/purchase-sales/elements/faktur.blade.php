@@ -35,6 +35,11 @@
                                     <input type="text" class="form-control"
                                         value="{{ $faktur->purchase->supplier->no_telp }}" disabled required>
                                 </div>
+                                {{-- <div class="mb-3">
+                                    <label for="isi" class="form-label">Isi dalam kemasan</label>
+                                    <input type="text" class="form-control"
+                                        value="" disabled required>
+                                </div> --}}
                             </div>
                             <div class="col-md-3 offset-md-2">
                                 <div class="mb-3">
@@ -73,20 +78,19 @@
                                     <th class="border">Nama Barang</th>
                                     <th class="border">Jumlah Pesan</th>
                                     <th class="border">Jumlah Terima</th>
-                                    <th class="border">Harga Beli / {{ $barang[0]->satuan->satuan_barang }}</th>
+                                    <th class="border">Harga Beli</th>
                                     {{-- <th class="border">Harga Beli/Satuan Barang</th> --}}
                                     <th class="border">Total</th>
                                 </tr>
                             </thead>
-                            @foreach ($barang as $b)
+                            @foreach ($bm as $b)
                                 <tbody>
                                     <!-- Row 1 -->
-
                                     <tr class="border">
-                                        <td class="border"><input required type="string" name="nama_brg[]" id="nama_brg" value="{{ $b->nama_brg }}"></td>
-                                        <td class="border">{{ $b->jumlah }} {{ $b->satuan->satuan_barang }}</td>
+                                        <td class="border"><input required readonly type="string" name="nama_brg[]" id="nama_brg" value="{{ $b->barang->nama_barang }}"></td>
+                                        <td class="border text-center">{{ $b->jumlah }}</td>
                                         <td class="border"><input required type="number" class="jumlah_trm" name="jumlah_trm[]" min="0" value="0" id="jumlah_trm" onchange="calculateTotal()"></td>
-                                        <td class="border">Rp. <input required type="number" class="h_beli" name="h_beli[]" min="0" value="0" id="h_beli" onchange="calculateTotal()"></td>
+                                        <td class="border">Rp. <input required type="number" class="h_beli col-md-6" name="h_beli[]" min="0" value="0" id="h_beli" onchange="calculateTotal()"> / {{ $b->satuan_beli }}</td>
                                         <td class="border text-center">Rp. <input type="number" class="total mx-2" name="total[]" id="total" readonly></td>
                                     </tr>
                                     
@@ -95,7 +99,7 @@
                         </table>
                         <div class="container d-flex justify-content-end">
                             <label for="g_total" class="text-right"><strong>Grand Total:</strong></label>
-                            <input class="mx-3" type="double" id="g_total" name="g_total" readonly>
+                            <input class="mx-4" type="double" id="g_total" name="g_total" readonly>
                         </div>
                         <button type="submit" class="btn btn-primary text-left">Simpan</button>
                     </form>

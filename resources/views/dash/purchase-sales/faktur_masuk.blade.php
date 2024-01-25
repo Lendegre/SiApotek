@@ -7,21 +7,21 @@
                 <div class="card-body">
                     {{-- Data Table Faktur --}}
                     <div class="mt-2 table-responsive">
-                        <table class="table table-striped" id="data">
+                        <table class="table table-striped " id="data">
                             <thead>
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <button type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                     Tambah Faktur
                                 </button>
                                 <tr class="border text-center">
-                                    <th class="border">No</th>
-                                    <th class="border">No Faktur</th>
-                                    <th class="border">Supplier</th>
-                                    <th class="border">Tanggal Terima</th>
-                                    <th class="border">Tanggal Jatuh Tempo</th>
-                                    <th class="border">Status Bayar</th>
-                                    <th class="border">Grand Total</th>
-                                    <th class="border">Aksi</th>
+                                    <th class="border border-dark text-center">No</th>
+                                    <th class="border border-dark text-center">No Faktur</th>
+                                    <th class="border border-dark text-center">Supplier</th>
+                                    <th class="border border-dark text-center">Tanggal Terima</th>
+                                    <th class="border border-dark text-center">Tanggal Jatuh Tempo</th>
+                                    <th class="border border-dark text-center">Status Bayar</th>
+                                    <th class="border border-dark text-center">Grand Total</th>
+                                    <th class="border border-dark text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -31,15 +31,15 @@
                                 @endphp --}}
 
                                 @foreach ($barangmasuk->unique('no_faktur') as $bm)
-                                    <tr class="border text-center">
-                                        <td class="border">{{ $loop->iteration }}</td>
-                                        <td class="border">{{ $bm->no_faktur }}</td>
-                                        <td class="border">{{ $bm->purchase->supplier->nama_supplier }}</td>
-                                        <td class="border">{{ $bm->tgl_trm }}</td>
-                                        <td class="border">{{ $bm->tgl_tempo }}</td>
-                                        <td class="border">{{ $bm->sbayar }}</td>
-                                        <td class="border">Rp. {{ $bm->g_total }}</td>
-                                        <td class="border">
+                                    <tr class="text-center">
+                                        <td class="border border-dark">{{ $loop->iteration }}</td>
+                                        <td class="border border-dark">{{ $bm->no_faktur }}</td>
+                                        <td class="border border-dark">{{ $bm->purchase->supplier->nama_supplier }}</td>
+                                        <td class="border border-dark">{{ $bm->tgl_trm }}</td>
+                                        <td class="border border-dark">{{ $bm->tgl_tempo }}</td>
+                                        <td class="border border-dark">{{ $bm->sbayar }}</td>
+                                        <td class="border border-dark">Rp. {{ $bm->g_total }}</td>
+                                        <td class="border border-dark col-md-2">
                                             <button class="btn btn-info modal-open" data-modal="{{ 'edit'.$bm->purchase_id }}"><i data-feather="edit"></i></button>
                                             <a href="{{ route('detail-faktur', $bm->purchase_id) }}" class="btn btn-warning"><i data-feather="eye"></i></a>
                                             <button class="btn btn-danger modal-open" data-modal="{{ 'delete'.$bm->purchase_id }}"><i data-feather="trash-2"></i></button>

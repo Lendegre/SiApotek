@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Dash;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Order;
 use App\Models\Barang;
 use App\Models\Supplier;
-use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+
 
 class AnalyticsController extends Controller
 {
@@ -19,6 +21,15 @@ class AnalyticsController extends Controller
      */
     protected function showOverview()
     {
+        $harga = Order::select(DB::raw("CAST(SUM(harga) as int) as harga"))
+        ->groupBy(DB::raw("Month(tanggal)"))
+        ->pluck('harga');
+
+        $bulan = Order::select(DB::raw("MONTHNAME(tanggal) as bulan"))
+        ->groupBy(DB::raw("MONTHNAME(tanggal)"))
+        ->pluck('bulan');
+
+
         // almost expired
         $today = Carbon::now();
         $expiredDate = $today->copy()->addDays(30);
@@ -27,10 +38,13 @@ class AnalyticsController extends Controller
             ->whereDate('tanggal_kedaluwarsa', '<=', $expiredDate)->count();
 
         // low stock
-        $lowStock = Barang::with(['bentuk'])->whereColumn('isi', '<=', 'minimal_stok')->count();
+        $lowStock = Barang::with(['bentuk'])->whereColumn('stok', '<=', 'minimal_stok')->count();
 
-        // all stock
+        // all product
         $totalProduct = Barang::count();
+
+        //all stok
+        $totalStok = Barang::sum('stok');
 
         $data = [
             'title'             => 'Halaman Utama',
@@ -40,10 +54,13 @@ class AnalyticsController extends Controller
             'count_product'     => Barang::count(),
             'barang'            => Barang::orderBy('barang_id', 'DESC')->get(),
             'totalProduct'      => $totalProduct,
+            'totalStok'         => $totalStok,
+            // 'topSold'           => $topSold,
             'lowStock'          => $lowStock,
             'almostExp'         => $almostExp,
         ];
 
-        return view('dash.analytics.overview', $data);
+
+        return view('dash.analytics.overview', compact('harga', 'bulan'), $data);
     }
 }

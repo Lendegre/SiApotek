@@ -16,6 +16,7 @@ use App\Models\PurchaseProduct;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+// use Illuminate\Validation\Rule;
 
 
 
@@ -23,7 +24,7 @@ use App\Http\Controllers\Controller;
 
 class PurchaseSalesController extends Controller
 {
-    protected $id_page, $model;
+    protected $id_page, $model, $getItemByGroup;
 
     public function __construct()
     {
@@ -32,9 +33,9 @@ class PurchaseSalesController extends Controller
             Supplier::all(),
             Golongan::all(),
             Satuan::all(),
-            Bentuk::all(),
             Barangmasuk::all(),
         ];
+        $this->getItemByGroup = MasterDataController::getItemsByGroup();
     }
 
     /**
@@ -90,10 +91,11 @@ class PurchaseSalesController extends Controller
             'golongan_id'   => $request->input('golongan_id'),
             'tgl_pengajuan' => now(),
         ]);
+        // Ambil data yang sudah disimpan
+         $data = Purchase::latest()->first();
 
-        return redirect()->route('purchase-product', $request->input('no_surat'))->with('success', 'Success to create purchase data');
+        return redirect()->route('purchase-product', $request->input('no_surat'))->withInput()->with('success', 'Data Supplier Tujuan Berhasil Di Simpan')->with('data', $data);
     }
-
 
     /**
      * Render view to purchase a product
@@ -105,11 +107,15 @@ class PurchaseSalesController extends Controller
     protected function showPurchaseProduct($no_surat)
     {
         $purchase = Purchase::where('no_surat', $no_surat)->first();
+        $barang = Barang::where('supplier_id', $purchase->supplier_id)->whereColumn('stok', '<=', 'minimal_stok')->get();
+        // var_dump($barang);
+        // exit();
+        
         $data = [
-            'title'         => 'Pembelian Produk',
+            'title'         => 'Pembelian Barang',
             'id_page'       => null,
             'purchase'      => $purchase,
-            'satuan'        => Satuan::all(),
+            'barang'        => $barang,
             'products'      => PurchaseProduct::where('purchase_id', $purchase->purchase_id)->get(),
         ];
 
@@ -123,23 +129,29 @@ class PurchaseSalesController extends Controller
      * @return View
      */
     protected function createPurchaseProduct(Request $request)
-    {
-        $barang = PurchaseProduct::where('purchase_id', $request->input('purchase_id'))->first();
+    { 
+        $barang = PurchaseProduct::where('purchase_id', $request->input('purchase_id'))->where('barang_id', $request->input('barang_id'))->first();
 
-
+        if (!$barang) {
         if ($request->has('tambahPesanan')) {
-
             DB::table('purchase_product')->insert([
-                'nama_brg'      => $request->input('nama_brg'),
+                'barang_id'     => $request->input('barang_id'),
                 'purchase_id'   => $request->input('purchase_id'),
-                'satuan_id'     => $request->input('satuan_id'),
+                'satuan_beli'   => $request->input('satuan_beli'),
                 'jumlah'        => $request->input('jumlah'),
+                'isi'           => $request->input('isi'),
                 'bentuk'        => $request->input('bentuk'),
                 'zat'           => $request->input('zat'),
             ]);
-            return back()->with('success', 'Success to add the item');
+
+            return back()->with('success', 'Success menambahkan barang');    
         }
+
     }
+    return back()->with('error', 'Barang Sudah Ada');
+         // Handle other cases if needed
+    //  return back()->with('error', 'Gagal menambahkan barang');
+    } 
 
 
     /**
@@ -152,7 +164,7 @@ class PurchaseSalesController extends Controller
     {
         DB::table('purchase_product')->where('purchase_product_id', $purchase_product_id)->delete();
 
-        return back()->with('info', 'Item has been deleted');
+        return back()->with('info', 'Barang berhasil dihapus!');
     }
 
     /**
@@ -165,11 +177,10 @@ class PurchaseSalesController extends Controller
     {
         DB::table('purchase_product')->where('purchase_product_id', $purchase_product_id)->update([
             'jumlah'    => $request->input('jumlah'),
-            'bentuk'    => $request->input('bentuk'),
             'zat'       => $request->input('zat'),
         ]);
 
-        return back()->with('info', 'Item has been updated');
+        return back()->with('info', 'Barang berhasil diupdate!');
     }
 
     /**
@@ -240,7 +251,7 @@ class PurchaseSalesController extends Controller
             'keterangan'    => $request->input('keterangan'),
         ]);
 
-        return back()->with('success', 'Purchase status has been updated');
+        return back()->with('success', 'Status pembelian telah diupdate!');
     }
 
     /**
@@ -274,7 +285,7 @@ class PurchaseSalesController extends Controller
 
         $customer->save();
 
-        return redirect()->route('order-product', $customer->customer_id)->with('success', 'Success to create order for customer');
+        return redirect()->route('order-product', $customer->customer_id)->with('success', 'Success Menambahkan Data Pelanggan');
     }
 
     /**
@@ -290,10 +301,12 @@ class PurchaseSalesController extends Controller
             'title'     => 'Penjualan Barang',
             'id_page'   => null,
             'customer'  => $customer,
-            'barang'    => Barang::where('isi', '>', 0)->get(),
-            'bentuk'    => $this->model[3],
+            'barang'    => $this->getItemByGroup->where('stok', '>', 0),
             'products'  => Order::where('customer_id', $customer_id)->get(),
         ];
+
+        // var_dump($barang);
+        // exit();
 
         return view('dash.purchase-sales.elements.sales_product', $data);
     }
@@ -309,26 +322,25 @@ class PurchaseSalesController extends Controller
         date_default_timezone_set('Asia/Jakarta');
         $barang = Order::where('customer_id', $request->input('customer_id'))->where('barang_id', $request->input('barang_id'))->first();
         $barangLimit = Barang::where('barang_id', $request->input('barang_id'))->first();
-        $barang_count = Order::count() + 1;
+        // $barang_count = Order::count() + 1;
 
         if (!$barang) {
-            if ($barangLimit->isi >= $request->input('isi')) {
+            if ($barangLimit->stok >= $request->input('stok')) {
                 DB::table('orders')->insert([
-                    'no_order'   => 'INV-' . date('Ymd', strtotime('now')) . $barang_count,
-                    'barang_id'      => $request->input('barang_id'),
-                    'isi'   => $request->input('isi'),
-                    'customer_id' => $request->input('customer_id'),
-                    'harga' => $request->input('isi') * $barangLimit->harga_jual,
-                    'tanggal'   => $request->input('tanggal'),
+                    'no_order'      => 'INV-' . date('Ymd', strtotime('now')).$request->input('customer_id'),
+                    'barang_id'     => $request->input('barang_id'),
+                    'stok'          => $request->input('stok'),
+                    'customer_id'   => $request->input('customer_id'),
+                    'harga'         => $request->input('stok') * $barangLimit->harga_jual,
+                    'tanggal'       => $request->input('tanggal'),
                 ]);
 
-                return back()->with('success', 'Success to add order item');
+                return back()->with('success', 'Berhasil Menambahkan Barang');
             }
 
-            return back()->with('error', 'Stock is not enough!');
+            return back()->with('error', 'Stok Tidak Mencukupi!');
         }
-
-        return back()->with('error', 'Order item is already in the table');
+        return back()->with('error', 'Barang Sudah Ada');
     }
 
     /**
@@ -341,7 +353,7 @@ class PurchaseSalesController extends Controller
     {
         DB::table('orders')->where('order_id', $order_id)->delete();
 
-        return back()->with('info', 'Item has been deleted');
+        return back()->with('info', 'Barang pilihan telah dihapus');
     }
 
     /**
@@ -352,11 +364,17 @@ class PurchaseSalesController extends Controller
      */
     protected function updateOrderItem(Request $request, $order_id)
     {
-        DB::table('orders')->where('order_id', $order_id)->update([
-            'isi'       => $request->input('isi'),
-        ]);
+        $barangLimit = Barang::where('barang_id', $request->input('barang_id'))->first();
+        
+        if($barangLimit->stok >= $request->input('stok')) {
+            DB::table('orders')->where('order_id', $order_id)->update([
+                'stok'       => $request->input('stok'),
+                'harga'         => $request->input('stok') * $barangLimit->harga_jual,
+            ]);
+            return back()->with('info', 'Barang pilihan telah diupdate!');
+        }
 
-        return back()->with('info', 'Item has been updated');
+        return back()->with('error', 'Stok melebihi kapasitas stok yang ada.');
     }
 
 
@@ -397,8 +415,8 @@ class PurchaseSalesController extends Controller
         foreach ($orders as $order) {
             $barang = Barang::where('barang_id', $order->barang_id)->first();
             if ($barang) {
-                $stok = $barang->isi - $request->input("isi$order->order_id");
-                $barang->update(['isi' => $stok]);
+                $stok = $barang->stok - $request->input("stok$order->order_id");
+                $barang->update(['stok' => $stok]);
             }
         }
 
@@ -440,6 +458,7 @@ class PurchaseSalesController extends Controller
             'customer'  => $customer,
             'orders'   => Order::where('customer_id', $customer_id)->get(),
             'title' => Order::where('customer_id', $customer_id)->select('no_order')->first(),
+            'total_harga'   => Order::where('customer_id', $customer_id)->sum('harga'),
         ];
 
         $pdf = Pdf::loadView('pdf.surat-nonresep', $data);
@@ -472,7 +491,7 @@ class PurchaseSalesController extends Controller
      */
     protected function createFaktur(Request $request)
     {
-        $messages = [
+        $message = [
             'required' => 'Form harus diisi.',
             'unique' => 'Nomor surat ini sudah memiliki faktur',
             // Tambahkan pesan-pesan validasi kustom lainnya sesuai kebutuhan.
@@ -480,13 +499,13 @@ class PurchaseSalesController extends Controller
 
         $validatedData = $request->validate([
                 'purchase_id' => 'required|unique:fakturs,purchase_id',
-        ], $messages);
+        ], $message);
 
         DB::table('fakturs')->insert([
             'purchase_id'      => $request->input('purchase_id'),
         ]);
 
-        return redirect()->route('faktur-product', $request->input('purchase_id'))->with($messages,'Success to create purchase data');
+        return redirect()->route('faktur-product', $request->input('purchase_id'))->with($message,'Success to create purchase data');
 
         // return view('dash.purchase-sales.elements.faktur',[
         //     'title'     => 'Faktur',
@@ -499,18 +518,32 @@ class PurchaseSalesController extends Controller
 
     protected function showFakturProduct($no_surat)
     {
+        
         $faktur = Faktur::where('purchase_id', $no_surat)->first();
-        $barang = PurchaseProduct::where('purchase_id', $no_surat)->get();
+        $bm = PurchaseProduct::where('purchase_id', $no_surat)->get();
+
+        // var_dump($bm);
+        // exit();
+
+        // $barang = Barang::where('barang_id', $barang_id)->get();
+
+        // var_dump($barang);
+        // exit();
 
         // return $request;
         $data = [
             'title'         => 'Faktur Produk',
             'id_page'       => 15,
             'faktur'        => $faktur,
-            'barang'        =>$barang,
-            // 'barang'        => Barang::all(),
+            'bm'            => $bm,
             // 'products'      => PurchaseProduct::where('purchase_id', $purchase->purchase_id)->get(),
         ];
+
+        // var_dump($bm);
+        // exit();
+
+        // var_dump($bm[0]->barang());
+        // exit();
 
         return view('dash.purchase-sales.elements.faktur', $data);
     }
@@ -523,11 +556,19 @@ class PurchaseSalesController extends Controller
      */
     protected function createFakturProduct( Request $request)
     {     
+        // return $request;
         $items = count($request->nama_brg);
-    
-        for ($x = 0; $x<$items; $x++){
+        // $stok = PurchaseProduct::where('isi', $isi)->get();
 
-            
+        // var_dump($stok);
+        //     exit();
+
+        for ($x = 0; $x<$items; $x++){
+            $isi_purchase = PurchaseProduct::where('purchase_id', $request->purchase_id)->value('isi');
+            $barang_purchase = PurchaseProduct::where('purchase_id', $request->purchase_id)->get();
+
+            $barang_id = $barang_purchase[$x]->barang_id;
+
             DB::table('barangmasuks')->insert([
                 'purchase_id'           => $request->purchase_id,
                 'no_faktur'             => $request->no_faktur,
@@ -540,6 +581,13 @@ class PurchaseSalesController extends Controller
                 'total'                 => $request->total[$x],
                 'g_total'               => $request->g_total,
             ]);
+
+            $barang = Barang::find($barang_id);
+
+            if($barang) {
+                $barang->stok = $barang->stok + ($barang->isi * $request->jumlah_trm[$x]);
+                $barang->save();
+            }
         }
 
                // Hitung total keseluruhan
@@ -548,7 +596,7 @@ class PurchaseSalesController extends Controller
         // Inisialisasi array untuk total masing-masing barang
         $barangTotals = [];
 
-            return redirect('/purchase-sales/faktur-management/')->with('success', 'Success to add the item'); 
+        return redirect('/purchase-sales/faktur-management/')->with('success', 'Berhasil menyimpan data pembelian'); 
     }
 
     public function updateFaktur(Request $request, $purchase_id)

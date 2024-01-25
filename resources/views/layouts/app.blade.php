@@ -54,6 +54,23 @@
 	<script>	
 		new DataTable('#data');
 	</script>
+
+	{{-- <script>
+	$(document).ready(() => {
+	$("#jumlah").keyup(function () {
+	   var int1 = $("#isi").val() * $("#jumlah").val();
+	   console.log(int1);
+	   $("#stok").val(int1);
+	});
+
+	$("#isi").keyup(function () {
+	   var int2 = $("#jumlah").val() * $("#isi").val();
+	   console.log(int2);
+	   $("#stok").val(int2);
+	});
+  	});
+	</script> --}}
+
 	@stack('chart-script')
 
 	@include('components.notiflix_dialog')

@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/data-surat', [PurchaseSales::class, 'showDataSurat'])->name('data-surat');
                 Route::get('/purchase-product/{no_surat}', [PurchaseSales::class, 'showPurchaseProduct'])->name('purchase-product');
                 Route::post('/create-purchase', [PurchaseSales::class, 'createPurchase'])->name('create-purchase');
+                // Route::post('/update-purchase', [PurchaseSales::class, 'updatePurchase'])->name('update-purchase');
                 Route::post('/create-purchase-product', [PurchaseSales::class, 'createPurchaseProduct'])->name('create-purchase-product');
                 Route::post('/delete-purchase-product/{purchase_product_id}', [PurchaseSales::class, 'deletePurchaseProduct'])->name('delete-purchase-product');
                 Route::post('/update-purchase-product/{purchase_product_id}', [PurchaseSales::class, 'updatePurchaseProduct'])->name('update-purchase-product');
@@ -90,6 +91,14 @@ Route::middleware('auth')->group(function () {
                 Route::post('/create-items', [MasterData::class, 'createItems'])->name('create-items');
                 Route::post('/delete-item/{barang_id}', [MasterData::class, 'deleteItem'])->name('delete-item');
                 Route::post('/update-item/{barang_id}', [MasterData::class, 'updateItem'])->name('update-item');
+
+                // Route::post('/updateStok', function (Request $request) {
+                //     $stok = $request->input('total');
+                
+                //     // Lakukan sesuatu dengan nilai stok, seperti menyimpan ke database
+                
+                //     return response()->json(['success' => true]);
+                // })->name('updateStok');
             });
 
             // supplier group
@@ -152,7 +161,6 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('/stock-report')->group(function () {
             Route::get('/', [Report::class, 'showStockReport'])->name('stock-report');
-            Route::get('/filter-stok', [Report::class, 'filterStok'])->name('filter-stok');
             Route::get('/stock-pdf', [Report::class, 'pdfStockReport'])->name('stock-pdf');
             Route::get('/showLowStock', [Report::class, 'showLowStock'])->name('stock-low');
             Route::get('/showAlmostExp', [Report::class, 'showAlmostExp'])->name('stock-exp');

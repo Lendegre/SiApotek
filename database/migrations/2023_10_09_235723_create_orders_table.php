@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('no_order');
             $table->foreignId('customer_id')->constrained('customer', 'customer_id',)->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('barang_id')->constrained('barang', 'barang_id')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->integer('isi');
+            $table->integer('stok');
             $table->integer('harga');
             $table->date('tanggal');
             $table->timestamps();

@@ -14,7 +14,9 @@ class PurchaseProduct extends Model
     protected $fillable = [
         'barang_id',
         'purchase_id',
+        'satuan_beli',
         'jumlah',
+        'isi',
         'bentuk',
         'zat',
     ];
@@ -27,9 +29,9 @@ class PurchaseProduct extends Model
 
     // relationship with purchase
 
-    public function satuan(): BelongsTo
+    public function barang(): BelongsTo
     {
-        return $this->belongsTo(Satuan::class, 'satuan_id');
+        return $this->belongsTo(Barang::class, 'barang_id');
     }
 
 

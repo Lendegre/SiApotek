@@ -10,7 +10,7 @@
                     
                     @if (in_array(0, $count_model))
                     <div class="bg-warning rounded p-3 " role="alert">
-                        <span class="text-light">Pastikan data supplier, kategori, bentuk sediaan, satuan dan golongan memiliki minimal 1 data sebelum melakukan penambahan barang masuk. </span>
+                        <span class="text-light">Pastikan data supplier, kategori, satuan dan golongan memiliki minimal 1 data sebelum melakukan penambahan barang masuk. </span>
                         <a class="text-decoration modal-open" data-modal="detail" style="cursor: pointer">Lihat Detail</a>
                         <div id="detail" class="modal">
                             <div class="modal-content">
@@ -30,7 +30,7 @@
                                         <tbody>
                                             
                                             @php
-                                            $models = ['Kategori', 'Bentuk Sediaan', 'Satuan', 'Golongan']
+                                            $models = ['Kategori', 'Bentuk Sediaan', 'Satuan', 'Golongan', 'Supplier']
                                             @endphp
                                             
                                             @foreach ($models as $idx => $model)
@@ -56,8 +56,8 @@
                     <div id="create" class="modal">
                         <div class="modal-content">
                             <span class="close" data-modal="create">&times;</span>
-                            <h2>Jumlah Barang</h2>
-                            <p>Tentukan berapa jumlah barang yang akan ditambahkan.</p>
+                            <h2>Jumlah Barang Baru</h2>
+                            <p>Tentukan berapa jumlah barang baru yang akan ditambahkan.</p>
                             
                             <div class="mt-2">
                                 <form action="{{ route('count-amount-request') }}" method="POST">
@@ -82,13 +82,14 @@
                                 <th>No.</th>
                                 <th class="text-center">Aksi</th>
                                 <th>Nama Barang</th>
+                                <th>Supplier</th>
                                 <th>Kedaluwarsa</th>
-                                <th>Jumlah Stok</th>
+                                <th>Stok</th>
                                 <th>Isi dalam kemasan</th>
                                 <th>Bentuk Sediaan</th>
-                                <th>Harga Beli</th>
                                 <th>Harga Jual</th>
                                 <th>Satuan Jual</th>
+                                <th>Satuan Beli</th>
                                 <th>Kategori</th>
                                 <th>Golongan</th>
                                 <th>Minimal Stok</th>
@@ -132,74 +133,40 @@
                                                         <input type="text" required value="{{ $barang->nama_barang }}" class="form-control" placeholder="Masukkan nama barang" name="{{ 'nama_barang' }}" id="{{ 'nama_barang' }}">
                                                     </div>
                                                     
-                                                    {{-- <div class="col-md-6">
+                                                    <div class="col-md-6">
                                                         <label for="{{ 'supplier_id' }}">Supplier</label>
                                                         <select required name="{{ 'supplier_id' }}" class="form-control" id="{{ 'supplier_id' }}">
                                                             <option value="{{ $barang->supplier_id }}">{{ $barang->supplier->nama_supplier }}</option>
-                                                            @foreach ($suppliers as $item)
+                                                            @foreach ($supplier as $item)
                                                                 <option value="{{ $item->supplier_id }}">{{ $item->nama_supplier }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-6"> --}}
+                                                    <div class="col-md-6">
+                                                        <label for="{{ 'satuan_id' }}">Satuan</label>
+                                                        <select required name="{{ 'satuan_id' }}" id="{{ 'satuan_id' }}" class="form-control">
+                                                            <option value="{{ $barang->satuan_id }}">{{ $barang->satuan->satuan_barang }}</option>
+                                                            @foreach ($satuan as $item)
+                                                                <option value="{{ $item->satuan_id }}">{{ $item->satuan_barang }}</option>
+                                                                @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
                                                         <label for="{{ 'tanggal_kedaluwarsa' }}">Tanggal Kedaluwarsa</label>
                                                         <input required value="{{ $barang->tanggal_kedaluwarsa }}" type="date" class="form-control" name="{{ 'tanggal_kedaluwarsa' }}" id="{{ 'tanggal_kedaluwarsa' }}">
                                                     </div>
-                                                    
-                                                    {{-- <div class="col-md-6">
-                                                        <label for="{{ 'tanggal_masuk' }}">Tanggal Masuk</label>
-                                                        <input required value="{{ $barang->tanggal_masuk }}" type="date" class="form-control" name="{{ 'tanggal_masuk' }}" id="{{ 'tanggal_masuk' }}">
-                                                    </div> --}}
-                                                    
-                                                    <div class="col-md-6 justify-content-between d-flex">
                                                         <div class="col-md-6">
-                                                            <label for="{{ 'jumlah' }}">Jumlah Stok</label>
-                                                            <input required value="{{ $barang->jumlah }}" type="number" placeholder="Masukkan jumlah " class="form-control" name="{{ 'jumlah' }}" id="{{ 'jumlah' }}">    
-                                                        </div>
-                                                        
-                                                        <div class="col-md-5">
-                                                            <label for="{{ 'satuan_id' }}">Satuan</label>
-                                                            <select required name="{{ 'satuan_id' }}" id="{{ 'satuan_id' }}" class="form-control">
-                                                                <option value="{{ $barang->satuan_id }}">{{ $barang->satuan->satuan_barang }}</option>
-                                                                @foreach ($satuan as $item)
-                                                                    <option value="{{ $item->satuan_id }}">{{ $item->satuan_barang }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="col-md-6 justify-content-between d-flex">
-                                                        <div class="col-md-6">
-                                                            <label for="{{ 'isi' }}">Isi dalam kemasan</label>
-                                                            <input required value="{{ $barang->isi }}" type="number" placeholder="Masukkan isi dalam kemasan" class="form-control" name="{{ 'isi' }}" id="{{ 'isi' }}">    
-                                                        </div>
-                                                        
-                                                        <div class="col-md-5">
                                                             <label for="{{ 'bentuk' }}">Bentuk sediaan</label>
                                                             <input required value="{{ $barang->bentuk }}" type="string" placeholder="Masukkan bentuk sediaan" class="form-control" name="{{ 'bentuk' }}" id="{{ 'bentuk' }}">  
-                                                        </div>                                    
-                                                    </div>
-                                                    
-                                                    <div class="col-md-6">
-                                                        <label for="{{ 'harga_beli' }}">Harga Beli</label>
-                                                        <input required value="{{ $barang->harga_beli }}" type="number" placeholder="Masukkan harga beli" class="form-control" name="{{ 'harga_beli' }}" id="{{ 'harga_beli' }}">
-                                                    </div>
-                                                    
+                                                        </div>                                   
                                                     <div class="col-md-6">
                                                         <label for="{{ 'harga_jual' }}">Harga Jual</label>
                                                         <input required value="{{ $barang->harga_jual }}" type="number" placeholder="Masukkan harga jual" class="form-control" name="{{ 'harga_jual' }}" id="{{ 'harga_jual' }}">
                                                     </div>
-                                                    
                                                     <div class="col-md-6">
                                                         <label for="{{ 'satuan_jual' }}">Satuan Jual</label>
                                                         <input required value="{{ $barang->satuan_jual }}" type="string" placeholder="Masukkan satuan jual" class="form-control" name="{{ 'satuan_jual' }}" id="{{ 'satuan_jual'}}">
                                                     </div>
-                                                    
-                                                    <div class="col-md-6">
-                                                        <label for="{{ 'minimal_stok' }}">Minimal Stok</label>
-                                                        <input required value="{{ $barang->minimal_stok }}" type="number" placeholder="Masukkan minimal stok" class="form-control" name="{{ 'minimal_stok' }}" id="{{ 'minimal_stok' }}">
-                                                    </div>
-                                                    
                                                     <div class="col-md-6">
                                                         <label for="{{ 'kategori_id' }}">Kategori</label>
                                                         <select required name="{{ 'kategori_id' }}" id="{{ 'kategori_id' }}" class="form-control">
@@ -209,7 +176,6 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    
                                                     <div class="col-md-6">
                                                         <label for="{{ 'golongan_id' }}">Golongan</label>
                                                         <select required name="{{ 'golongan_id' }}" class="form-control" id="{{ 'golongan_id' }}">
@@ -219,8 +185,12 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    
-                                                    <div class="">
+                                                    <div class="col-md-6 text-center mx-auto">
+                                                        <label for="{{ 'minimal_stok' }}">Minimal Stok</label>
+                                                        <input required value="{{ $barang->minimal_stok }}" type="number" placeholder="Minimal stok" class="form-control" name="{{ 'minimal_stok' }}" id="{{ 'minimal_stok' }}">
+                                                    </div> 
+                                                </div>
+                                                    <div class="mt-3">
                                                         <button class="btn p-2 text-light" style="width: 100%; background: linear-gradient(to right, #000, navy)">
                                                             <strong>Simpan</strong>
                                                         </button>
@@ -231,13 +201,16 @@
                                         </div>
                                     </td>
                                     <td>{{ $barang->nama_barang }}</td>
+                                    <td>{{ $barang->supplier->nama_supplier }}</td>
                                     <td>{{ $barang->tanggal_kedaluwarsa }}</td>
-                                    <td>{{ $barang->jumlah . ' '}} {{ $barang->satuan->satuan_barang }}</td>
-                                    <td>{{ $barang->isi . ' '}} {{ $barang->satuan_jual }}</td>
+                                    {{-- <td>{{ $barang->total_jumlah . ' '}} {{ $barang->satuan->satuan_barang }}</td> --}}
+                                    <td>{{ $barang->stok}} {{ $barang->satuan_jual }}</td>
+                                    <td>{{ $barang->isi . ' '}} {{ $barang->satuan_jual }} <strong>/ {{ $barang->satuan->satuan_barang }}</strong></td>
                                     <td>{{ $barang->bentuk}}</td>
-                                    <td>Rp. {{ number_format($barang->harga_beli, 0, ',', '.') }}/{{ $barang->satuan->satuan_barang }}</td>
+                                    {{-- <td>Rp. {{ number_format($barang->harga_beli, 0, ',', '.') }}/{{ $barang->satuan->satuan_barang }}</td> --}}
                                     <td>Rp. {{ number_format($barang->harga_jual, 0, ',', '.') }} <strong>/{{ $barang->satuan_jual }}</strong></td>
                                     <td>{{ $barang->satuan_jual }}</td>
+                                    <td>{{ $barang->satuan->satuan_barang }}</td>
                                     <td>{{ $barang->kategori->nama_kategori }}</td>
                                     <td>{{ $barang->golongan->jenis_golongan }}</td>
                                     <td>{{ $barang->minimal_stok }} {{ $barang->satuan_jual }}</td>
@@ -250,4 +223,4 @@
             </div>
         </div>
     </div>
-    @endsection
+@endsection

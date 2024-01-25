@@ -13,4 +13,10 @@ class Satuan extends Model
     protected $fillable = [
         'satuan_barang'
     ];
+
+    public function barang(): hasMany
+    {
+        return $this->hasMany(Barang::class);
+    }
+
 }

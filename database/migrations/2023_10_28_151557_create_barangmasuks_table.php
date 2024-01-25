@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('barangmasuks', function (Blueprint $table) {
             $table->id();
             $table->integer('purchase_id')->constrained('purchase', 'purchase_id')->cascadeOnDelete()->cascadeOnUpdate();
+            // $table->integer('purchase_product_id')->constrained('purchase_product', 'purchase_product_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('no_faktur');
             $table->string('nama_brg');
             $table->date('tgl_trm');

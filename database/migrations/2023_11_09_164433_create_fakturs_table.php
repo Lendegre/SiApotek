@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('fakturs', function (Blueprint $table) {
             $table->id();
-            $table->integer('purchase_id')->unique();
+            $table->foreignId('purchase_id')->constrained('purchase', 'purchase_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

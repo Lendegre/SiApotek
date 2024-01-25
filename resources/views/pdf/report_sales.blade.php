@@ -10,13 +10,14 @@
         .grand-total {
             display: flex;
             align-items: center;
+            margin-top: 20px;
         }
 
         .line {
             flex-grow: 1;
             height: 1px;
             background-color: #000;
-            margin-left: 100px; /* Adjust the margin as needed */
+            margin-left: 90px; /* Adjust the margin as needed */
             width: 100px; /* Adjust the margin as needed */
         }
 
@@ -40,6 +41,7 @@
         <thead>
             <tr>
                 <th class="table-cell text-center">No</th>
+                <th class="table-cell text-center">Nota Transaksi</th>
                 <th class="table-cell text-center">Tanggal</th>
                 <th class="table-cell text-center">Nama Pembeli</th>
                 <th class="table-cell text-center">Nama Barang</th>
@@ -53,20 +55,21 @@
             @foreach($sales_report as $sale)
                 <tr>
                     <td class="table-cell">{{ $loop->iteration }}</td>
+                    <td class="table-cell">{{ $sale->no_order }}</td>
                     <td class="table-cell">{{ $sale->tanggal }}</td>
                     <td class="table-cell">{{ $sale->customer->nama }}</td>
                     <td class="table-cell">{{ $sale->barang->nama_barang }}</td>
                     <td class="table-cell">Rp. {{ $sale->barang->harga_jual }}</td>
-                    <td class="table-cell">{{ $sale->isi }} {{ $sale->barang->satuan_jual }}</td>
-                    <td class="table-cell">Rp. {{ $sale->customer->total_harga }}</td>
-                    <td class="table-cell">{{ $sale->barang->isi }} {{ $sale->barang->satuan_jual }}</td>
+                    <td class="table-cell">{{ $sale->stok }} {{ $sale->barang->satuan_jual }}</td>
+                    <td class="table-cell">Rp. {{ number_format($sale->stok * $sale->barang->harga_jual, 0, ',', '.') }}</td>
+                    <td class="table-cell">{{ $sale->barang->stok }} {{ $sale->barang->satuan_jual }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
     
     <div class="container">
-        <div class="grand-total float-right mt-5">
+        <div class="grand-total float-right">
             <span>Grand Total :</span>
            Rp. <strong>{{ number_format($grandTotal, 2) }}</strong><div class="line"></div>
         </div>

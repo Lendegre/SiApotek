@@ -15,7 +15,7 @@ class Order extends Model
         'no_order',
         'customer_id',
         'barang_id',
-        'isi',
+        'stok',
         'harga',
         'tanggal',
     ];
@@ -30,4 +30,5 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
+
 }

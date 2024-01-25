@@ -24,22 +24,24 @@
                 </div>
 
                 <div class="row table-responsive mt-4">
-                    <table class="table" id="data">
+                    <table class="table text-center" id="data">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Nama Barang</th>
-                                <th>Jumlah</th>
-                                <th>Bentuk</th>
+                                <th class="text-center">No.</th>
+                                <th class="text-center">Nama Barang</th>
+                                <th class="text-center">Jumlah</th>
+                                <th class="text-center">Bentuk</th>
+                                <th class="text-center">Isi Dalam Kemasan</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($products as $item)
                             <tr>
                                 <td>{{ $loop->iteration . '.' }}</td>
-                                <td>{{ $item->nama_brg }}</td>
-                                <td>{{ $item->jumlah . ' ' . $item->satuan->satuan_barang }} </td>
+                                <td>{{ $item->barang->nama_barang }}</td>
+                                <td>{{ $item->jumlah . ' ' . $item->barang->satuan->satuan_barang }} </td>
                                 <td>{{ $item->bentuk }}</td>
+                                <td>{{ $item->isi}} {{ $item->barang->satuan_jual }} / {{ $item->barang->satuan->satuan_barang }}</td>
                             </tr>
                             @endforeach
                         </tbody>

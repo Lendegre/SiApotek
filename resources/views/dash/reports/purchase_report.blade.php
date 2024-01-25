@@ -41,10 +41,8 @@
                                         <th>No Faktur</th>
                                         <th>Tanggal</th>
                                         <th>Supplier</th>
-                                        <th>Nama Barang</th>
-                                        <th>Jumlah</th>
-                                        <th>Harga</th>
                                         <th>Total</th>
+                                        <th>Aksi</th>
                                         <!-- Tambahkan kolom-kolom lain sesuai kebutuhan -->
                                     </tr>
                                 </thead>
@@ -55,10 +53,10 @@
                                             <td>{{ $bm->no_faktur }}</td>
                                             <td>{{ $bm->tgl_trm }}</td>
                                             <td>{{ $bm->purchase->supplier->nama_supplier }}</td>
-                                            <td>{{ $bm->nama_brg }}</td>
-                                            <td>{{ $bm->jumlah_trm }}</td>
-                                            <td>{{ $bm->h_beli }}</td>
                                             <td>{{ $bm->total }}</td>
+                                            <td>
+                                                <a href="{{ route('detail-faktur', $bm->purchase_id) }}" class="btn btn-warning"><i data-feather="eye"></i></a>
+                                            </td>
                                             <!-- Tambahkan data kolom lain sesuai kebutuhan -->
                                         </tr>
                                     @endforeach

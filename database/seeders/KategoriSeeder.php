@@ -24,6 +24,8 @@ class KategoriSeeder extends Seeder
             ['nama_kategori' => 'Obat Bebas Berstandar',],
             ['nama_kategori' => 'Obat Etikal',],
             ['nama_kategori' => 'Perlengkapan Bayi',],
+            // ['nama_kategori' => 'Obat Narkotika',],
+            // ['nama_kategori' => 'Obat Psikotropika',],
         ]);
     }
 }

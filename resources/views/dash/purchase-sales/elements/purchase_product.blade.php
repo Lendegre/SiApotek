@@ -8,35 +8,22 @@
                     <h4><strong>{{ $purchase->supplier->nama_supplier }}</strong></h4>
                     <hr>
 
-                    <form action="{{ route('create-purchase-product') }}" method="POST">
+                    <form action="{{ route('create-purchase-product') }}" method="POST" id="myForm">
                         @csrf
                         <input type="hidden" name="purchase_id" value="{{ $purchase->purchase_id }}">
-                        <div class="row align-items-end">
-                            <div class="col-6">
-                                <label for="nama_brg">Barang</label>
-                                <input class="form-control" placeholder="Nama Barang" type="string" name="nama_brg"
-                                    id="nama_brg" required>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
+                        <div class="row justify-content-between">
                             <div class="col-md-3">
-                                <label for="jumlah">Jumlah</label>
-                                <input required type="number" name="jumlah" id="jumlah"
-                                    placeholder="Masukkan jumlah pesanan" class="form-control border border-success">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="satuan_id">Satuan Barang</label>
-                                <select class="form-select" name="satuan_id" required id="satuan_id">
-                                    <option value="">-Pilih Satuan Barang-</option>
-                                    @foreach ($satuan as $satuan)
-                                        <option value="{{ $satuan->satuan_id }}">{{ $satuan->satuan_barang }}</option>
+                                <label for="barang_id">Barang</label>
+                                <select class="form-select" name="barang_id" required id="barang_id">
+                                    <option value="">-Pilih Barang-</option>
+                                    @foreach ($barang as $b)
+                                        <option value="{{ $b->barang_id }}" data-satuan_beli="{{ $b->satuan->satuan_barang }}" data-bentuk="{{ $b->bentuk }}" data-isi="{{ $b->isi }}">{{ $b->nama_barang }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="bentuk">Bentuk Sediaan</label>
-                                <input required type="string" name="bentuk" id="bentuk"
-                                    placeholder="Bentuk sediaan barang" class="form-control">
+                                <label for="jumlah">Jumlah</label>
+                                <input required type="number" name="jumlah" id="jumlah" placeholder="Masukkan jumlah pesanan" class="form-control">
                             </div>
                             <div class="col-md-3" id="formZat">
                                 <label for="zat">Zat Aktif (Opsional)</label>
@@ -44,7 +31,20 @@
                                     class="form-control">
                             </div>
                         </div>
-
+                        <div class="row mt-3 justify-content-between">
+                            <div class="col-md-3">
+                                <label for="satuan_beli">Satuan Beli</label>
+                                <input type="text" name="satuan_beli" class="form-control" id="satuan_beli" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="bentuk">Bentuk Sediaan</label>
+                                <input required type="string" name="bentuk" id="bentuk" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="isi">isi dalam kemasan</label>
+                                <input required type="string" name="isi" id="isi" class="form-control" readonly>
+                            </div>
+                        </div>
                         <button name="tambahPesanan" type="submit" class="mt-4 btn btn-primary">
                             Tambah Pesanan
                         </button>
@@ -72,7 +72,7 @@
                                 <th>No.</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah</th>
-                                <th>Bentuk</th>
+                                <th>Zat Aktif</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -80,9 +80,9 @@
                             @foreach ($products as $item)
                                 <tr>
                                     <td>{{ $loop->iteration . '.' }}</td>
-                                    <td>{{ $item->nama_brg }}</td>
-                                    <td>{{ $item->jumlah . ' ' . $item->satuan->satuan_barang }} </td>
-                                    <td>{{ $item->bentuk }}</td>
+                                    <td>{{ $item->barang->nama_barang }}</td>
+                                    <td>{{ $item->jumlah . ' ' . $item->barang->satuan->satuan_barang }} </td>
+                                    <td>{{ $item->zat }} </td>
                                     <td>
                                         <button class="btn btn-info modal-open"
                                             data-modal="{{ 'update' . $item->purchase_product_id }}"><i
@@ -103,17 +103,12 @@
                                                     @csrf
                                                     <div class="row" style="row-gap: 15px;">
                                                         <div class="col-md-6">
-                                                            <label for="jumlah">Jumlah
-                                                                ({{ $item->satuan->satuan_barang }})</label>
-                                                            <input required type="number" value="{{ $item->jumlah }}"
-                                                                name="jumlah" id="jumlah"
-                                                                placeholder="Masukkan jumlah pesanan" class="form-control">
+                                                            <label for="jumlah">Jumlah ({{ $item->barang->satuan->satuan_barang }})</label>
+                                                            <input required type="number" value="{{ $item->jumlah }}" name="jumlah" id="jumlah" placeholder="Masukkan jumlah pesanan" class="form-control">
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label for="bentuk">Bentuk ({{ $item->bentuk }})</label>
-                                                            <input required type="string" name="bentuk"
-                                                                value="{{ $item->bentuk }}" id="bentuk"
-                                                                placeholder="Masukkan bentuk" class="form-control">
+                                                            <label for="zat">Zat Aktif {{ $item->purchase->golongan->jenis_golongan }}</label>
+                                                            <input type="text" value="{{ $item->zat }}" name="zat" id="zat" placeholder="Masukkan Zat Aktif (Opsional)" class="form-control">
                                                         </div>
                                                     </div>
 
@@ -154,7 +149,24 @@
                         </div>
                     @endif
                 </div>
+
+                <a type="button" class="btn btn-dark" href="{{ route('data-surat') }}">Simpan</a>
+
             </div>
         </div>
     </div>
+
+    <script>
+        // Tambahkan script JavaScript untuk menangani peristiwa perubahan pada form select
+        document.getElementById('barang_id').addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var satuanInput1 = document.getElementById('satuan_beli');
+            var satuanInput2 = document.getElementById('bentuk');
+            var satuanInput3 = document.getElementById('isi');
+            satuanInput1.value = selectedOption.getAttribute('data-satuan_beli');
+            satuanInput2.value = selectedOption.getAttribute('data-bentuk');
+            satuanInput3.value = selectedOption.getAttribute('data-isi');
+        });
+    </script>
+
 @endsection

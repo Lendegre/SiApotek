@@ -7,6 +7,7 @@ use App\Models\Barang;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Purchase;
+use App\Models\PurchaseProduct;
 use App\Models\BarangMasuk;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -33,7 +34,7 @@ class ReportController extends Controller
         $tanggalAwal = $request->input('tanggalAwal');
         $tanggalAkhir = $request->input('tanggalAkhir');
 
-        $barangmasuk = Barangmasuk::all();
+        $barangmasuk = Barangmasuk::groupBy('no_faktur')->get();
 
         $data = [
             'title' => 'Laporan Pembelian Barang',
@@ -56,7 +57,7 @@ class ReportController extends Controller
         $request->session()->put('tanggalAkhir', $request->input('tanggalAkhir'));
         
         // Query data dari model berdasarkan tanggal
-        $barangmasuk = Barangmasuk::whereBetween('tgl_trm', [$tanggalAwal, $tanggalAkhir])->get();
+        $barangmasuk = Barangmasuk::whereBetween('tgl_trm', [$tanggalAwal, $tanggalAkhir])->groupBy('no_faktur')->get();
 
         // Hitung total pendapatan
         // $income['harga'] = Order::whereBetween('tanggal', [$request->input('tanggalAwal'), $request->input('tanggalAkhir')])
@@ -123,7 +124,7 @@ class ReportController extends Controller
         $data = [
             'title' => 'Laporan Penjualan',
             'id_page' => $this->id_page[1],
-            'sales_report' => Order::all(),
+            'sales_report' => Order::groupBy('no_order')->get(),
             'income'    => Customer::sum('total_harga'),
             'tanggalAwal'    => $tanggalAwal,
             'tanggalAkhir'    => $tanggalAkhir,
@@ -142,7 +143,7 @@ class ReportController extends Controller
         $request->session()->put('tanggalAkhir', $request->input('tanggalAkhir'));
         
         // Query data dari model berdasarkan tanggal
-        $sales_report = Order::whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir])->get();
+        $sales_report = Order::whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir])->groupBy('no_order')->get();
 
         // Hitung total pendapatan
         $income['harga'] = Order::whereBetween('tanggal', [$request->input('tanggalAwal'), $request->input('tanggalAkhir')])
@@ -200,65 +201,45 @@ class ReportController extends Controller
      * 
      * @return View
      */
-    protected function showStockReport(Request $request)
+    protected function showStockReport(request $request)
     {
-        $tanggalAwal = $request->input('tanggalAwal');
-        $tanggalAkhir = $request->input('tanggalAkhir');
-
-        $barang = Barang::all();
-        // $order = Order::all();
-
-        // $barang = DB::table('Barang as t1')
-        // ->join('Orders as t2', 't1.Barang_id', '=', 't2.Barang_id')
-        // ->select('t1.isi as isi_b', 't2.isi as j_jual', 't1.*', 't2.*')
-        // ->get();
-
-        // var_dump($barang);
-        // exit();
+        $dataPersediaan = Barang::all();
+        $dataOrder = Order::all();
+        $dataBarangmasuk = purchaseproduct::all();
 
         $data = [
             'title' => 'Laporan Persediaan',
             'id_page' => $this->id_page[2],
             'sub_page'  => 'stock1',
-            'barang'    => $barang,
-            'order'    => $order,
-            'tanggalAwal'    => $tanggalAwal,
-            'tanggalAkhir'    => $tanggalAkhir,
+            // 'dataPersediaan'    => $dataPersediaan,
+            // 'order'    => $order,
+            // 'tanggalAwal'    => $tanggalAwal,
+            // 'tanggalAkhir'    => $tanggalAkhir,
         ];
 
-        // return $barang;
-
-        // var_dump($barang);
-        // exit();
-
-        return view('dash.reports.stock_report', $data);
+        return view('dash.reports.stock_report', compact('dataPersediaan', 'dataOrder', 'dataBarangmasuk'), $data);
     }
 
-    public function filterStok(Request $request)
+    public function pdfStockReport(Request $request)
     {
-        $tanggalAwal = $request->input('tanggalAwal');
-        $tanggalAkhir = $request->input('tanggalAkhir');
 
-        // Simpan nilai inputan tanggal ke dalam sesi
-        $request->session()->put('tanggalAwal', $request->input('tanggalAwal'));
-        $request->session()->put('tanggalAkhir', $request->input('tanggalAkhir'));
-        
-        // Query data dari model berdasarkan tanggal
-        $barang = Barang::whereBetween('tanggal_masuk', [$tanggalAwal, $tanggalAkhir])->get();
+        $periode = Carbon::now()->format('Y-m-d');
 
-        // Hitung total pendapatan
-        // $income['harga'] = Order::whereBetween('tanggal', [$request->input('tanggalAwal'), $request->input('tanggalAkhir')])
-        //     ->sum('harga');
+        $dataOrder = Order::all();
+        $dataBarangmasuk = purchaseproduct::all();
 
-        return view('dash.reports.stock_report', compact('barang'),
-                    [
-                        'title' => 'Laporan Persediaan',
-                        'id_page' => $this->id_page[2],
-                        'sub_page'  => 'stock1',
-                        'barang'    => Barang::all(),
-                        'tanggalAwal' => session('tanggalAwal'),
-                        'tanggalAkhir' => session('tanggalAkhir'),
-                                ]);   
+        // Ambil data untuk ditampilkan di PDF
+        $barang = Barang::all();
+
+        // Tampilkan data ke dalam PDF
+        $pdf = PDF::loadView('pdf.report_stock', [
+            'periode' => $periode,
+            'dataOrder' => $dataOrder,
+            'dataBarangmasuk' => $dataBarangmasuk,
+            'barang' => $barang ]);
+
+        // Simpan atau tampilkan PDF sesuai kebutuhan
+        return $pdf->stream('Laporan.pdf');
     }
 
     /**
@@ -268,9 +249,7 @@ class ReportController extends Controller
      */
     protected function showLowStock(Request $request)
     {
-        $tanggalAwal = $request->input('tanggalAwal');
-        $tanggalAkhir = $request->input('tanggalAkhir');
-        $lowStock = Barang::with(['bentuk'])->whereColumn('isi', '<=', 'minimal_stok');
+        $lowStock = Barang::whereColumn('stok', '<=', 'minimal_stok');
 
         $infoLowStock = $lowStock->count();
 
@@ -280,8 +259,6 @@ class ReportController extends Controller
             'sub_page' => 'stock2',
             'barang' => $lowStock->get(),
             'info'  => $infoLowStock,
-            'tanggalAwal'    => $tanggalAwal,
-            'tanggalAkhir'    => $tanggalAkhir,
         ];
 
         return view('dash.reports.stock_low', $data);
@@ -292,8 +269,9 @@ class ReportController extends Controller
      * 
      * @return View
      */
-    protected function showAlmostExp()
+    protected function showAlmostExp(Request $request)
     {
+
         date_default_timezone_set('Asia/Jakarta');
         $today = Carbon::now();
         $expiredDate = $today->copy()->addDays(30);
@@ -307,7 +285,7 @@ class ReportController extends Controller
             'title' => 'Kedaluwarsa',
             'id_page' => $this->id_page[2],
             'sub_page'  => 'stock3',
-            'barang'    => $almostExp->get(),
+            'dataPersediaan'    => $almostExp->get(),
             'info'  => $infoAlmostExp,
         ];
 

@@ -16,4 +16,10 @@ class Supplier extends Model
         'no_telp',
         'alamat'
     ];
+
+    // table relation with barang
+    public function barang(): hasMany
+    {
+        return $this->hasMany(barang::class, 'barang_id');
+    }
 }

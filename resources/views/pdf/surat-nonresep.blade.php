@@ -39,6 +39,15 @@
       text-align: center; /* Mengatur rata kanan dan kiri */
       margin: 10px;
     }
+
+    .signature {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            margin-top: 20px; /* Adjust this value to set the distance from the bottom */
+    }
       </style>
       <body>
       <table style="width:90%">
@@ -102,10 +111,10 @@
         <tbody>
             @foreach ($orders as $order)
                 <tr>
-                    <td style="text-align: center">{{ $order->isi }}</td>
+                    <td style="text-align: center">{{ $order->stok }} {{ $order->barang->satuan_jual }}</td>
                     <td style="text-align: center">{{ $order->barang->nama_barang }}</td>
-                    <td style="text-align: center">{{ $order->barang->harga_jual }}</td>
-                    <td style="text-align: center">{{ $order->harga }}</td>
+                    <td style="text-align: center">Rp. {{ $order->barang->harga_jual }}</td>
+                    <td style="text-align: center">Rp. {{ $order->harga }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -113,15 +122,19 @@
     <br>
     <br>
     <br>
-    <table style="width: 100% border-collapse: collapse">
+    <div class="signature">
+      <table style="width: 100% border-collapse: collapse">
         <th>
             <p>Hormat Kami</p>
-            <br>
-            <br>
+            <div id="ttd">
+              <img src="{{ public_path() . '/img/ttd.png' }}" width="45" alt="logo farmasi"> 
+            </div>
             <div class="center-line"></div>
+            <p style="font-size: 10pt; margin-top: -20px;">Irwan Hilmy. S.Farm.,Apt</p>
         </th>
         <th>
             <p>Tanda Terima</p>
+            <br>
             <br>
             <br>
             <div class="center-line"></div>
@@ -133,10 +146,10 @@
         </th>
         <th>
             <br>
-            Rp. {{ $customer->total_harga }}
+            Rp. {{ $total_harga }}
             <div class="center-line"></div>
         </th>
     </table>
- 
+    </div>
 </body>
 </html>

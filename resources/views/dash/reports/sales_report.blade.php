@@ -42,24 +42,20 @@
                             <thead>
                                 <tr style="white-space: nowrap">
                                     <th>No.</th>
+                                    <th>Nota transaksi</th>
                                     <th>Tanggal</th>
-                                    <th>Nama Barang</th>
-                                    <th>Jenis Obat</th>
-                                    <th>Jumlah</th>
-                                    <th>Stok</th>
+                                    <th>Nama Konsumen</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ( $sales_report as $item)
                                     <tr style="white-space: nowrap">
                                         <td>{{ $loop->iteration . '.' }}</td>
+                                        <td>{{ $item->no_order }}</td>
                                         <td>{{ $item->tanggal }}</td>
-                                        <td>{{ $item->barang->nama_barang }}</td>
-                                        <td>{{ $item->customer->jenis_obat }}</td>
-                                        <td>{{ $item->isi }}</td>
-                                        <td>{{ $item->barang->isi }}</td>
+                                        <td>{{ $item->customer->nama }}</td>
                                         <td>
                                             @if ($item->customer->status == 'Pending')
                                                 <span class="rounded px-3 bg-warning text-light">Pending</span>           
@@ -68,8 +64,8 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($item->status != 'Dibayar')
-                                                <a href="{{ route('order-product', $item->customer_id) }}" class="btn btn-primary"><i data-feather="grid"></i></a>
+                                            @if ($item->customer->status != 'Dibayar')
+                                            <a href="{{ route('order-product', $item->customer_id) }}" class="btn btn-primary"><i data-feather="grid"></i></a>
                                                 <button class="btn btn-danger modal-open" data-modal="{{ 'delete'.$item->customer_id }}"><i data-feather="trash"></i></button>
                                         
                                                 <div id="{{ 'delete'.$item->customer_id }}" class="modal">

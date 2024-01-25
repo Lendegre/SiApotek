@@ -14,10 +14,12 @@ class SatuanSeeder extends Seeder
     public function run(): void
     {
         DB::table('satuan')->insert([
-            ['satuan_barang' => 'Tube'],
-            ['satuan_barang' => 'Karton'],
-            ['satuan_barang' => 'Botol'],
-            ['satuan_barang' => 'Box'],
+            ['satuan_barang' => 'TUBE'],
+            ['satuan_barang' => 'KARTON'],
+            ['satuan_barang' => 'BOTOL'],
+            ['satuan_barang' => 'BOX'],
+            ['satuan_barang' => 'DUS'],
+            ['satuan_barang' => 'PACK'],
         ]);
     }
 }

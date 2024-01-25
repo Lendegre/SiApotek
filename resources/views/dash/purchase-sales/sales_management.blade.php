@@ -8,7 +8,7 @@
                     @csrf
                     <div class="row align-items-center" style="row-gap: 12px;">
                         <div class="col-md-3">
-                            <label for="nama">Nama: </label>
+                            <label for="nama">Nama Konsumen: </label>
                         </div>
                         <div class="col-md-9">
                             <input type="string" name="nama" id="nama" class="form-control">

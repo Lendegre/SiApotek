@@ -27,7 +27,7 @@ class SupplierSeeder extends Seeder
                 'alamat'        => 'Cirebon'
             ],
             [
-                'nama_supplier' => 'PT Kimia Farma',
+                'nama_supplier' => 'Kimia Farma',
                 'nama_sales'    => 'Iqbal',
                 'no_telp'       => '082240197573',
                 'alamat'        => 'Bandung'
@@ -43,6 +43,12 @@ class SupplierSeeder extends Seeder
                 'nama_sales'    => 'Rian',
                 'no_telp'       => '087783976091',
                 'alamat'        => 'Ciamis'
+            ],
+            [
+                'nama_supplier' => 'Kimia Farma',
+                'nama_sales'    => 'Arif Mawardi',
+                'no_telp'       => '02652354848',
+                'alamat'        => 'Tasikmalaya'
             ],
         ]);
     }

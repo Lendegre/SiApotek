@@ -21,14 +21,14 @@
                             <select class="form-control" name="barang_id" required id="barang_id">
                                 <option value="">-Pilih Barang-</option>
                                 @foreach ($barang as $item)
-                                <option value="{{ $item->barang_id }}">{{ $item->nama_barang }} (stok: {{ $item->isi }})</option>
+                                <option value="{{ $item->barang_id }}">{{ $item->nama_barang }} (stok: {{ $item->stok }} {{ $item->satuan_jual }})</option>
                                 @endforeach
                             </select>
                         </div>
                         
                         <div class="col-md-6">
-                            <label for="isi">Jumlah</label>
-                            <input required type="number" name="isi" id="isi" placeholder="Masukkan jumlah" class="form-control">
+                            <label for="stok">Jumlah</label>
+                            <input required type="number" name="stok" id="stok" placeholder="Masukkan jumlah" class="form-control">
                         </div>
                         
                         <div class="col-12">    
@@ -68,7 +68,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration . '.' }}</td>
                                     <td>{{ $item->barang->nama_barang }}</td>
-                                    <td>{{ $item->isi . ' ' . $item->barang->satuan_jual }}</td>
+                                    <td>{{ $item->stok . ' ' . $item->barang->satuan_jual }}</td>
                                     <td>Rp. {{ number_format($item->harga) }}</td>
                                     <td>
                                         <button class="btn btn-info modal-open" data-modal="{{ 'update'.$item->order_id }}"><i data-feather="edit"></i></button>
@@ -81,10 +81,11 @@
                                                 <hr>
                                                 <form action="{{ route('update-order-item', $item->order_id) }}" method="POST">
                                                     @csrf
+                                                    <input type="hidden" value="{{ $item->barang->barang_id }}" name="barang_id">
                                                     <div class="row" style="row-gap: 15px;">
                                                         <div class="col-md-12">
-                                                            <label for="isi">Jumlah ({{ $item->barang->satuan_jual }})</label>
-                                                            <input required type="number" name="isi" value="{{ $item->isi }}" id="isi" placeholder="Masukkan stok pesanan" class="form-control">
+                                                            <label for="stok">Jumlah ({{ $item->barang->satuan_jual }})</label>
+                                                            <input required type="number" name="stok" value="{{ $item->stok }}" id="stok" placeholder="Masukkan stok pesanan" class="form-control">
                                                         </div>
                                                     </div>
                                                     
@@ -121,7 +122,7 @@
                     <form action="{{ route('finish', $customer->customer_id) }}" method="POST">
                         @csrf
                         @foreach ($products as $item)
-                            <input type="hidden" value="{{ $item->isi }}" name="isi{{ $item->order_id }}" id="isi">
+                            <input type="hidden" value="{{ $item->stok }}" name="stok{{ $item->order_id }}" id="stok">
                         @endforeach
                         <button type="submit" class="btn btn-success">Selesaikan Pembayaran</button>
                         <a href="{{ route('sales-report') }}" class="btn btn-dark">Laporan Penjualan</a>

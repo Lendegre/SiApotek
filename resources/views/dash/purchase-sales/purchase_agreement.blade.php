@@ -57,8 +57,8 @@
                                                             <label for="status">Status</label>
                                                             <select name="status" class="form-control" required id="status">
                                                                 <option value="">-Pilih Status-</option>
-                                                                <option value="Ditolak">Ditolak</option>
-                                                                <option value="Diterima">Diterima</option>
+                                                                <option value="Ditolak">Tolak</option>
+                                                                <option value="Diterima">Setujui</option>
                                                             </select>
                                                             <div class="mt-3" id="formKeterangan" style="display: none;">
                                                                 <label for="keterangan" class="form-label">Keterangan</label>

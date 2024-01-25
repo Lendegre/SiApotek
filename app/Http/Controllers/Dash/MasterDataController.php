@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Carbon\Carbon;
+
 
 class MasterDataController extends Controller
 {
@@ -31,6 +33,12 @@ class MasterDataController extends Controller
         ];
     }
 
+    public static function getItemsByGroup()
+    {
+        $getItems = Barang::all();
+            return $getItems;
+    }
+
     /**
      * Render view barang user interface
      * 
@@ -39,8 +47,9 @@ class MasterDataController extends Controller
     protected function showDataBarang()
     {
         $count_model = [
-            Kategori::count(),
+            Supplier::count(),
             Satuan::count(),
+            Kategori::count(),
             Golongan::count(),
         ];
 
@@ -48,14 +57,15 @@ class MasterDataController extends Controller
             'title'         => $this->label . 'Barang',
             'id_page'       => $this->id_page[0],
             'count_model'   => $count_model,
-            'items'         => Barang::orderBy('barang_id', 'DESC')->get(),
+            'items'         => Barang::all(),
+            'supplier'      => $this->model[0],
             'satuan'        => $this->model[1],
             'kategori'      => $this->model[2],
             'golongan'      => $this->model[3],
         ];
-
         return view('dash.master-data.barang', $data);
     }
+    
 
     /**
      * Render view add item interface
@@ -73,6 +83,7 @@ class MasterDataController extends Controller
             'title'     => 'Tambah Barang',
             'id_page'   => null,
             'items'     => $countData,
+            'supplier'  => $this->model[0],
             'satuan'    => $this->model[1],
             'kategori'  => $this->model[2],
             'golongan'  => $this->model[3],
@@ -111,33 +122,36 @@ class MasterDataController extends Controller
 
         for ($i = 1; $i <= $count_data; $i++) {
             $otherBarang = Barang::where('nama_barang', $request->input("nama_barang$i"))->first();
-
             if (!$otherBarang) {
+                $tanggal_masuk = Carbon::now()->format('Y-m-d');
                 DB::table('barang')->insert([
                     "nama_barang"         => $request->input("nama_barang$i"),
+                    "supplier_id"         => $request->input("supplier_id$i"),
                     "tanggal_kedaluwarsa" => $request->input("tanggal_kedaluwarsa$i"),
-                    "jumlah"              => $request->input("jumlah$i"),
-                    "satuan_id"           => $request->input("satuan_id$i"),
+                    "tanggal_masuk"       => $tanggal_masuk,
                     "isi"                 => $request->input("isi$i"),
                     "bentuk"              => $request->input("bentuk$i"),
-                    "harga_beli"          => $request->input("harga_beli$i"),
+                    "stok"                => $request->input("stok$i"),
                     "harga_jual"          => $request->input("harga_jual$i"),
                     "satuan_jual"         => $request->input("satuan_jual$i"),
                     "minimal_stok"        => $request->input("minimal_stok$i"),
+                    "satuan_id"           => $request->input("satuan_id$i"),
                     "kategori_id"         => $request->input("kategori_id$i"),
                     "golongan_id"         => $request->input("golongan_id$i")
                 ]);
+
+
             } else {
                 $isDuplicate = true;
             }
         }
-
         if ($isDuplicate) {
-            return back()->withInput()->with('error', 'Barang is duplicate');
-        } else {
-            return redirect()->route('barang')->with('success', 'Success to create item');
+            return back()->withInput()->with('error', 'Barang Sudah Ada');
+        } else { 
+            return redirect()->route('barang')->with('success', 'Sukses menyimpan data');
         }
     }
+    
 
     /**
      * Logic to delete item
@@ -148,7 +162,7 @@ class MasterDataController extends Controller
     {
         DB::table('barang')->where('barang_id', $barang_id)->delete();
 
-        return back()->with('info', 'Item has been deleted');
+        return back()->with('info', 'Data berhasil dihapus');
     }
 
     /**
@@ -163,11 +177,11 @@ class MasterDataController extends Controller
         if (!$otherBarang) {
             $barang->nama_barang = $request->input('nama_barang');
             $barang->tanggal_kedaluwarsa = $request->input('tanggal_kedaluwarsa');
-            $barang->jumlah = $request->input('jumlah');
+            $barang->tanggal_masuk = $request->input('tanggal_masuk');
             $barang->satuan_id = $request->input('satuan_id');
             $barang->isi = $request->input('isi');
             $barang->bentuk = $request->input('bentuk');
-            $barang->harga_beli = $request->input('harga_beli');
+            $barang->stok = $request->input('stok');
             $barang->harga_jual = $request->input('harga_jual');
             $barang->satuan_jual = $request->input('satuan_jual');
             $barang->minimal_stok = $request->input('minimal_stok');
@@ -176,10 +190,10 @@ class MasterDataController extends Controller
 
             $barang->save();
 
-            return back()->with('info', 'Barang has been updated');
+            return back()->with('info', 'Berhasil diupdate');
         }
 
-        return back()->with('error', 'Barang is duplicate');
+        return back()->with('error', 'Data barang tidak boleh sama');
     }
 
     /**
@@ -216,10 +230,10 @@ class MasterDataController extends Controller
                 'alamat'        => $request->input('alamat'),
             ]);
 
-            return back()->with('success', 'Success to create supplier');
+            return back()->with('success', 'Sukses membuat data supplier');
         }
 
-        return back()->with('error', 'Nama supplier is duplicate');
+        return back()->with('error', 'Data supplier tidak boleh sama');
     }
 
     /**
@@ -232,7 +246,7 @@ class MasterDataController extends Controller
     {
         DB::table('supplier')->where('supplier_id', $supplier_id)->delete();
 
-        return back()->with('info', 'Supplier has been deleted');
+        return back()->with('info', 'Data supplier berhasil dihapus!');
     }
 
     /**
@@ -253,9 +267,9 @@ class MasterDataController extends Controller
                 $supplier->no_telp = $request->input('no_telp');
                 $supplier->alamat = $request->input('alamat');
                 $supplier->save();
-                return back()->with('info', 'Supplier has been updated');
+                return back()->with('info', 'Data berhasil diupdate');
             } else {
-                return back()->with('error', 'Supplier is duplicate');
+                return back()->with('error', 'Data supplier tidak boleh sama');
             }
         }
 
@@ -293,10 +307,10 @@ class MasterDataController extends Controller
                 'nama_kategori' => $request->input('nama_kategori'),
             ]);
 
-            return back()->with('success', 'Success to create kategori');
+            return back()->with('success', 'Sukses membuat data kategori');
         }
 
-        return back()->with('error', 'Nama kategori is duplicate');
+        return back()->with('error', 'Data kategori tidak boleh sama');
     }
 
     /**
@@ -309,7 +323,7 @@ class MasterDataController extends Controller
     {
         DB::table('kategori')->where('kategori_id', $kategori_id)->delete();
 
-        return back()->with('info', 'Kategori has been deleted');
+        return back()->with('info', 'Data kategori berhasil dihapus');
     }
 
     /**
@@ -327,9 +341,9 @@ class MasterDataController extends Controller
             if (!$otherKategori) {
                 $kategori->nama_kategori = $request->input('nama_kategori');
                 $kategori->save();
-                return back()->with('info', 'Kategori has been updated');
+                return back()->with('info', 'Data kategori berhasil diupdate');
             } else {
-                return back()->with('error', 'Kategori is duplicate');
+                return back()->with('error', 'Data kategori tidak boleh sama!');
             }
         }
 
@@ -367,10 +381,10 @@ class MasterDataController extends Controller
                 'satuan_barang' => $request->input('satuan_barang'),
             ]);
 
-            return back()->with('success', 'Success to create satuan');
+            return back()->with('success', 'Sukses membuat data satuan');
         }
 
-        return back()->with('error', 'Satuan is duplicate');
+        return back()->with('error', 'Data satuan tidak boleh sama');
     }
 
     /**
@@ -383,7 +397,7 @@ class MasterDataController extends Controller
     {
         DB::table('satuan')->where('satuan_id', $satuan_id)->delete();
 
-        return back()->with('info', 'Satuan sediaan has been deleted');
+        return back()->with('info', 'Data satuan berhasil dihapus!');
     }
 
     /**
@@ -402,9 +416,9 @@ class MasterDataController extends Controller
                 $satuan->satuan_barang = $request->input('satuan_barang');
 
                 $satuan->save();
-                return back()->with('info', 'Satuan has been updated');
+                return back()->with('info', 'Data satuan berhasil diupdate');
             } else {
-                return back()->with('error', 'Satuan is duplicate');
+                return back()->with('error', 'Data satuan tidak boleh sama');
             }
         }
 
@@ -442,10 +456,10 @@ class MasterDataController extends Controller
                 'jenis_golongan' => $request->input('jenis_golongan'),
             ]);
 
-            return back()->with('success', 'Success to create golongan');
+            return back()->with('success', 'Sukses membuat data golongan');
         }
 
-        return back()->with('error', 'Golongan is duplicate');
+        return back()->with('error', 'Data golongan tidak boleh sama');
     }
 
     /**
@@ -458,7 +472,7 @@ class MasterDataController extends Controller
     {
         DB::table('golongan')->where('golongan_id', $golongan_id)->delete();
 
-        return back()->with('info', 'Golongan has been deleted');
+        return back()->with('info', 'Data golongan berhasil dihapus!');
     }
 
     /**
@@ -477,9 +491,9 @@ class MasterDataController extends Controller
                 $golongan->jenis_golongan = $request->input('jenis_golongan');
 
                 $golongan->save();
-                return back()->with('info', 'Golongan has been updated');
+                return back()->with('info', 'Data golongan berhasil diupdate');
             } else {
-                return back()->with('error', 'Golongan is duplicate');
+                return back()->with('error', 'Data golongan tidak boleh sama');
             }
         }
 

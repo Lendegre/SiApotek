@@ -37,9 +37,9 @@ class Purchase extends Model
         return $this->hasMany(faktur::class, 'id');
     }
 
-    public function purchaseproduct(): BelongsTo
-    {
-        return $this->belongsTo(purchaseproduct::class, 'purchase_product_id');
-    }
+    // public function purchaseproduct(): HasMany
+    // {
+    //     return $this->hasMany(PurchaseProduct::class, 'purchase_id');
+    // }
 
 }
