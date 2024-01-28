@@ -420,7 +420,7 @@ class PurchaseSalesController extends Controller
             }
         }
 
-        return redirect()->route('sales-report')->with('success', 'Have successfully completed the payment');
+        return redirect()->route('sales-report')->with('success', 'Sukses Melakukan pembayaran');
     }
 
     /**
@@ -518,7 +518,6 @@ class PurchaseSalesController extends Controller
 
     protected function showFakturProduct($no_surat)
     {
-        
         $faktur = Faktur::where('purchase_id', $no_surat)->first();
         $bm = PurchaseProduct::where('purchase_id', $no_surat)->get();
 

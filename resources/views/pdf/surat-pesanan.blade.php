@@ -41,6 +41,18 @@
             border: 1px solid white;
             background-color: white;
         }
+        .signature {
+            position: relative;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: right;
+            float: right;
+            margin-top: 50px; /* Adjust this value to set the distance from the bottom */
+        }
+        .table3 {
+            border-color: white;
+        }
 </style>
 
 <body>
@@ -124,5 +136,17 @@
             <th id="th">: <strong>503.28/146/SIA/DPMPTSP.03/III/2018</strong></th>
         </tr>
     </table>
+    <div class="signature">
+        <table class="table3" style="width: 100%;">
+          <th style="border: none;">
+              <p style="font-weight: normal;">Sukamantri, {{ $purchase->tgl_pengajuan }}</p>
+              <div>
+                <img src="{{ public_path() . '/img/ttd.png' }}" width="45" alt="logo farmasi"> 
+              </div>
+              <div class="center-line"></div>
+              <p style="font-size: 10pt; margin-top: 5px;">Irwan Hilmy. S.Farm.,Apt</p>
+          </th>
+        </table>
+    </div>
 </body>
 </html>

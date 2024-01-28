@@ -17,7 +17,7 @@
             flex-grow: 1;
             height: 1px;
             background-color: #000;
-            margin-left: 90px; /* Adjust the margin as needed */
+            margin-left: 100px; /* Adjust the margin as needed */
             width: 100px; /* Adjust the margin as needed */
         }
 

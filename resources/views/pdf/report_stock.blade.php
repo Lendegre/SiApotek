@@ -94,8 +94,8 @@
             <tr>
                 <td class="table-cell" style="width: 42%;"><strong>TOTAL KESELURUHAN</strong></td>
                 <td class="table-cell text-center" style="width: 17%;">{{ $barang->sum('stok') }} Stok</td>
-                <td class="table-cell text-center" style="width: 20%;">{{ $dataBarangmasuk->where('barang_id',$sb->barang_id)->sum('jumlah') }} Dibeli</td>
-                <td class="table-cell text-center" style="width: 21%;">{{ $dataOrder->where('barang_id', $sb->barang_id)->sum('stok') }} Terjual</td>
+                <td class="table-cell text-center" style="width: 20%;">{{ $dataBarangmasuk->sum('jumlah') }}</td>
+                <td class="table-cell text-center" style="width: 21%;">{{ $dataOrder->sum('stok') }}</td>
             </tr>
         </thead>
     </table>

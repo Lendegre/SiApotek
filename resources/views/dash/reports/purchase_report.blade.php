@@ -30,7 +30,11 @@
                         </form>
 
                         <div class="d-flex justify-content-end mb-3">
-                            <a href="{{ route('purchase-pdf', ['tanggalAwal' => $tanggalAwal, 'tanggalAkhir' => $tanggalAkhir]) }}" class="btn btn-primary" target="_blank">Cetak PDF</a>
+                            @if($tanggalAwal && $tanggalAkhir)
+                                <a type="button" href="{{ route('purchase-pdf', ['tanggalAwal' => $tanggalAwal, 'tanggalAkhir' => $tanggalAkhir]) }}" class="btn btn-primary" target="_blank">Cetak PDF</a>
+                            @else
+                                <button class="btn btn-primary" disabled>Cetak PDF</button>
+                            @endif
                         </div>
 
                         <div class="table-responsive">

@@ -20,7 +20,6 @@
                                     <input type="date" class="form-control" name="tanggalAwal" id="tanggalAwal"  value="{{ old('tanggalAwal', $tanggalAwal) }}" required>
                                 </div>
                             </div>
-                            
                             <div class="form-group col-md-3 mb-3 mx-3">
                                 <label for="tanggalAkhir">Tanggal Akhir:</label>
                                 <div>
@@ -32,11 +31,14 @@
                             </div>
                         </div>
                     </form>
-
+                    
                     <div class="d-flex justify-content-end mb-3">
-                        <a href="{{ route('sales-pdf', ['tanggalAwal' => $tanggalAwal, 'tanggalAkhir' => $tanggalAkhir]) }}" class="btn btn-primary" target="_blank">Cetak PDF</a>
+                        @if($tanggalAwal && $tanggalAkhir)
+                        <a type="button" href="{{ route('sales-pdf', ['tanggalAwal' => $tanggalAwal, 'tanggalAkhir' => $tanggalAkhir]) }}" class="btn btn-primary" target="_blank">Cetak PDF</a>
+                        @else
+                        <button class="btn btn-primary" disabled>Cetak PDF</button>
+                        @endif
                     </div>
-
                     <div class="table-responsive">
                         <table class="table" id="data">
                             <thead>

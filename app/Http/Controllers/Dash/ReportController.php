@@ -81,6 +81,9 @@ class ReportController extends Controller
         // Ambil data untuk ditampilkan di PDF
         $barangmasuk = Barangmasuk::whereBetween('tgl_trm', [$tanggalAwal, $tanggalAkhir])->get();
 
+        // var_dump($barangmasuk);
+        // exit();
+
         // Hitung total pendapatan
         // Hitung grand total
         $grandTotal = $barangmasuk->sum('total');
@@ -135,6 +138,7 @@ class ReportController extends Controller
 
     public function cari(Request $request)
     {
+        
         $tanggalAwal = $request->input('tanggalAwal');
         $tanggalAkhir = $request->input('tanggalAkhir');
 
@@ -160,7 +164,8 @@ class ReportController extends Controller
     }
 
     public function pdfSalesReport(Request $request)
-    {
+    { 
+
         $tanggalAwal = $request->tanggalAwal;
         $tanggalAkhir = $request->tanggalAkhir;
 
@@ -174,9 +179,12 @@ class ReportController extends Controller
         // Tampilkan data ke dalam PDF
         $pdf = PDF::loadView('pdf.report_sales', [
             'sales_report' => $sales_report, 
-            'grandTotal' =>$grandTotal, 
-            'tanggalAwal' =>$tanggalAwal, 
+            'grandTotal'   =>$grandTotal, 
+            'tanggalAwal'  =>$tanggalAwal,
             'tanggalAkhir' =>$tanggalAkhir]);
+
+        // Set ukuran kertas menjadi 1/4 folio
+        // $pdf->setPaper(array(0, 0, 238.125, 375), 'landscape');
 
         // Simpan atau tampilkan PDF sesuai kebutuhan
         return $pdf->stream('Laporan.pdf');

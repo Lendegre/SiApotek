@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <style>
         .center-line {
-          border-left: 2.5cm solid black; /* Garis sebelah kiri dengan panjang 3 cm dan warna hitam (sesuaikan sesuai keinginan Anda) */
-          height: 0.1%; /* Atur tinggi elemen sesuai keinginan Anda */
+          border-left: 3cm solid black; /* Garis sebelah kiri dengan panjang 3 cm dan warna hitam (sesuaikan sesuai keinginan Anda) */
+          height: 2.5px; /* Atur tinggi elemen sesuai keinginan Anda */
           margin-left: 20px;
         }
       </style>
@@ -17,6 +17,8 @@
     <style>
     table {
     width: 100%; /* Lebar tabel 100% dari container */
+    border-collapse: collapse;
+    margin-bottom: 10px;
   }
 
     #header {
@@ -32,7 +34,7 @@
 
     #paragraph-container {
       text-align: center; /* Mengatur rata kanan dan kiri */
-      margin: 20px;
+      margin: 30px;
     }
 
     #paragraph-container2 {
@@ -40,14 +42,6 @@
       margin: 10px;
     }
 
-    .signature {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-            margin-top: 20px; /* Adjust this value to set the distance from the bottom */
-    }
       </style>
       <body>
       <table style="width:90%">
@@ -55,19 +49,19 @@
           <th>
             <div id="header">
                     <div id="logo">
-                        <img src="{{ public_path() . '/img/logo.png' }}" width="300" alt="logo farmasi"> 
+                        <img src="{{ public_path() . '/img/logo.png' }}" width="350" alt="logo farmasi"> 
                     </div>
                     {{-- <h3 style="float: left"><b>APOTEK ARFA FARMA</b></h3> --}}
                     <br>
                     <br>
                     <br>
                     <div id="paragraph-container">
-                        <p>JALAN RAYA SUKAMANTRI 1 RT.01 RW.01
+                        <h4>JALAN RAYA SUKAMANTRI 1 RT.01 RW.01
                             <br> 
                             DESA SUKAMANTRI
                             <br>
                             NO. HP. 0852-9459-5949 / 0856-2447-0315
-                        </p>
+                        </h4>
                     </div>
                 </div>
             </th>
@@ -81,40 +75,24 @@
             </div>
         </th>
       </table>
-      <hr>
-  
-
-    {{-- <p>Biodata konsumen dengan resep obat:</p>
-    <p>Konsumen  : <strong>{{ $customer->nama_customer }}</strong></p>
-    <p>Usia : <strong>{{ $customer->usia }}</strong></p>
-    <table>
-        <tr>
-            <td style="white-space: nowrap">Alamat : </td>
-            <td><strong>{{ $customer->alamat }}</strong></td>
-        </tr>
-    </table> --}}
-    {{-- <p>Dengan pesanan tertentu adalah:</p> --}}
+      <hr style="margin-top: -30px;">
     <br>
-    <table border="1" style="width: 100%; border: 1px solid #000">
+    <table border="1" style="width: 100%; border: 1px solid black; margin-top: -10px;">
         <thead>
             <tr>
-                <th>
-                    Banyak
-                    <br>
-                    nya
-                </th>
-                <th>Nama Produk</th>
-                <th>Harga</th>
-                <th>Total</th>
+                <th style="padding: 10px;">Banyaknya</th>
+                <th style="padding: 10px;">Nama Produk</th>
+                <th style="padding: 10px;">Harga</th>
+                <th style="padding: 10px;">Total</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($orders as $order)
                 <tr>
-                    <td style="text-align: center">{{ $order->stok }} {{ $order->barang->satuan_jual }}</td>
-                    <td style="text-align: center">{{ $order->barang->nama_barang }}</td>
-                    <td style="text-align: center">Rp. {{ $order->barang->harga_jual }}</td>
-                    <td style="text-align: center">Rp. {{ $order->harga }}</td>
+                    <td style="text-align: center; padding: 5px;">{{ $order->stok }} {{ $order->barang->satuan_jual }}</td>
+                    <td style="text-align: center; padding: 5px;">{{ $order->barang->nama_barang }}</td>
+                    <td style="text-align: center; padding: 5px;">Rp. {{ $order->barang->harga_jual }}</td>
+                    <td style="text-align: center; padding: 5px;">Rp. {{ $order->harga }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -130,7 +108,7 @@
               <img src="{{ public_path() . '/img/ttd.png' }}" width="45" alt="logo farmasi"> 
             </div>
             <div class="center-line"></div>
-            <p style="font-size: 10pt; margin-top: -20px;">Irwan Hilmy. S.Farm.,Apt</p>
+            <p style="font-size: 10pt; margin-top: 5px;">Irwan Hilmy. S.Farm.,Apt</p>
         </th>
         <th>
             <p>Tanda Terima</p>
@@ -140,7 +118,7 @@
             <div class="center-line"></div>
         </th>
         <th>
-            <p style="padding-left: 150px">Sub Total</p>
+            <p style="padding-left: 150px; margin-top: 20px;">Sub Total</p>
             <br>
             <br>
         </th>
