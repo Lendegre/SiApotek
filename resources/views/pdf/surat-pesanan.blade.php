@@ -98,7 +98,7 @@
             <tr>
                 <th>No.</th>
                 <th>Nama Pesanan</th>
-                <th>Zat Aktif {{ $purchase->golongan->jenis_golongan }}</th>
+                <th>Zat Aktif ({{ $purchase->golongan->jenis_golongan }})</th>
                 <th>Jumlah</th> 
                 <th>Satuan</th> 
                 <th>Bentuk</th>
@@ -112,7 +112,7 @@
                     <td>{{ $product->zat }}</td>
                     <td>{{ $product->jumlah }}</td>
                     <td>{{ $product->barang->satuan->satuan_barang }}</td>
-                    <td>{{ $product->bentuk }}</td>
+                    <td>{{ $product->barang->bentuk->nama_bentuk }}</td>
                 </tr>
             @endforeach
         </tbody>

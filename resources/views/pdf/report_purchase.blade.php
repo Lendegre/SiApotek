@@ -50,13 +50,13 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($barangmasuk as $bm)
+            @foreach($faktur as $bm)
                 <tr>
                     <td class="table-cell">{{ $loop->iteration }}</td>
                     <td class="table-cell">{{ $bm->no_faktur }}</td>
                     <td class="table-cell">{{ $bm->tgl_trm }}</td>
                     <td class="table-cell">{{ $bm->purchase->supplier->nama_supplier }}</td>
-                    <td class="table-cell">{{ $bm->nama_brg }}</td>
+                    <td class="table-cell">{{ $bm->barang->nama_barang }}</td>
                     <td class="table-cell">{{ $bm->h_beli }}</td>
                     <td class="table-cell">{{ $bm->jumlah_trm }}</td>
                     <td class="table-cell">{{ $bm->total }}</td>

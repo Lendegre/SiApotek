@@ -59,7 +59,7 @@
             </li>
 
             <li class="sidebar-item @if($id_page == 15) active @endif">
-                <a class="sidebar-link" href="{{ route('data-faktur') }}">
+                <a class="sidebar-link" href="{{ route('faktur-management') }}">
                     <i class="align-middle" data-feather="file"></i> 
                     <span class="align-middle">Faktur Pembelian Barang</span>
                 </a>
@@ -102,12 +102,12 @@
                 </a>
             </li>
 
-            {{-- <li class="sidebar-item @if($id_page == 5) active @endif">
+            <li class="sidebar-item @if($id_page == 5) active @endif">
                 <a class="sidebar-link" href="{{ route('bentuk') }}">
                     <i class="align-middle" data-feather="triangle"></i> 
                     <span class="align-middle">Data Bentuk Sediaan</span>
                 </a>
-            </li> --}}
+            </li>
 
             <li class="sidebar-item @if($id_page == 6) active @endif">
                 <a class="sidebar-link" href="{{ route('satuan') }}">

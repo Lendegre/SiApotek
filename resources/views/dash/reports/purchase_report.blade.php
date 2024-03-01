@@ -51,7 +51,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($barangmasuk as $bm)
+                                    @foreach ($faktur as $bm)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $bm->no_faktur }}</td>

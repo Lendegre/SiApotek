@@ -63,11 +63,21 @@
                                     <label for="{{ 'isi'.$i }}"><strong>Isi dalam kemasan</strong></label>
                                     <input required value="{{ old('isi'.$i) }}" type="text" placeholder="Masukkan jumlah isi" class="isi form-control" name="{{ 'isi'.$i }}" id="isi{{ $i }}">    
                                 </div>
-                                
+
                                 <div class="col-md-6">
+                                    <label for="{{ 'bentuk_id'.$i }}"><strong>Bentuk</strong></label>
+                                    <select required name="{{ 'bentuk_id'.$i }}" class="form-control" id="{{ 'bentuk_id'.$i }}">
+                                        <option value="">-Pilih Bentuk-</option>
+                                        @foreach ($bentuk as $item)
+                                            <option @if(old('bentuk_id'.$i) == $item->bentuk_id) selected @endif value="{{ $item->bentuk_id }}">{{ $item->nama_bentuk }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                
+                                {{-- <div class="col-md-6">
                                     <label for="{{ 'bentuk'.$i }}"><strong>Bentuk sediaan</strong></label>
                                     <input required value="{{ old('bentuk'.$i) }}" type="string" placeholder="Masukkan bentuk sediaan" class="form-control" name="{{ 'bentuk'.$i }}" id="{{ 'bentuk'.$i }}">  
-                                </div> 
+                                </div>  --}}
 
                                 <div class="col-md-6">
                                     <label for="{{ 'harga_jual'.$i }}"><strong>Harga Jual</strong></label>
@@ -115,10 +125,8 @@
                                         @endforeach
                                     </select>
                                 </div>
-
-
                                 <div class="col-md-6">
-                                    <label for="{{ 'stok'.$i }}"><strong>Banyaknya Stok</strong></label>
+                                    <label for="{{ 'stok'.$i }}"><strong>Stok yang tersedia saat ini</strong></label>
                                     <input required value="0" type="text" class="stok form-control" name="{{ 'stok'.$i }}" id="stok{{ $i }}">
                                 </div>
                                 

@@ -16,7 +16,7 @@
                                     <th>Status</th>
                                     <th>Keterangan</th>
                                     <th>Tanggal Pengajuan</th>
-                                    <th>Action</th>
+                                    <th class="col-md-2">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,12 +55,12 @@
                                                         <input type="hidden" name="purchase_id" value="{{ $item->purchase_id }}">
                                                         <div class="">
                                                             <label for="status">Status</label>
-                                                            <select name="status" class="form-control" required id="status">
+                                                            <select name="status" class="form-control reason" required id="status">
                                                                 <option value="">-Pilih Status-</option>
                                                                 <option value="Ditolak">Tolak</option>
                                                                 <option value="Diterima">Setujui</option>
                                                             </select>
-                                                            <div class="mt-3" id="formKeterangan" style="display: none;">
+                                                            <div class="keterangan mt-3" id="formKeterangan" style="display: none;">
                                                                 <label for="keterangan" class="form-label">Keterangan</label>
                                                                 <textarea class="form-control" id="keterangan" name="keterangan"></textarea>
                                                             </div>
@@ -98,15 +98,31 @@
     </div>
 
     <script>
+        document.querySelectorAll('.reason').forEach(function(element) {
+            element.addEventListener('change', function() {
+                var reason = this.value;
+                var commentField = this.closest('tr').querySelector('.keterangan');
+    
+                if (reason === 'Ditolak') {
+                    commentField.style.display = 'block';
+                } else {
+                    commentField.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    {{-- <script>
+            
         document.getElementById('status').addEventListener('change', function() {
             var formAlasan = document.getElementById('formKeterangan');
-    
+            
             if (this.value === 'Ditolak') {
                 formAlasan.style.display = 'block';
             } else {
                 formAlasan.style.display = 'none';
             }
         });
-    </script>
+    </script> --}}
 
 @endsection

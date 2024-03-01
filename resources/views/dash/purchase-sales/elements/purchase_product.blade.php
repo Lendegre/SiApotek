@@ -17,7 +17,7 @@
                                 <select class="form-select" name="barang_id" required id="barang_id">
                                     <option value="">-Pilih Barang-</option>
                                     @foreach ($barang as $b)
-                                        <option value="{{ $b->barang_id }}" data-satuan_beli="{{ $b->satuan->satuan_barang }}" data-bentuk="{{ $b->bentuk }}" data-isi="{{ $b->isi }}">{{ $b->nama_barang }}</option>
+                                        <option value="{{ $b->barang_id }}" data-satuan_beli="{{ $b->satuan->satuan_barang }}" data-bentuk="{{ $b->bentuk->nama_bentuk }}" data-isi="{{ $b->isi }}">{{ $b->nama_barang }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -37,8 +37,8 @@
                                 <input type="text" name="satuan_beli" class="form-control" id="satuan_beli" readonly>
                             </div>
                             <div class="col-md-3">
-                                <label for="bentuk">Bentuk Sediaan</label>
-                                <input required type="string" name="bentuk" id="bentuk" class="form-control" readonly>
+                                <label for="bentuk_id">Bentuk Sediaan</label>
+                                <input required type="string" name="bentuk_id" id="bentuk_id" class="form-control" readonly>
                             </div>
                             <div class="col-md-3">
                                 <label for="isi">isi dalam kemasan</label>
@@ -161,7 +161,7 @@
         document.getElementById('barang_id').addEventListener('change', function() {
             var selectedOption = this.options[this.selectedIndex];
             var satuanInput1 = document.getElementById('satuan_beli');
-            var satuanInput2 = document.getElementById('bentuk');
+            var satuanInput2 = document.getElementById('bentuk_id');
             var satuanInput3 = document.getElementById('isi');
             satuanInput1.value = selectedOption.getAttribute('data-satuan_beli');
             satuanInput2.value = selectedOption.getAttribute('data-bentuk');

@@ -7,11 +7,12 @@
         <div class="card">
             <div class="card-body">
                 <div style="border: 1px solid navy; padding: 8px;">
-                    <p class="mb-0">No. Surat: <strong>{{ $purchase->no_surat }}</strong></p>
-                    <p class="mb-0">Tanggal Pemesanan: <strong>{{ $purchase->tgl_pengajuan }}</strong></p>
-                    <p class="mb-0">Status: <strong>{{ $purchase->status }}</strong></p>
-                    <p class="mb-0">Supplier: <strong>{{ $purchase->supplier->nama_supplier }}</strong></p>
+                    <p>No. Surat: <strong>{{ $purchase->no_surat }}</strong></p>
+                    <p>Tanggal Pemesanan: <strong>{{ $purchase->tgl_pengajuan }}</strong></p>
+                    <p>Status: <strong>{{ $purchase->status }}</strong></p>
+                    <p>Supplier: <strong>{{ $purchase->supplier->nama_supplier }}</strong></p>
                     <p>Golongan: <strong>{{ $purchase->golongan->jenis_golongan }}</strong></p>
+                    <p>Keterangan: <strong>{{ $purchase->keterangan }}</strong></p>
                     
                     @if ($purchase->status == 'Diterima')
                         
@@ -40,7 +41,7 @@
                                 <td>{{ $loop->iteration . '.' }}</td>
                                 <td>{{ $item->barang->nama_barang }}</td>
                                 <td>{{ $item->jumlah . ' ' . $item->barang->satuan->satuan_barang }} </td>
-                                <td>{{ $item->bentuk }}</td>
+                                <td>{{ $item->barang->bentuk->nama_bentuk }}</td>
                                 <td>{{ $item->isi}} {{ $item->barang->satuan_jual }} / {{ $item->barang->satuan->satuan_barang }}</td>
                             </tr>
                             @endforeach

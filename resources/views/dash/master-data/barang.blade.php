@@ -155,10 +155,15 @@
                                                         <label for="{{ 'tanggal_kedaluwarsa' }}">Tanggal Kedaluwarsa</label>
                                                         <input required value="{{ $barang->tanggal_kedaluwarsa }}" type="date" class="form-control" name="{{ 'tanggal_kedaluwarsa' }}" id="{{ 'tanggal_kedaluwarsa' }}">
                                                     </div>
-                                                        <div class="col-md-6">
-                                                            <label for="{{ 'bentuk' }}">Bentuk sediaan</label>
-                                                            <input required value="{{ $barang->bentuk }}" type="string" placeholder="Masukkan bentuk sediaan" class="form-control" name="{{ 'bentuk' }}" id="{{ 'bentuk' }}">  
-                                                        </div>                                   
+                                                    <div class="col-md-6">
+                                                        <label for="{{ 'bentuk_id' }}"><strong>Bentuk</strong></label>
+                                                        <select required name="{{ 'bentuk_id' }}" class="form-control" id="{{ 'bentuk_id' }}">
+                                                            <option value="{{ $barang->bentuk_id }}">{{ $barang->bentuk->nama_bentuk }}</option>
+                                                            @foreach ($bentuk as $item)
+                                                                <option @if(old('bentuk_id') == $item->bentuk_id) selected @endif value="{{ $item->bentuk_id }}">{{ $item->nama_bentuk }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>                                   
                                                     <div class="col-md-6">
                                                         <label for="{{ 'harga_jual' }}">Harga Jual</label>
                                                         <input required value="{{ $barang->harga_jual }}" type="number" placeholder="Masukkan harga jual" class="form-control" name="{{ 'harga_jual' }}" id="{{ 'harga_jual' }}">
@@ -185,7 +190,11 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-6 text-center mx-auto">
+                                                    <div class="col-md-6">
+                                                        <label for="{{ 'isi' }}"><strong>Isi dalam kemasan</strong></label>
+                                                        <input required value="{{ $barang->isi }}" type="text" placeholder="Masukkan jumlah isi" class="isi form-control" name="{{ 'isi' }}" id="{{ 'isi' }}">    
+                                                    </div>
+                                                    <div class="col-md-3 text-center mx-auto">
                                                         <label for="{{ 'minimal_stok' }}">Minimal Stok</label>
                                                         <input required value="{{ $barang->minimal_stok }}" type="number" placeholder="Minimal stok" class="form-control" name="{{ 'minimal_stok' }}" id="{{ 'minimal_stok' }}">
                                                     </div> 
@@ -206,7 +215,7 @@
                                     {{-- <td>{{ $barang->total_jumlah . ' '}} {{ $barang->satuan->satuan_barang }}</td> --}}
                                     <td>{{ $barang->stok}} {{ $barang->satuan_jual }}</td>
                                     <td>{{ $barang->isi . ' '}} {{ $barang->satuan_jual }} <strong>/ {{ $barang->satuan->satuan_barang }}</strong></td>
-                                    <td>{{ $barang->bentuk}}</td>
+                                    <td>{{ $barang->bentuk->nama_bentuk}}</td>
                                     {{-- <td>Rp. {{ number_format($barang->harga_beli, 0, ',', '.') }}/{{ $barang->satuan->satuan_barang }}</td> --}}
                                     <td>Rp. {{ number_format($barang->harga_jual, 0, ',', '.') }} <strong>/{{ $barang->satuan_jual }}</strong></td>
                                     <td>{{ $barang->satuan_jual }}</td>

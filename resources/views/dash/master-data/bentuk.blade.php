@@ -14,13 +14,13 @@
                     <div id="create" class="modal">
                         <div class="modal-content">
                             <span class="close" data-modal="create">&times;</span>
-                            <h2>Create Bentuk Sediaan</h2>
+                            <h2>Tambah Data Bentuk Sediaan</h2>
                             <hr>
                             <form action="{{ route('create-bentuk') }}" method="POST">
                                 @csrf
                                 <div class="">
-                                    <label for="bentuk_barang">Bentuk Sediaan<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" placeholder="Masukkan nama bentuk persediaan" required name="bentuk_barang" id="bentuk_barang">
+                                    <label for="nama_bentuk">Bentuk Sediaan Barang<span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" placeholder="Masukkan nama bentuk persediaan" required name="nama_bentuk" id="nama_bentuk">
                                 </div>
 
                                 <div class="mt-3">
@@ -44,7 +44,7 @@
                             @foreach ($bentuk as $item)
                             <tr>
                                 <td>{{ $loop->iteration . '.' }}</td>
-                                <td>{{ $item->bentuk_barang }}</td>
+                                <td>{{ $item->nama_bentuk }}</td>
                                 <td>
                                     <button class="btn btn-info modal-open" data-modal="{{ 'edit'.$item->bentuk_id }}"><i data-feather="edit"></i></button>
                                     <button class="btn btn-danger modal-open" data-modal="{{ 'delete'.$item->bentuk_id }}"><i data-feather="trash-2"></i></button>
@@ -58,8 +58,8 @@
                                             <form action="{{ route('update-bentuk', $item->bentuk_id) }}" method="POST">
                                                 @csrf
                                                 <div class="">
-                                                    <label for="bentuk_barang">Bentuk Sediaan<span class="text-danger">*</span></label>
-                                                    <input class="form-control" value="{{ $item->bentuk_barang }}" type="text" placeholder="Masukkan nama bentuk persediaan" required name="bentuk_barang" id="bentuk_barang">
+                                                    <label for="nama_bentuk">Bentuk Sediaan<span class="text-danger">*</span></label>
+                                                    <input class="form-control" value="{{ $item->nama_bentuk }}" type="text" placeholder="Masukkan nama bentuk persediaan" required name="nama_bentuk" id="Nama_bentuk">
                                                 </div>
 
                                                 <div class="mt-3">

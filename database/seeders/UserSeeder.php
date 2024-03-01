@@ -16,22 +16,22 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'username'      => 'Pemilik',
-                'password'      => Hash::make('123pemilik456'),
+                'username'      => 'PEMILIK',
+                'password'      => Hash::make('123PEMILIK456'),
                 'role'          => 'pemilik',
                 'created_at'    => now(),
                 'updated_at'    => now(),
             ],
             [
-                'username'      => 'Apoteker',
-                'password'      => Hash::make('123apoteker456'),
+                'username'      => 'APOTEKER',
+                'password'      => Hash::make('123APOTEKER456'),
                 'role'          => 'apoteker',
                 'created_at'    => now(),
                 'updated_at'    => now(),
             ],
             [
-                'username'      => 'Admin',
-                'password'      => Hash::make('123admin456'),
+                'username'      => 'ADMIN',
+                'password'      => Hash::make('123ADMIN456'),
                 'role'          => 'admin',
                 'created_at'    => now(),
                 'updated_at'    => now(),

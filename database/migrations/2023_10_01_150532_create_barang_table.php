@@ -18,12 +18,12 @@ return new class extends Migration
             $table->date('tanggal_kedaluwarsa')->nullable();
             $table->foreignId('satuan_id')->constrained('satuan', 'satuan_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('isi');
-            $table->string('bentuk');
             $table->integer('stok');
             $table->bigInteger('harga_jual');
             $table->string('satuan_jual');
             $table->integer('minimal_stok');
             $table->foreignId('kategori_id')->constrained('kategori', 'kategori_id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->integer('bentuk_id');
             $table->foreignId('golongan_id')->constrained('golongan', 'golongan_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->date('tanggal_masuk')->nullable();
             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));

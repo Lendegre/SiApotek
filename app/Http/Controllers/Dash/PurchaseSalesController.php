@@ -10,11 +10,12 @@ use App\Models\Customer;
 use App\Models\Golongan;
 use App\Models\Purchase;
 use App\Models\Supplier;  
-use App\Models\Barangmasuk;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PurchaseProduct;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
 // use Illuminate\Validation\Rule;
 
@@ -33,7 +34,7 @@ class PurchaseSalesController extends Controller
             Supplier::all(),
             Golongan::all(),
             Satuan::all(),
-            Barangmasuk::all(),
+            Faktur::all(),
         ];
         $this->getItemByGroup = MasterDataController::getItemsByGroup();
     }
@@ -140,7 +141,7 @@ class PurchaseSalesController extends Controller
                 'satuan_beli'   => $request->input('satuan_beli'),
                 'jumlah'        => $request->input('jumlah'),
                 'isi'           => $request->input('isi'),
-                'bentuk'        => $request->input('bentuk'),
+                'bentuk_id'     => $request->input('bentuk_id'),
                 'zat'           => $request->input('zat'),
             ]);
 
@@ -466,83 +467,38 @@ class PurchaseSalesController extends Controller
         return $pdf->stream($customer->no_surat . '.pdf');
     }
 
-
-
-    public function showDataFaktur(){
+    public function showFakturManagement()
+    {
             $no_surat = Purchase::where('status', 'Diterima')->get();
-            $barangmasuk = Barangmasuk::all();
+            $faktur = Faktur::groupBy('no_faktur')->get();
+
+ 
         $data = [
             'title'             => 'Data Faktur',
             'id_page'           => 15,
             'no_surat'          => $no_surat,
-            'barangmasuk'        =>$barangmasuk,
+            'faktur'            =>$faktur,
         ];
-
-
-        return view('dash.purchase-sales.faktur_masuk', $data);
+        return view('dash.purchase-sales.faktur_managament', $data);
     }
 
 
-        /**
-     * Logic to create purchase
-     * 
-     * @param Request
-     * @return View
-     */
-    protected function createFaktur(Request $request)
+    protected function showFakturProduct($purchase_id)
     {
-        $message = [
-            'required' => 'Form harus diisi.',
-            'unique' => 'Nomor surat ini sudah memiliki faktur',
-            // Tambahkan pesan-pesan validasi kustom lainnya sesuai kebutuhan.
-        ];
+        $purchase = Purchase::where('purchase_id', $purchase_id)->first();
+        // return $purchase;
 
-        $validatedData = $request->validate([
-                'purchase_id' => 'required|unique:fakturs,purchase_id',
-        ], $message);
+        $bm = PurchaseProduct::where('purchase_id', $purchase_id)->get();
+        
 
-        DB::table('fakturs')->insert([
-            'purchase_id'      => $request->input('purchase_id'),
-        ]);
-
-        return redirect()->route('faktur-product', $request->input('purchase_id'))->with($message,'Success to create purchase data');
-
-        // return view('dash.purchase-sales.elements.faktur',[
-        //     'title'     => 'Faktur',
-        //     'id_page'   => null,
-        // ]);
-        // 'no_surat'          => $no_surat,
-
-        // return view('barangmasuk-faktur', compact('selectedNomorSurat'));
-    }
-
-    protected function showFakturProduct($no_surat)
-    {
-        $faktur = Faktur::where('purchase_id', $no_surat)->first();
-        $bm = PurchaseProduct::where('purchase_id', $no_surat)->get();
-
-        // var_dump($bm);
-        // exit();
-
-        // $barang = Barang::where('barang_id', $barang_id)->get();
-
-        // var_dump($barang);
-        // exit();
-
-        // return $request;
         $data = [
             'title'         => 'Faktur Produk',
             'id_page'       => 15,
-            'faktur'        => $faktur,
+            'purchase'      => $purchase,
             'bm'            => $bm,
+            // 'no_surat'      => $no_surat,
             // 'products'      => PurchaseProduct::where('purchase_id', $purchase->purchase_id)->get(),
         ];
-
-        // var_dump($bm);
-        // exit();
-
-        // var_dump($bm[0]->barang());
-        // exit();
 
         return view('dash.purchase-sales.elements.faktur', $data);
     }
@@ -553,25 +509,35 @@ class PurchaseSalesController extends Controller
      * @param Request $request
      * @return View
      */
-    protected function createFakturProduct( Request $request)
+    protected function createFakturProduct(Request $request)
     {     
-        // return $request;
-        $items = count($request->nama_brg);
-        // $stok = PurchaseProduct::where('isi', $isi)->get();
+        $validatedData = $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-        // var_dump($stok);
-        //     exit();
+        // $image = $request->file('image');
+        // $imageName = time().'.'.$image->getClientOriginalExtension();
+        // $image->move(public_path('images'), $imageName);
+        $images = $request->file('image');
+        $image_ekstensi = $images->extension();
+        $image_nama = date('ymdhis'). "." . $image_ekstensi;
+        $images->move(public_path('faktur_upload'), $image_nama);
+        
 
+        $items = count($request->barang_id);
         for ($x = 0; $x<$items; $x++){
-            $isi_purchase = PurchaseProduct::where('purchase_id', $request->purchase_id)->value('isi');
-            $barang_purchase = PurchaseProduct::where('purchase_id', $request->purchase_id)->get();
+           
+            $isi_purchase[$x] = PurchaseProduct::where('purchase_id', $request->purchase_id)->value('isi');
+            $barang_purchase[$x] = PurchaseProduct::where('purchase_id', $request->purchase_id)->get();
+     
+            $barang_id = $barang_purchase[0][$x]->barang_id;
 
-            $barang_id = $barang_purchase[$x]->barang_id;
 
-            DB::table('barangmasuks')->insert([
+            DB::table('faktur')->insert([
                 'purchase_id'           => $request->purchase_id,
                 'no_faktur'             => $request->no_faktur,
-                'nama_brg'              => $request->nama_brg[$x],
+                'image'                 => $image_nama,
+                'barang_id'             => $barang_purchase[0][$x]->barang_id,
                 'sbayar'                => $request->sbayar,
                 'jumlah_trm'            => $request->jumlah_trm[$x],
                 'h_beli'                => $request->h_beli[$x],
@@ -589,7 +555,7 @@ class PurchaseSalesController extends Controller
             }
         }
 
-               // Hitung total keseluruhan
+        // Hitung total keseluruhan
         $g_total = 0;
 
         // Inisialisasi array untuk total masing-masing barang
@@ -600,7 +566,7 @@ class PurchaseSalesController extends Controller
 
     public function updateFaktur(Request $request, $purchase_id)
     {
-            DB::table('barangmasuks')->where('purchase_id', $purchase_id)->update([
+            DB::table('faktur')->where('purchase_id', $purchase_id)->update([
                 'no_faktur' => $request->input('no_faktur'),
                 'tgl_trm'   => $request->input('tgl_trm'),
                 'tgl_tempo' => $request->input('tgl_tempo'),
@@ -610,10 +576,13 @@ class PurchaseSalesController extends Controller
         return back()->with('info', 'Item has been updated');
     }
 
-    protected function deleteFaktur($purchase_id)
+    protected function deleteFaktur($no_faktur)
     {
-        DB::table('barangmasuks')->where('purchase_id', $purchase_id)->delete();
-        DB::table('fakturs')->where('purchase_id', $purchase_id)->delete();
+        $data = faktur::where('no_faktur', $no_faktur)->first();
+        File::delete(public_path('faktur_upload'). '/' . $data->image);
+
+        DB::table('faktur')->where('no_faktur', $no_faktur)->delete();
+        // DB::table('fakturs')->where('purchase_id', $purchase_id)->delete();
 
         return back()->with('info', 'Faktur berhasil dihapus');
     }
@@ -621,7 +590,7 @@ class PurchaseSalesController extends Controller
     protected function showDetailFaktur($purchase_id)
     {
         // $faktur = Barangmasuk::find($purchase_id);
-        $barang_msk = Barangmasuk::where('purchase_id', $purchase_id)->get();
+        $barang_msk = Faktur::where('purchase_id', $purchase_id)->get();
 
         // var_dump($barang_msk);
         // exit();
@@ -639,6 +608,21 @@ class PurchaseSalesController extends Controller
 
 
         return view('dash.purchase-sales.elements.detail_faktur', $data);
+    }
+
+    public function showEditFaktur($no_faktur)
+    {
+        $faktur = Faktur::where('no_faktur', $no_faktur)->first();
+        $barang_faktur = PurchaseProduct::where('purchase_id', $faktur->purchase_id)->get();
+
+        $data = [
+            'title'         => 'Edit Faktur ' . $no_faktur,
+            'id_page'       => null,
+            'barang_faktur' => $barang_faktur,
+            'faktur'        => $faktur
+        ];
+
+        return view('dash.purchase-sales.elements.edit_faktur', $data);
     }
 
 }

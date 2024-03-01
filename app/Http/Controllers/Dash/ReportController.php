@@ -8,7 +8,7 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Purchase;
 use App\Models\PurchaseProduct;
-use App\Models\BarangMasuk;
+use App\Models\Faktur;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,12 +34,12 @@ class ReportController extends Controller
         $tanggalAwal = $request->input('tanggalAwal');
         $tanggalAkhir = $request->input('tanggalAkhir');
 
-        $barangmasuk = Barangmasuk::groupBy('no_faktur')->get();
+        $faktur = Faktur::groupBy('no_faktur')->get();
 
         $data = [
             'title' => 'Laporan Pembelian Barang',
             'id_page' => $this->id_page[0],
-            'barangmasuk' => $barangmasuk,
+            'faktur' => $faktur,
             'tanggalAwal'    => $tanggalAwal,
             'tanggalAkhir'    => $tanggalAkhir,
         ];
@@ -57,17 +57,17 @@ class ReportController extends Controller
         $request->session()->put('tanggalAkhir', $request->input('tanggalAkhir'));
         
         // Query data dari model berdasarkan tanggal
-        $barangmasuk = Barangmasuk::whereBetween('tgl_trm', [$tanggalAwal, $tanggalAkhir])->groupBy('no_faktur')->get();
+        $faktur = Faktur::whereBetween('tgl_trm', [$tanggalAwal, $tanggalAkhir])->groupBy('no_faktur')->get();
 
         // Hitung total pendapatan
         // $income['harga'] = Order::whereBetween('tanggal', [$request->input('tanggalAwal'), $request->input('tanggalAkhir')])
         //     ->sum('harga');
 
-        return view('dash.reports.purchase_report', compact('barangmasuk'),
+        return view('dash.reports.purchase_report', compact('faktur'),
                     [
                         'title' => 'Laporan Pembelian Barang',
                         'id_page' => $this->id_page[0],
-                        'barangmasuk' => $barangmasuk,
+                        'faktur' => $faktur,
                         'tanggalAwal' => session('tanggalAwal'),
                         'tanggalAkhir' => session('tanggalAkhir'),
                     ]);   
@@ -79,18 +79,18 @@ class ReportController extends Controller
         $tanggalAkhir = $request->tanggalAkhir;
 
         // Ambil data untuk ditampilkan di PDF
-        $barangmasuk = Barangmasuk::whereBetween('tgl_trm', [$tanggalAwal, $tanggalAkhir])->get();
+        $faktur = Faktur::whereBetween('tgl_trm', [$tanggalAwal, $tanggalAkhir])->get();
 
         // var_dump($barangmasuk);
         // exit();
 
         // Hitung total pendapatan
         // Hitung grand total
-        $grandTotal = $barangmasuk->sum('total');
+        $grandTotal = $faktur->sum('total');
 
         // Tampilkan data ke dalam PDF
         $pdf = PDF::loadView('pdf.report_purchase', [
-            'barangmasuk' => $barangmasuk, 
+            'faktur' => $faktur, 
             'grandTotal' =>$grandTotal, 
             'tanggalAwal' =>$tanggalAwal, 
             'tanggalAkhir' =>$tanggalAkhir]);
@@ -228,28 +228,6 @@ class ReportController extends Controller
         return view('dash.reports.stock_report', compact('dataPersediaan', 'dataOrder', 'dataBarangmasuk'), $data);
     }
 
-    public function pdfStockReport(Request $request)
-    {
-
-        $periode = Carbon::now()->format('Y-m-d');
-
-        $dataOrder = Order::all();
-        $dataBarangmasuk = purchaseproduct::all();
-
-        // Ambil data untuk ditampilkan di PDF
-        $barang = Barang::all();
-
-        // Tampilkan data ke dalam PDF
-        $pdf = PDF::loadView('pdf.report_stock', [
-            'periode' => $periode,
-            'dataOrder' => $dataOrder,
-            'dataBarangmasuk' => $dataBarangmasuk,
-            'barang' => $barang ]);
-
-        // Simpan atau tampilkan PDF sesuai kebutuhan
-        return $pdf->stream('Laporan.pdf');
-    }
-
     /**
      * Render view low stock report
      * 
@@ -297,6 +275,70 @@ class ReportController extends Controller
             'info'  => $infoAlmostExp,
         ];
 
-        return view('dash.reports.stock_report', $data);
+        return view('dash.reports.stock_exp', $data);
+    }
+
+
+    public function cetak(Request $request)
+    {
+        $kondisi = $request->input('kondisi');
+
+        // Lakukan logika berdasarkan kondisi yang dipilih
+        switch ($kondisi) {
+            case 'SEMUA':
+            $periode = Carbon::now()->format('Y-m-d');
+            $dataOrder = Order::all();
+            $dataBarangmasuk = purchaseproduct::all();
+            // Ambil data untuk ditampilkan di PDF
+            $barang = Barang::all();
+            // Tampilkan data ke dalam PDF
+            $pdf = PDF::loadView('pdf.report_stock', [
+            'periode' => $periode,
+            'dataOrder' => $dataOrder,
+            'dataBarangmasuk' => $dataBarangmasuk,
+            'barang' => $barang ]);
+            return $pdf->stream('Laporan.pdf');
+                break;
+
+            case 'KEDALUWARSA':
+                $periode = Carbon::now()->format('Y-m-d');
+
+                // Ambil data untuk ditampilkan di PDF
+                date_default_timezone_set('Asia/Jakarta');
+                $today = Carbon::now();
+                $expiredDate = $today->copy()->addDays(30);
+                $almostExp = DB::table('barang')
+                    ->whereDate('tanggal_kedaluwarsa', '>=', $today)
+                    ->whereDate('tanggal_kedaluwarsa', '<=', $expiredDate);
+
+                $infoAlmostExp = $almostExp->count();
+                
+
+                // Tampilkan data ke dalam PDF
+                $pdf = PDF::loadView('pdf.report_stockExp', [
+                    'dataPersediaan'    => $almostExp->get(),
+                    'info'  => $infoAlmostExp,    
+                    'periode'  => $periode,    
+                ]);
+
+                // Simpan atau tampilkan PDF sesuai kebutuhan
+                return $pdf->stream('LaporanStokExp.pdf');
+                break;
+
+            case 'HABIS':
+                $periode = Carbon::now()->format('Y-m-d');
+
+                // Ambil data untuk ditampilkan di PDF
+                $barang = Barang::whereColumn('stok', '<=', 'minimal_stok')->get();
+        
+                // Tampilkan data ke dalam PDF
+                $pdf = PDF::loadView('pdf.report_stockLow', [
+                    'periode' => $periode,
+                    'barang' => $barang ]);
+        
+                // Simpan atau tampilkan PDF sesuai kebutuhan
+                return $pdf->stream('LaporanStokLow.pdf');
+                break;
+        }
     }
 }

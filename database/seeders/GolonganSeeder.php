@@ -14,10 +14,10 @@ class GolonganSeeder extends Seeder
     public function run(): void
     {
         DB::table('golongan')->insert([
-            ['jenis_golongan' => 'Psikotropika'],
-            ['jenis_golongan' => 'Narkotika'],
-            ['jenis_golongan' => 'Prekursor'],
-            ['jenis_golongan' => 'Reguler'],
+            ['jenis_golongan' => 'PSIKOTROPIKA'],
+            ['jenis_golongan' => 'NARKOTIKA'],
+            ['jenis_golongan' => 'PREKURSOR'],
+            ['jenis_golongan' => 'REGULER'],
         ]);
     }
 }

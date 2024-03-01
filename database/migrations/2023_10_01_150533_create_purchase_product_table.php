@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('barang_id')->constrained('barang', 'barang_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('purchase_id')->constrained('purchase', 'purchase_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('satuan_beli');
-            $table->string('bentuk');
+            $table->integer('bentuk_id');
             $table->string('isi');
             $table->integer('jumlah');
             $table->string('zat')->nullable();

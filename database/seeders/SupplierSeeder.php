@@ -15,40 +15,40 @@ class SupplierSeeder extends Seeder
     {
         DB::table('supplier')->insert([
             [
-                'nama_supplier' => 'PT Combi Putra',
-                'nama_sales'    => 'Kristian',
+                'nama_supplier' => 'PT COMBI PUTRA',
+                'nama_sales'    => 'KRISTIAN',
                 'no_telp'       => '085314200125',
-                'alamat'        => 'Bandung'
+                'alamat'        => 'BANDUNG'
             ],
             [
-                'nama_supplier' => 'PT Antarmitra Sembada',
-                'nama_sales'    => 'Hendrik',
+                'nama_supplier' => 'PT ANTARMITRA SEMBADA',
+                'nama_sales'    => 'HEDNRIK',
                 'no_telp'       => '083120100007',
-                'alamat'        => 'Cirebon'
+                'alamat'        => 'CIREBON'
             ],
             [
-                'nama_supplier' => 'Kimia Farma',
-                'nama_sales'    => 'Iqbal',
+                'nama_supplier' => 'KIMIA FARMA',
+                'nama_sales'    => 'IQBAL',
                 'no_telp'       => '082240197573',
-                'alamat'        => 'Bandung'
+                'alamat'        => 'BANDUNG'
             ],
             [
-                'nama_supplier' => 'PT Praba Baraka Jaya',
-                'nama_sales'    => 'Rian Mahendra',
+                'nama_supplier' => 'PT PRABA BARAKA JAYA',
+                'nama_sales'    => 'RIAN MAHENDRA',
                 'no_telp'       => '085317749189',
                 'alamat'        => 'Cirebon'
             ],
             [
-                'nama_supplier' => 'PT Prisma Surya Gemilang',
-                'nama_sales'    => 'Rian',
+                'nama_supplier' => 'PT PRISMA SURYA GEMILANG',
+                'nama_sales'    => 'RIAN',
                 'no_telp'       => '087783976091',
-                'alamat'        => 'Ciamis'
+                'alamat'        => 'CIAMIS'
             ],
             [
-                'nama_supplier' => 'Kimia Farma',
-                'nama_sales'    => 'Arif Mawardi',
+                'nama_supplier' => 'KIMIA FARMA',
+                'nama_sales'    => 'ARIF MAWARDI',
                 'no_telp'       => '02652354848',
-                'alamat'        => 'Tasikmalaya'
+                'alamat'        => 'TASIKMALAYA'
             ],
         ]);
     }

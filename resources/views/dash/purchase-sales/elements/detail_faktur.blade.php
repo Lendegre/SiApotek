@@ -30,7 +30,7 @@
                             @foreach ($barang_msk as $b_msk)
                             <tr>
                                 <td>{{ $loop->iteration . '.' }}</td>
-                                <td>{{ $b_msk->nama_brg }}</td>
+                                <td>{{ $b_msk->barang->nama_barang }}</td>
                                 {{-- <td>{{ $b_msk->purchase->purchaseproduct->jumlah }}</td> --}}
                                 <td>{{ $b_msk->jumlah_trm }} </td>
                                 <td>Rp. {{ $b_msk->h_beli }} </td>

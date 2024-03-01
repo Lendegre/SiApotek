@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('barangmasuks', function (Blueprint $table) {
+        Schema::create('faktur', function (Blueprint $table) {
             $table->id();
             $table->integer('purchase_id')->constrained('purchase', 'purchase_id')->cascadeOnDelete()->cascadeOnUpdate();
-            // $table->integer('purchase_product_id')->constrained('purchase_product', 'purchase_product_id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->integer('purchase_product_id')->constrained('purchase_product', 'purchase_product_id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->integer('barang_id')->constrained('barang', 'barang_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('no_faktur');
-            $table->string('nama_brg');
+            $table->string('image');
             $table->date('tgl_trm');
             $table->date('tgl_tempo');  
             $table->enum('sbayar', ['COD', 'Kredit']);
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('barangmasuks');
+        Schema::dropIfExists('faktur');
     }
 };

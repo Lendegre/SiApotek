@@ -35,9 +35,12 @@
         <div class="card">
             <div class="card-body">
 
-                {{-- <div class="d-flex justify-content-end mb-3">
-                    <a href="{{ route('stock-pdf', ['tanggalAwal' => $tanggalAwal, 'tanggalAkhir' => $tanggalAkhir]) }}" class="btn btn-primary" target="_blank">Cetak PDF</a>
-                </div> --}}
+                {{-- <form action="{{ Route('stockLow-pdf') }}" method="get">
+                    @csrf
+                    <div class="d-flex justify-content-end mb-3">
+                        <button type="submit" name="cetak_stokLow" class="btn btn-primary m-3" target="_blank">Cetak Laporan</button>
+                    </div>
+                </form> --}}
 
                 <table class="table" id="data">
                     <thead>
@@ -47,7 +50,7 @@
                             <th class="table-warning">Stok Saat Ini</th>
                             <th>Minimal Stok</th>                             
                             {{-- <th>Tanggal Masuk</th>
-                            <th class="table-danger">Kedaluwarsa</th --}}
+                            <th class="table-danger">Kedaluwarsa</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -63,38 +66,8 @@
                                 </tr>
                             @endforeach
                         @endif
-                       
-                        {{-- @if ($sub_page == 'stock2')
-                        <table class="table" id="data">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Nama Barang</th>
-                                    @if ($sub_page != 'stock3')
-                                    <th class="table-warning">Stok Saat Ini</th>
-                                    <th>Minimal Stok</th>
-                                    @endif
-                                    @if ($sub_page != 'stock2')                                
-                                    <th>Tanggal Masuk</th>
-                                    <th class="table-danger">Kedaluwarsa</th
-                                    @endif
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($barang as $item)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->nama_barang }}</td>
-                                    <td class="table-warning">{{ $item->isi . ' ' . $item->satuan_jual }}</td>
-                                    <td>{{ $item->minimal_stok }} {{ $item->satuan_jual }}</td>
-                                </tr>
-                            @endforeach
-                        @endif
-                            </tbody>
 
-                        </table> --}}
-
-                        @if ($sub_page == 'stock3')
+                        {{-- @if ($sub_page == 'stock3')
                             @foreach ($barang as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
@@ -103,7 +76,7 @@
                                     <td class="table-danger">{{ $item->tanggal_kedaluwarsa }}</td>
                                 </tr>
                             @endforeach
-                        @endif
+                        @endif --}}
                     </tbody>
                 </table>
             </div>

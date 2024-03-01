@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Barangmasuk;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController as Auth;
 use App\Http\Controllers\Dash\UserController as User;
@@ -18,6 +17,7 @@ Route::middleware('auth')->group(function () {
     // analytics group
     Route::prefix('/analytics')->group(function () {
         Route::get('/overview', [Analytics::class, 'showOverview'])->name('overview');
+        // Route::get('/overview/search', [Analytics::class, 'search'])->name('search');
     });
 
     // users group
@@ -45,8 +45,8 @@ Route::middleware('auth')->group(function () {
 
             Route::prefix('/sales-management')->group(function () {
                 Route::get('/', [PurchaseSales::class, 'showSalesManagement'])->name('sales-management');
-                Route::get('/order-product/{customer_id}', [PurchaseSales::class, 'showOrderProduct'])->name('order-product');
                 Route::post('/create-order', [PurchaseSales::class, 'createOrder'])->name('create-order');
+                Route::get('/order-product/{customer_id}', [PurchaseSales::class, 'showOrderProduct'])->name('order-product');
                 Route::post('/create-order-item', [PurchaseSales::class, 'createOrderItem'])->name('create-order-item');
                 Route::post('/delete-order-item/{order_id}', [PurchaseSales::class, 'deleteOrderItem'])->name('delete-order-item');
                 Route::post('/update-order-item/{order_id}', [PurchaseSales::class, 'updateOrderItem'])->name('update-order-item');
@@ -54,16 +54,14 @@ Route::middleware('auth')->group(function () {
             });
 
             Route::prefix('/faktur-management')->group(function () {
-                Route::get('/', [PurchaseSales::class, 'showDataFaktur'])->name('data-faktur');
-                // Route::get('/barangmasuk-faktur/{no_surat}', [PurchaseSales::class, 'showBarangMasuk'])->name('barangmasuk_faktur');
-                Route::get('/faktur/{no_surat}', [PurchaseSales::class, 'showFakturProduct'])->name('faktur-product');
-                Route::post('/create_faktur', [PurchaseSales::class, 'createFaktur'])->name('create_faktur');
+                Route::get('/', [PurchaseSales::class, 'showFakturManagement'])->name('faktur-management');
+                Route::post('/create-faktur', [PurchaseSales::class, 'createFaktur'])->name('create-faktur');
+                Route::get('/faktur-product/{purchase_id}', [PurchaseSales::class, 'showFakturProduct'])->name('faktur-product');
                 Route::post('/create-faktur-product', [PurchaseSales::class, 'createFakturProduct'])->name('create-faktur-product');
                 Route::post('/update-faktur-product/{purchase_id}', [PurchaseSales::class, 'updateFaktur'])->name('update-faktur-product');
-                Route::post('/delete-faktur/{purchase_id}', [PurchaseSales::class, 'deleteFaktur'])->name('delete-faktur');
+                Route::post('/delete-faktur/{no_faktur}', [PurchaseSales::class, 'deleteFaktur'])->name('delete-faktur');
+                Route::get('/edit-faktur/{no_faktur}', [PurchaseSales::class, 'showEditFaktur'])->name('edit-faktur');
                 Route::get('/detail-faktur/{purchase_id}', [PurchaseSales::class, 'showDetailFaktur'])->name('detail-faktur');
-                // Route::post('/update-item/{barang_id}', [MasterData::class, 'updateItem'])->name('update-item');
-                // Route::get('/show-data-faktur', [PurchaseSales::class, 'showDataFaktur'])->name('show-data-faktur');
             });
         });
 
@@ -91,14 +89,6 @@ Route::middleware('auth')->group(function () {
                 Route::post('/create-items', [MasterData::class, 'createItems'])->name('create-items');
                 Route::post('/delete-item/{barang_id}', [MasterData::class, 'deleteItem'])->name('delete-item');
                 Route::post('/update-item/{barang_id}', [MasterData::class, 'updateItem'])->name('update-item');
-
-                // Route::post('/updateStok', function (Request $request) {
-                //     $stok = $request->input('total');
-                
-                //     // Lakukan sesuatu dengan nilai stok, seperti menyimpan ke database
-                
-                //     return response()->json(['success' => true]);
-                // })->name('updateStok');
             });
 
             // supplier group
@@ -117,13 +107,13 @@ Route::middleware('auth')->group(function () {
                 Route::post('/delete-kategori/{kategori_id}', [MasterData::class, 'deleteKategori'])->name('delete-kategori');
             });
 
-            // bentuk persediaan group
-            // Route::prefix('/bentuk')->group(function () {
-            //     Route::get('/', [MasterData::class, 'showDataBentuk'])->name('bentuk');
-            //     Route::post('/create-bentuk', [MasterData::class, 'createBentuk'])->name('create-bentuk');
-            //     Route::post('/update-bentuk/{bentuk_id}', [MasterData::class, 'updateBentuk'])->name('update-bentuk');
-            //     Route::post('/delete-bentuk/{bentuk_id}', [MasterData::class, 'deleteBentuk'])->name('delete-bentuk');
-            // });
+           // bentuk persediaan group
+            Route::prefix('/bentuk')->group(function () {
+                Route::get('/', [MasterData::class, 'showDataBentuk'])->name('bentuk');
+                Route::post('/create-bentuk', [MasterData::class, 'createBentuk'])->name('create-bentuk');
+                Route::post('/update-bentuk/{bentuk_id}', [MasterData::class, 'updateBentuk'])->name('update-bentuk');
+                Route::post('/delete-bentuk/{bentuk_id}', [MasterData::class, 'deleteBentuk'])->name('delete-bentuk');
+            });
 
             // satuan group
             Route::prefix('/satuan')->group(function () {
@@ -161,9 +151,13 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('/stock-report')->group(function () {
             Route::get('/', [Report::class, 'showStockReport'])->name('stock-report');
-            Route::get('/stock-pdf', [Report::class, 'pdfStockReport'])->name('stock-pdf');
             Route::get('/showLowStock', [Report::class, 'showLowStock'])->name('stock-low');
             Route::get('/showAlmostExp', [Report::class, 'showAlmostExp'])->name('stock-exp');
+            Route::post('/cetak-laporan', [Report::class, 'cetak'])->name('cetak-laporan');
+
+            // Route::get('/stock-pdf', [Report::class, 'pdfStockReport'])->name('stock-pdf');
+            // Route::get('/stockLow-pdf', [Report::class, 'pdfStockLowReport'])->name('stockLow-pdf');
+            // Route::get('/stockExp-pdf', [Report::class, 'pdfStockExpReport'])->name('stockExp-pdf');
         });
     });
 });

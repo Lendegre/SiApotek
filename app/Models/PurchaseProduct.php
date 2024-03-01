@@ -26,7 +26,11 @@ class PurchaseProduct extends Model
     // {
     //     return $this->belongsTo(Barang::class, 'barang_id');
     // }
-
+    
+    public function faktur(): BelongsTo
+    {
+        return $this->belongsTo(Faktur::class, 'id');
+    }
     // relationship with purchase
 
     public function barang(): BelongsTo
@@ -45,10 +49,6 @@ class PurchaseProduct extends Model
     //     return $this->belongsTo(Faktur::class, 'id');
     // }
         
-    public function barangmasuk(): hasMany
-    {
-        return $this->hasMany(barangmasuk::class, 'id');
-    }
 
 
 }

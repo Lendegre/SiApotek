@@ -32,14 +32,14 @@ class Purchase extends Model
         return $this->belongsTo(Golongan::class, 'golongan_id');
     }
 
-    public function faktur(): hasMany
+    public function faktur(): BelongsTo
     {
-        return $this->hasMany(faktur::class, 'id');
+        return $this->belongsTo(faktur::class, 'id');
     }
 
-    // public function purchaseproduct(): HasMany
-    // {
-    //     return $this->hasMany(PurchaseProduct::class, 'purchase_id');
-    // }
+    public function purchaseproduct(): BelongsTo
+    {
+        return $this->belongsTo(PurchaseProduct::class, 'purchase_product_id');
+    }
 
 }

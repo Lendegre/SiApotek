@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Dash;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Models\Unit;
 use App\Models\Barang;
+use App\Models\Bentuk;
+use App\Models\Satuan;
 use App\Models\Golongan;
 use App\Models\Kategori;
-use App\Models\Satuan;
 use App\Models\Supplier;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 
 
 class MasterDataController extends Controller
@@ -29,6 +30,7 @@ class MasterDataController extends Controller
             Supplier::all(),
             Satuan::all(),
             Kategori::all(),
+            Bentuk::all(),
             Golongan::all()
         ];
     }
@@ -50,6 +52,7 @@ class MasterDataController extends Controller
             Supplier::count(),
             Satuan::count(),
             Kategori::count(),
+            Bentuk::count(),
             Golongan::count(),
         ];
 
@@ -61,7 +64,8 @@ class MasterDataController extends Controller
             'supplier'      => $this->model[0],
             'satuan'        => $this->model[1],
             'kategori'      => $this->model[2],
-            'golongan'      => $this->model[3],
+            'bentuk'        => $this->model[3],
+            'golongan'      => $this->model[4],
         ];
         return view('dash.master-data.barang', $data);
     }
@@ -86,7 +90,8 @@ class MasterDataController extends Controller
             'supplier'  => $this->model[0],
             'satuan'    => $this->model[1],
             'kategori'  => $this->model[2],
-            'golongan'  => $this->model[3],
+            'bentuk'    => $this->model[3],
+            'golongan'  => $this->model[4],
         ];
 
         return view('dash.master-data.elements.add_items', $data);
@@ -130,7 +135,7 @@ class MasterDataController extends Controller
                     "tanggal_kedaluwarsa" => $request->input("tanggal_kedaluwarsa$i"),
                     "tanggal_masuk"       => $tanggal_masuk,
                     "isi"                 => $request->input("isi$i"),
-                    "bentuk"              => $request->input("bentuk$i"),
+                    "bentuk_id"           => $request->input("bentuk_id$i"),
                     "stok"                => $request->input("stok$i"),
                     "harga_jual"          => $request->input("harga_jual$i"),
                     "satuan_jual"         => $request->input("satuan_jual$i"),
@@ -175,12 +180,13 @@ class MasterDataController extends Controller
         $otherBarang = Barang::where('nama_barang', '!=', $barang->nama_barang)->where('nama_barang', $request->input('nama_barang'))->first();
 
         if (!$otherBarang) {
-            $barang->nama_barang = $request->input('nama_barang');
+            $barang->nama_barang = $request->input('nama_barang'); 
+            $barang->supplier_id = $request->input('supplier_id'); 
             $barang->tanggal_kedaluwarsa = $request->input('tanggal_kedaluwarsa');
             $barang->tanggal_masuk = $request->input('tanggal_masuk');
             $barang->satuan_id = $request->input('satuan_id');
             $barang->isi = $request->input('isi');
-            $barang->bentuk = $request->input('bentuk');
+            $barang->bentuk_id = $request->input('bentuk_id');
             $barang->stok = $request->input('stok');
             $barang->harga_jual = $request->input('harga_jual');
             $barang->satuan_jual = $request->input('satuan_jual');
@@ -349,6 +355,83 @@ class MasterDataController extends Controller
 
         return back();
     }
+
+
+    /**
+     * Render view bentuk user interface
+     * 
+     * @return View
+     */
+    protected function showDataBentuk()
+    {
+        $data = [
+            'title'     => $this->label . 'Bentuk Barang',
+            'id_page'   => $this->id_page[3],
+            'bentuk'  => Bentuk::orderBy('bentuk_id', 'DESC')->get(),
+        ];
+
+        return view('dash.master-data.bentuk', $data);
+    }
+
+     /**
+     * Handle request to create bentuk
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function createBentuk(Request $request)
+    {
+        $existingBentuk = Bentuk::where('nama_bentuk', $request->input('nama_bentuk'))->first();
+
+        if (!$existingBentuk) {
+            DB::table('bentuk')->insert([
+                'nama_bentuk' => $request->input('nama_bentuk'),
+            ]);
+
+            return back()->with('success', 'Sukses membuat data bentuk');
+        }
+
+        return back()->with('error', 'Data bentuk tidak boleh sama');
+    }
+
+     /**
+     * Handle request to delete bentuk
+     * 
+     * @return RedirectResponse
+     */
+
+     protected function deleteBentuk($bentuk_id)
+     {
+         DB::table('bentuk')->where('bentuk_id', $bentuk_id)->delete();
+ 
+         return back()->with('success', 'Data bentuk berhasil dihapus');
+     }
+
+      /**
+     * Handle request to update bentuk
+     * 
+     * @param Request
+     * @return RedirectResponse
+     */
+    protected function updateBentuk(Request $request, $bentuk_id)
+    {
+        $bentuk = Bentuk::find($bentuk_id);
+        $otherBentuk = Bentuk::where('nama_bentuk', $request->input('nama_bentuk'))->first();
+
+        if ($bentuk->nama_bentuk != $request->input('nama_bentuk')) {
+            if (!$otherBentuk) {
+                $bentuk->nama_bentuk = $request->input('nama_bentuk');
+                $bentuk->save();
+                return back()->with('info', 'Data bentuk berhasil diupdate');
+            } else {
+                return back()->with('error', 'Data bentuk tidak boleh sama!');
+            }
+        }
+
+        return back();
+    }
+
+
 
     /**
      * Render view satuan user interface

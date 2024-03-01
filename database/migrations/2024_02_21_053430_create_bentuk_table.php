@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fakturs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('purchase_id')->constrained('purchase', 'purchase_id')->cascadeOnDelete()->cascadeOnUpdate();
+        Schema::create('bentuk', function (Blueprint $table) {
+            $table->id('bentuk_id');
+            $table->string('nama_bentuk');
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fakturs');
+        Schema::dropIfExists('bentuk');
     }
 };

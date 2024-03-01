@@ -10,10 +10,10 @@
                         @csrf
                         <div class="row justify-content-between mt-2">
 
-                             <input type="hidden" name="purchase_id" value="{{ $purchase->purchase_id }}"> 
+                             {{-- <input type="hidden" name="purchase_id" value="{{ $purchase->purchase_id }}">  --}}
                              {{-- <input type="hidden" name="purchase_product_id" value="{{ $purchase_product->purchase_product_id }}"> --}}
 
-                            <div class="col-md-4">
+                            {{-- <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="" class="form-label">No. Surat</label>
                                     <input type="string" class="form-control" name="no_surat" id="" value="{{ $purchase->no_surat }}" disabled required>
@@ -31,43 +31,43 @@
                                     <label for="no_tlp" class="form-label">No. Telepon</label>
                                     <input type="text" class="form-control" name="no_tlp" value="{{ $purchase->supplier->no_telp }}" disabled required>
                                 </div>
-                            </div>
-                            <div class="col-md-3 offset-md-2">
+                            </div> --}}
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="no_faktur" class="form-label">No. Faktur</label>
-                                    <input type="string" class="form-control @error('no_faktur') is-invalid @enderror" id="no_faktur" name="no_faktur">
+                                    <input type="string" class="form-control @error('no_faktur') is-invalid @enderror" value="{{ $faktur->no_faktur }}" id="no_faktur" name="no_faktur">
                                     @error('no_faktur')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
                                         @enderror
                                 </div>
-                                <div class="mb-3">
+                                <!-- <div class="mb-3">
                                     <label for="sbayar" class="form-label">Status Pembayaran</label>
                                     <select required class="form-control" name="sbayar" id="sbayar">
-                                        <option value="">-Pilih Status Pembayaran-</option>
+                                        <option value=""></option>
                                         <option value="COD">COD</option>
                                         <option value="Kredit">Kredit</option>
                                     </select>
-                                </div>
-                                    <div class="mt-5">
-                                        <label for="image" class="form-label">Foto Faktur</label>
-                                        <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*" onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])">
-                                        @error('image')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
+                                </div> -->
+                                <!-- <div class="mt">
+                                    <label for="image" class="form-label">Foto Faktur</label>
+                                    <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*" onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])">
+                                    @error('image')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div> -->
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="tgl_trm" class="form-label">Tanggal Terima</label>
-                                    <input type="date" class="form-control" id="tgl_trm" name="tgl_trm">
+                                    <input type="date" class="form-control" value="{{ $faktur->tgl_trm }}" id="tgl_trm" name="tgl_trm">
                                 </div>
                                 <div class="mb-2">
                                     <label for="tgl_tempo" class="form-label">Tanggal Pelunasan</label>
-                                    <input type="date" class="form-control" id="tgl_tempo" name="tgl_tempo">
+                                    <input type="date" class="form-control" value="{{ $faktur->tgl_tempo }}" id="tgl_tempo" name="tgl_tempo">
                                 </div>
                                 <div class="mt-3">
                                     <img src="" id="output" width="150">
@@ -86,7 +86,7 @@
                                     <th class="border">Total</th>
                                 </tr>
                             </thead>
-                            @foreach ($bm as $b)
+                            @foreach ($barang_faktur as $b)
                                 <tbody>
                                     <!-- Row 1 -->
                                     <tr class="border">
